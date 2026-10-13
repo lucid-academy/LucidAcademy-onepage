@@ -1,0 +1,5 @@
+# Adresy dem „na życzenie” — tylko lokalnie, nigdy w repozytorium (repo jest publikowane)
+narzedzia/zrodla-prywatne.json
+# Surowe PNG ze skryptu zrzutów (--podglad)
+narzedzia/podglad/
+node_modules/

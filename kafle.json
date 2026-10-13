@@ -1,0 +1,129 @@
+{
+  "_instrukcja": [
+    "Kolejność kafli w tym pliku = kolejność w widoku Wszystko: najpierw otwarte dema, potem dema na życzenie.",
+    "typ: jedna z nazw z listy kategorie (od niej zależy filtr).",
+    "status: \"otwarte\" (ostry zrzut, przyciski z adresami) albo \"na-zyczenie\" (zajawka, przycisk Napisz do nas prowadzi do #kontakt).",
+    "Przy statusie na-zyczenie NIE wpisuj adresu strony. Ten plik jest publiczny.",
+    "obraz: plik webp w assets/kafle/ (zrzuty robi narzedzia/zrzuty.mjs). alt: opis tego, co widać na obrazie.",
+    "kadr: \"poziomy\" albo \"pionowy\" (strony robione pod telefon, fotografowane przy 390 px).",
+    "wygaszenie (tylko na-zyczenie): \"prawo\", \"lewo\", \"dol\", \"prawo-dol\" albo \"boki\", czyli strona, od której zajawka przechodzi w tło.",
+    "fokus (opcjonalnie): który fragment obrazu ma być widoczny, np. \"50% 0%\" (góra) albo \"30% 60%\".",
+    "dopisek (opcjonalnie): drugie zdanie pod opisem.",
+    "atrybucja (opcjonalnie): wymagane oznaczenie źródła, np. gdy na zrzucie widać dane OpenStreetMap."
+  ],
+  "kategorie": ["Kultura i turystyka", "Gry miejskie", "Analizy", "Partycypacja"],
+  "kafle": [
+    {
+      "nazwa": "Święta dzielnic: Chełmińskie i Bydgoskie Przedmieście 2026",
+      "typ": "Kultura i turystyka",
+      "status": "otwarte",
+      "zdanie": "Kilkadziesiąt punktów programu w jednym parku. Odwiedzający od razu wie, co jest gdzie i o której.",
+      "obraz": "assets/kafle/swieta-dzielnic.webp",
+      "alt": "Strona Święta Chełmińskiego Przedmieścia: plan parku z ponumerowanymi punktami programu i dolnym paskiem z programem, filtrami i pamięcią święta.",
+      "atrybucja": "Plan terenu na podstawie danych © autorzy OpenStreetMap",
+      "kadr": "poziomy",
+      "przyciski": [
+        { "etykieta": "Chełmińskie", "adres": "https://lucidacademy.pl/projekty/swietochp/" },
+        { "etykieta": "Bydgoskie", "adres": "https://www.lucidacademy.pl/projekty/swietoBP/" }
+      ]
+    },
+    {
+      "nazwa": "Budżet Obywatelski Torunia 2027",
+      "typ": "Partycypacja",
+      "status": "otwarte",
+      "zdanie": "Mieszkaniec w kilka minut znajduje projekty ze swojej okolicy i rozumie, jak liczone są głosy.",
+      "obraz": "assets/kafle/bo-torun-2027.webp",
+      "alt": "Strona Budżetu Obywatelskiego Torunia 2027: nagłówek „Głosowanie zakończone — czekamy na wyniki”, liczba zgłoszonych pomysłów i wybór okręgu.",
+      "kadr": "poziomy",
+      "przyciski": [
+        { "etykieta": "Otwórz", "adres": "https://lucid-academy.github.io/ai-lab/bo-torun-2027.html" }
+      ]
+    },
+    {
+      "nazwa": "Wędrówki po gminie Purda",
+      "typ": "Gry miejskie",
+      "status": "otwarte",
+      "zdanie": "Gra wymyślona przez uczennice ze szkoły w Klebarku Wielkim, przeniesiona z papieru na interaktywną mapę z quizem i bestiariuszem.",
+      "obraz": "assets/kafle/wedrowki-purda.webp",
+      "alt": "Gra Wędrówki po gminie Purda: ilustrowana mapa gminy z ponumerowanymi punktami trasy, startem i metą oraz kartą postaci obok.",
+      "kadr": "poziomy",
+      "przyciski": [
+        { "etykieta": "Otwórz", "adres": "https://lucid-academy.github.io/olsztyn/" }
+      ]
+    },
+    {
+      "nazwa": "Żagle 2026, Szczecin",
+      "typ": "Kultura i turystyka",
+      "status": "otwarte",
+      "zdanie": "31 jednostek i 14 miejsc wydarzeń. Odwiedzający układa własny plan, odpowiadając na cztery pytania.",
+      "obraz": "assets/kafle/zagle-2026.webp",
+      "alt": "Karta morska Żagli 2026: tytuł, zakładki z mapą, planem i flotą oraz rysowana mapa nabrzeży Odry z ponumerowanymi miejscami wydarzeń.",
+      "kadr": "poziomy",
+      "przyciski": [
+        { "etykieta": "Otwórz", "adres": "https://lucid-academy.github.io/ai-lab/zagle-2026-karta-morska.html" }
+      ]
+    },
+    {
+      "nazwa": "Interaktywne wyprawy miejskie · Toruń",
+      "typ": "Gry miejskie",
+      "status": "na-zyczenie",
+      "zdanie": "Gra miejska dostępna przez cały sezon, a nie tylko w dniu wydarzenia. Uczestnik ma konto i osiągnięcia, organizator dostaje statystyki.",
+      "obraz": "assets/kafle/wyprawy-torun.webp",
+      "alt": "Fragment profilu uczestnika gry na telefonie: karta postaci z poziomem i paskiem doświadczenia oraz siatka ośmiu osiągnięć, pięć zdobytych.",
+      "kadr": "pionowy",
+      "wygaszenie": "dol"
+    },
+    {
+      "nazwa": "Mapa zieleni Torunia",
+      "typ": "Kultura i turystyka",
+      "status": "na-zyczenie",
+      "zdanie": "Mapa, która wie, co kwitnie w tym tygodniu. Zieleń miasta w rytmie pór roku zamiast stałej listy.",
+      "obraz": "assets/kafle/mapa-zieleni.webp",
+      "alt": "Fragment mapy zieleni Torunia: pasek „Co teraz” z miejscami, w których trwa sezon, z liczbą pozostałych dni, filtry pory roku i skrawek mapy z pinezkami.",
+      "atrybucja": "Podkład mapy © autorzy OpenStreetMap",
+      "kadr": "poziomy",
+      "wygaszenie": "prawo"
+    },
+    {
+      "nazwa": "Konsultacje: nocna sprzedaż alkoholu w Krośnie",
+      "typ": "Partycypacja",
+      "status": "na-zyczenie",
+      "zdanie": "Wyniki konsultacji z trzech perspektyw: mieszkańców, rad dzielnic i ciał doradczych. Strona jasno pokazuje też, czego dane nie dowodzą.",
+      "dopisek": "Przygotowane dla Urzędu Miasta Krosna na podstawie danych z konsultacji.",
+      "obraz": "assets/kafle/krosno-konsultacje.webp",
+      "alt": "Fragment strony z wynikami konsultacji w Krośnie: pięć wyników zbiorczych i trzy perspektywy — mieszkańców, rad lokalnych i instytucji.",
+      "kadr": "poziomy",
+      "wygaszenie": "dol"
+    },
+    {
+      "nazwa": "ISKRA: Atlas głosów, ul. Sienkiewicza",
+      "typ": "Partycypacja",
+      "status": "na-zyczenie",
+      "zdanie": "Głosy mieszkańców z 26 spacerów badawczych, uporządkowane jako materiał do planowania dzielnicy twórczej. Badanie terenowe prowadzili studenci psychologii.",
+      "obraz": "assets/kafle/iskra-atlas-glosow.webp",
+      "alt": "Fragment atlasu głosów: wykres słupkowy miejsc najczęściej wskazywanych przez uczestników spacerów, od Parku Bydgoskiego w dół.",
+      "kadr": "poziomy",
+      "wygaszenie": "prawo"
+    },
+    {
+      "nazwa": "Szczeciński Dziennik Sezonu",
+      "typ": "Analizy",
+      "status": "na-zyczenie",
+      "zdanie": "Ruch turystyczny czytelny dla zarządu: kto przyjeżdża i kiedy, miesiąc po miesiącu i rok do roku.",
+      "obraz": "assets/kafle/szczecinski-dziennik-sezonu.webp",
+      "alt": "Fragment wykresu sezonu: dwie linie ruchu turystycznego rok do roku, rosnące ku szczytowi, bez osi i wartości.",
+      "kadr": "poziomy",
+      "wygaszenie": "lewo"
+    },
+    {
+      "nazwa": "Ciepło Bydgoszczy 2040",
+      "typ": "Analizy",
+      "status": "na-zyczenie",
+      "zdanie": "Które osiedla najmocniej odczują ETS2 i gdzie podłączenie do sieci ciepłowniczej opłaca się najbardziej.",
+      "obraz": "assets/kafle/cieplo-bydgoszczy-2040.webp",
+      "alt": "Fragment mapy osiedli Bydgoszczy w kolorach od jasnoniebieskiego do ceglastego, bez legendy i wartości.",
+      "kadr": "poziomy",
+      "wygaszenie": "prawo-dol"
+    }
+  ]
+}

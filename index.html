@@ -3,1000 +3,131 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Do zdjęcia przy podmianie (PODMIANA.md) -->
+    <meta name="robots" content="noindex" />
+    <title>Lucid Academy | Szkolenia z AI dla instytucji publicznych</title>
     <meta
       name="description"
       content="Lucid Academy — fundacja, która pomaga szkołom, NGO, samorządom i instytucjom kultury oswoić sztuczną inteligencję: edukacja o AI, projekty społeczne, facylitacja i kultura."
     />
-    <title>Lucid Academy | Edukacja. Technologia. Przyszłość.</title>
+    <meta name="theme-color" content="#0C0720" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="image" href="assets/city-layer.png" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="preload" href="assets/fonty/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonty/bricolage-grotesque-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonty/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonty/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/strona.css" />
+
+    <!-- Klasa .js włącza animacje wejścia; bez JavaScriptu wszystko jest od razu widoczne. -->
+    <script>document.documentElement.classList.add("js");</script>
+    <script src="js/strona.js" defer></script>
   </head>
   <body>
-    <!-- =============================================
-       NAWIGACJA STICKY
-  ============================================== -->
-    <header id="site-header">
-      <nav class="nav" id="main-nav" aria-label="Nawigacja główna">
-        <div class="nav-container">
-          <a
-            href="#"
-            class="nav-logo"
-            aria-label="Lucid Academy — wróć na górę strony"
-          >
-            <img
-              src="assets/logo-lockup.png"
-              alt="Lucid Academy"
-              width="200"
-              height="68"
-              decoding="async"
-            />
-          </a>
+    <a class="pomin" href="#tresc">Przejdź do treści</a>
 
-          <ul class="nav-links" id="nav-links" role="list">
-            <li><a href="#misja" class="nav-link">Misja</a></li>
-            <li><a href="#uniwersytet" class="nav-link">Uniwersytet</a></li>
-            <li><a href="#oferta" class="nav-link">Oferta</a></li>
-            <li><a href="#co-robimy" class="nav-link">Co robimy</a></li>
-            <li><a href="#zespol" class="nav-link">Zespół</a></li>
-            <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
-          </ul>
+    <!-- Tło z wykładu „Alignment”: niebo, siatka, linie skanu -->
+    <div class="tlo" aria-hidden="true">
+      <div class="tlo__niebo"></div>
+      <div class="tlo__siatka"></div>
+      <div class="tlo__skan"></div>
+    </div>
 
-          <button
-            class="nav-hamburger"
-            id="nav-hamburger"
-            aria-label="Otwórz menu nawigacji"
-            aria-expanded="false"
-            aria-controls="nav-links"
-            type="button"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
+    <header class="naglowek" id="naglowek">
+      <nav class="nawigacja kontener" aria-label="Nawigacja główna">
+        <a class="logo" href="#" aria-label="Lucid Academy — wróć na górę strony">
+          <img src="assets/logo-lockup.png" alt="" width="800" height="360" decoding="async" />
+        </a>
+
+        <button class="menu-przycisk" type="button" aria-expanded="false" aria-controls="menu">
+          <span class="sr-only">Menu</span>
+          <span class="menu-przycisk__ikona" aria-hidden="true"></span>
+        </button>
+
+        <ul class="menu" id="menu" role="list">
+          <li><a href="#misja">Misja</a></li>
+          <li><a href="#uniwersytet">Uniwersytet</a></li>
+          <li><a href="#oferta">Oferta</a></li>
+          <li><a href="#co-robimy">Co budujemy</a></li>
+          <li><a href="#zespol">Zespół</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
       </nav>
     </header>
 
-    <main>
-      <!-- =============================================
-         SEKCJA: HERO
-    ============================================== -->
-      <section id="hero" aria-labelledby="hero-heading">
-        <div class="hero-stage">
-          <!-- 1. Tło -->
-          <div class="hero-bg" aria-hidden="true"></div>
+    <main id="tresc">
+      <!-- =========================================================
+           HERO
+      ========================================================== -->
+      <section class="hero" id="hero" aria-labelledby="hero-tytul">
+        <!-- Miejsce na rozbudowę w v1.5 -->
+        <div class="hero__ilustracja" aria-hidden="true">
+          <img
+            src="assets/art/laser-education.webp"
+            srcset="assets/art/768/laser-education.webp 768w, assets/art/laser-education.webp 1536w"
+            sizes="(min-width: 1024px) 66vw, 100vw"
+            alt=""
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+            data-parallax="0.12"
+          />
+        </div>
 
-          <!-- 2. Mgła -->
-          <div class="hero-fog" aria-hidden="true"></div>
+        <div class="hero__tresc kontener">
+          <p class="etykieta" data-wejscie>
+            <span class="etykieta__znak" aria-hidden="true">&gt;</span> 00 · lucid academy<span class="kursor" aria-hidden="true"></span>
+          </p>
 
-          <!-- 3. Słońce ZA miastem — wschodzące światło, intensywność rośnie ze scrollem -->
-          <div class="hero-sun hero-sun--back" aria-hidden="true">
-            <img
-              src="assets/lucid-sun.png"
-              alt=""
-              width="1536"
-              height="1024"
-              decoding="async"
-            />
-          </div>
+          <h1 class="hero__tytul" id="hero-tytul" data-wejscie>
+            Uczymy zespoły instytucji publicznych korzystać z&nbsp;AI
+            <span class="slowo-klucz"><span class="slowo-klucz__tekst" aria-hidden="true">świadomie</span><span class="sr-only">świadomie</span></span>.
+          </h1>
 
-          <!-- 4. Warstwa miasta -->
-          <div class="hero-city" aria-hidden="true">
-            <picture>
-              <source
-                media="(max-width: 767px)"
-                srcset="assets/full_hero_city.png"
-              />
-              <img
-                src="assets/city-layer.png"
-                alt=""
-                width="1536"
-                height="1024"
-                decoding="async"
-                fetchpriority="high"
-              />
-            </picture>
-          </div>
+          <p class="hero__lead" data-wejscie>
+            Szkolenia i&nbsp;warsztaty dla instytucji publicznych, samorządów,
+            szkół i&nbsp;NGO. Łączymy praktykę z&nbsp;refleksją, bo to ona zostaje
+            na dłużej niż konkretna wersja chatbota.
+          </p>
 
-          <!-- 6. Słońce PRZED miastem — delikatny flare zalewający dół sceny -->
-          <div class="hero-sun hero-sun--front" aria-hidden="true">
-            <img
-              src="assets/lucid-sun.png"
-              alt=""
-              width="1536"
-              height="1024"
-              decoding="async"
-            />
-          </div>
-
-          <!-- 5. Treść -->
-          <div class="hero-content">
-            <div class="hero-content-inner">
-              <p class="hero-label">
-                <span class="hero-label-text">Fundacja Lucid Academy</span>
-              </p>
-
-              <h1 id="hero-heading" class="hero-title">
-                Edukacja. Technologia. Przyszłość.
-              </h1>
-
-              <p class="hero-lead">
-                Wspieramy rozwój społeczny poprzez edukację o technologii i
-                kulturę. Budujemy przyszłość dla świadomych i kreatywnych ludzi.
-              </p>
-
-              <div class="hero-cta" role="group" aria-label="Główne działania">
-                <a href="#kontakt" class="btn btn-primary"
-                  >Porozmawiajmy o współpracy</a
-                >
-                <a href="#co-robimy" class="btn btn-secondary"
-                  >Zobacz, co robimy</a
-                >
-              </div>
-
-              <p class="hero-meta">
-                Edukacja&nbsp;AI · projekty&nbsp;społeczne · facylitacja ·
-                kultura
-              </p>
-            </div>
-          </div>
-
-          <!-- Wskaźnik scrolla -->
-          <div class="hero-scroll-cue" aria-hidden="true">
-            <span class="hero-scroll-cue__text">Przewiń</span>
-            <span class="hero-scroll-cue__line"></span>
+          <div class="hero__akcje" data-wejscie>
+            <a class="przycisk przycisk--glowny" href="#kontakt">Porozmawiajmy o współpracy</a>
+            <a class="link-cichy" href="#co-robimy">Zobacz, co budujemy <span aria-hidden="true">↓</span></a>
           </div>
         </div>
       </section>
 
-      <!-- =============================================
-         TIMELINE — narracyjna oś (linia światła)
-         Oś biegnie środkiem; rysuje się ze scrollem (JS ustawia
-         --line-progress). Sekcje układają się naprzemiennie wokół osi,
-         a węzły zapalają się, gdy linia do nich dochodzi.
-    ============================================== -->
-      <div class="timeline">
-        <!-- Oś światła: bazowa ścieżka + świecące wypełnienie + głowa -->
-        <div class="timeline-line" aria-hidden="true">
-          <span class="timeline-line__fill"></span>
-          <span class="timeline-line__head"></span>
+      <!-- =========================================================
+           05 · CO BUDUJEMY
+           Kafle powstają z kafle.json — tam się je edytuje.
+      ========================================================== -->
+      <section class="sekcja" id="co-robimy" aria-labelledby="co-robimy-tytul">
+        <!-- Miejsce na rozbudowę w v1.5: kolejne projekty dopisuje się w kafle.json -->
+        <div class="kontener">
+          <header class="sekcja__naglowek">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 05 · co budujemy<span class="kursor" aria-hidden="true"></span>
+            </p>
+            <h2 class="sekcja__tytul" id="co-robimy-tytul" data-wejscie>Co budujemy</h2>
+            <p class="sekcja__lead" data-wejscie>
+              Narzędzia budujemy z&nbsp;instytucjami i&nbsp;uczymy, jak robić je
+              <mark class="podswietlenie">samodzielnie</mark>.
+            </p>
+          </header>
+
+          <div class="filtr" role="group" aria-label="Pokaż projekty z kategorii" hidden></div>
+          <p class="filtr__licznik"></p>
+
+          <ul class="kafle" role="list"></ul>
+
+          <noscript>
+            <p class="kafle__komunikat">
+              Lista projektów wyświetla się po włączeniu JavaScriptu.
+              Chętnie pokażemy nasze narzędzia — <a href="#kontakt">napisz do nas</a>.
+            </p>
+          </noscript>
         </div>
-
-        <!-- =============================================
-           SEKCJA: MISJA — Treść: Blok 2
-           Linia rozdziela się na dwa filary (SVG fork),
-           a następnie splata w węzeł scalenia.
-      ============================================== -->
-        <section id="misja" aria-labelledby="misja-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-
-          <div class="misja-content">
-            <header class="misja-header">
-              <h2 id="misja-heading">Po&nbsp;co jesteśmy?</h2>
-              <p class="misja-lead">
-                Fundacja Lucid Academy łączy edukację o sztucznej inteligencji z
-                troską o kulturę i relacje międzyludzkie. Uczymy korzystać z AI
-                świadomie, krytycznie i twórczo; jednocześnie wspieramy kulturę
-                oraz wspólnotę jako przestrzeń, w której technologia odzyskuje
-                ludzki wymiar.
-              </p>
-              <p class="misja-belief">
-                Wierzymy, że AI najlepiej służy tam, gdzie pomaga ludziom się
-                spotykać, rozumieć i działać razem. Nie tam, gdzie ten kontakt
-                zastępuje. To przekonanie wyznacza wszystko, co robimy.
-              </p>
-            </header>
-
-            <figure class="section-art section-art--mission">
-              <img
-                src="assets/art/laser-ethics.webp"
-                alt="Abstrakcyjny układ równowagi między możliwościami AI a społecznymi konsekwencjami"
-                width="1536"
-                height="1024"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                Technologia zyskuje sens, kiedy potrafimy świadomie wyznaczać
-                jej kierunek.
-              </figcaption>
-            </figure>
-
-            <div class="misja-pillars">
-              <!-- SVG: prostokątny fork (ostre kąty, bez bezierów).
-                   Pozioma belka łączy dwie gałęzie, węzły na jej końcach.
-                   pathLength="1" → stroke-dashoffset bez getTotalLength(). -->
-              <svg
-                class="misja-fork-svg"
-                aria-hidden="true"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <linearGradient
-                    id="fork-gradient"
-                    gradientUnits="userSpaceOnUse"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="100"
-                  >
-                    <stop offset="0%" stop-color="#b088f4" />
-                    <stop offset="50%" stop-color="#7c4ddb" />
-                    <stop offset="100%" stop-color="#ff4bf2" />
-                  </linearGradient>
-                  <!-- Glow na ścieżkach (nie na cover rect) — filter per-element.
-                       stdDeviation nieco wyższy dla kompensacji przy płytkim sy. -->
-                  <filter
-                    id="fork-glow"
-                    x="-50%"
-                    y="-10%"
-                    width="200%"
-                    height="120%"
-                  >
-                    <feGaussianBlur
-                      in="SourceGraphic"
-                      stdDeviation="1.2"
-                      result="blur"
-                    />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-                <!-- Zakrycie głównej linii timeline -->
-                <rect
-                  class="misja-fork-cover"
-                  x="48.6"
-                  y="0"
-                  width="2.8"
-                  height="100"
-                />
-                <!-- Lewa gałąź: środek → belka → lewy bok → dół → powrót. -->
-                <path
-                  class="misja-fork-path"
-                  pathLength="1"
-                  d="M50,0 L50,10 L3,10 L3,92 L50,92 L50,100"
-                  stroke="url(#fork-gradient)"
-                  filter="url(#fork-glow)"
-                />
-                <!-- Prawa gałąź (lustro) -->
-                <path
-                  class="misja-fork-path"
-                  pathLength="1"
-                  d="M50,0 L50,10 L97,10 L97,92 L50,92 L50,100"
-                  stroke="url(#fork-gradient)"
-                  filter="url(#fork-glow)"
-                />
-              </svg>
-
-              <!-- Węzły jako elementy CSS — pozycja odpowiada SVG bar y=10%.
-                   SVG circles byłyby spłaszczone przez preserveAspectRatio="none". -->
-              <span
-                class="misja-fork-node misja-fork-node--left"
-                aria-hidden="true"
-              ></span>
-              <span
-                class="misja-fork-node misja-fork-node--right"
-                aria-hidden="true"
-              ></span>
-
-              <div class="misja-pillar-card">
-                <span class="misja-filar-label">Filar 1</span>
-                <h3>Świadoma edukacja o&nbsp;AI</h3>
-                <p>
-                  Pokazujemy, jak korzystać ze sztucznej inteligencji — bez
-                  technologicznego zachwytu i bez paniki. Uczymy nie tylko
-                  obsługi narzędzi, ale też tego, jak o AI myśleć i rozmawiać:
-                  co realnie zmienia w pracy, edukacji, relacjach i kulturze.
-                  Wierzymy, że świadomy dostęp do tej wiedzy i technologii oraz
-                  umiejętność krytycznego myślenia o AI to dziś kluczowe
-                  kwestie, które w niedalekiej przyszłości mogą wpływać na
-                  nierówności społeczne.
-                </p>
-              </div>
-
-              <div class="misja-pillar-card">
-                <span class="misja-filar-label">Filar 2</span>
-                <h3>Kultura i wspólnota</h3>
-                <p>
-                  Wspieramy lokalną kulturę i technologię obywatelską —
-                  projekty, w których AI jest narzędziem, nie celem. Sieci
-                  współpracy instytucji kultury, działania w przestrzeni
-                  dzielnicy, narzędzia tworzone z myślą o konkretnej
-                  społeczności. Najlepsza technologia to ta, która wzmacnia
-                  więzi między ludźmi i pomaga im wspólnie działać.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Węzeł scalenia — dwie gałęzie łączą się z powrotem w jedną linię -->
-          <span class="misja-merge-node" aria-hidden="true"></span>
-        </section>
-
-        <!-- =============================================
-           SEKCJA: UNIWERSYTET — Treść: Blok 3
-      ============================================== -->
-        <section id="uniwersytet" aria-labelledby="uniwersytet-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-          <!-- Miejsce na Slider w v1.5 -->
-          <div class="content-section content-section--wide uni-section">
-            <header class="section-intro">
-              <p class="section-kicker">Współpraca z Uniwersytetem</p>
-              <h2 id="uniwersytet-heading">Uniwersytet</h2>
-              <p class="section-lead">
-                Fundacja Lucid Academy działa w bliskim związku z Uniwersytetem
-                Mikołaja Kopernika w Toruniu. Najściślej współpracujemy z
-                kognitywistyką, ale nasze zajęcia o sztucznej inteligencji
-                trafiają szerzej — do studentów psychologii oraz w ramach
-                przedmiotów ogólnouniwersyteckich, otwartych dla całej
-                społeczności UMK.
-              </p>
-              <p class="section-note">
-                Działamy też z Otwartym Uniwersytetem w ramach europejskiej
-                sieci YUFE, dzięki czemu nasza praca wpisuje się w szerszy,
-                międzynarodowy kontekst.
-              </p>
-            </header>
-
-            <figure class="section-art section-art--university">
-              <img
-                src="assets/art/laser-education.webp"
-                alt="Abstrakcyjna księga połączona z siecią neuronową, symbolizująca edukację o AI"
-                width="1536"
-                height="1024"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                Wiedza, narzędzia i krytyczne myślenie tworzą jeden ekosystem
-                uczenia.
-              </figcaption>
-            </figure>
-
-            <div
-              class="university-path"
-              aria-label="Ekosystem uczenia się o AI"
-            >
-              <article class="learning-core">
-                <p class="micro-label">Trzon pracy na UMK</p>
-                <h3>Zrozumieć AI — ekosystem uczenia się</h3>
-                <p>
-                  Trzy zajęcia, z których każde podchodzi do sztucznej
-                  inteligencji z innej strony: jako do narzędzia, jako do tematu
-                  i jako do realnego działania. Razem składają się na
-                  kompetencję, której rzadko uczy się w komplecie: nie tylko jak
-                  używać AI, ale też po co i z jaką świadomością konsekwencji.
-                </p>
-              </article>
-
-              <div class="learning-modules">
-                <article
-                  class="text-block"
-                  data-laser-art="assets/art/laser-tools.webp"
-                  data-laser-tag="Praktyka / narzędzia"
-                >
-                  <h3>Narzędzia</h3>
-                  <p>
-                    Praca z narzędziami AI w trybie warsztatowym — od pierwszego
-                    kontaktu po biegłość, która pozwala wpleść je w codzienne
-                    zadania bez onieśmielenia i bez bezkrytycznego zachwytu.
-                  </p>
-                </article>
-                <article
-                  class="text-block"
-                  data-laser-art="assets/art/laser-dialogue.webp"
-                  data-laser-tag="Refleksja / dyskurs"
-                >
-                  <h3>Wykład konwersatoryjny</h3>
-                  <p>
-                    Przestrzeń na pytania, które technologia wyprzedza szybciej,
-                    niż nadąża refleksja: jak AI przesuwa granicę między pracą
-                    człowieka a maszyny, co robi z uwagą i pamięcią, komu daje
-                    przewagę, a komu ją odbiera.
-                  </p>
-                </article>
-                <article
-                  class="text-block"
-                  data-laser-art="assets/art/laser-lab.webp"
-                  data-laser-tag="Eksperyment / wdrożenie"
-                >
-                  <h3>AI Project Lab</h3>
-                  <p>
-                    Studenci wychodzą z sali do otoczenia. Pracują z lokalnymi
-                    społecznościami, projektują mikrozmiany oparte na AI i
-                    dzielą się wiedzą o tym, co technologia potrafi, a czego
-                    nie.
-                  </p>
-                </article>
-              </div>
-            </div>
-
-            <div class="duo-grid">
-              <article
-                class="text-panel"
-                data-laser-art="assets/art/laser-synergy.webp"
-                data-laser-tag="Ciągłość / synergia"
-              >
-                <h3>Synergia</h3>
-                <p>
-                  Zajęcia kończą się wraz z semestrem — ambitne pomysły nie.
-                  Wspieramy najaktywniejszych studentów mikrograntami Lucid
-                  Flow, mentoringiem Lucid Academy Sensei i regularnymi
-                  spotkaniami społeczności LA Journeys, a najlepsze projekty
-                  prowadzimy dalej, aż do wdrożenia.
-                </p>
-                <p class="quiet-line">
-                  Uniwersytet daje impuls i metodę, Fundacja daje czas, środki i
-                  ciągłość.
-                </p>
-              </article>
-              <article
-                class="text-panel"
-                data-laser-art="assets/art/laser-ethics.webp"
-                data-laser-tag="Odpowiedzialność / granice"
-              >
-                <h3>Dyskurs o AI</h3>
-                <p>
-                  Sztuczna inteligencja wchodzi do nauki, instytucji i
-                  codzienności szybciej, niż powstaje język, by o niej
-                  rozmawiać. Wnosimy na Uniwersytet dyskusję o granicach
-                  technologii, warunkach jej odpowiedzialnego wdrażania i o tym,
-                  czego AI nie powinna robić, nawet jeśli potrafi.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <!-- =============================================
-           SEKCJA: OFERTA — Treść: Blok 4
-      ============================================== -->
-        <section id="oferta" aria-labelledby="oferta-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-          <!-- Miejsce na rozszerzoną siatkę ofert w v1.5 -->
-          <div class="content-section content-section--wide">
-            <header class="section-intro">
-              <p class="section-kicker">Oferta</p>
-              <h2 id="oferta-heading">
-                Edukacja, narzędzia i procesy społeczne
-              </h2>
-              <p class="section-lead">
-                Prowadzimy działalność edukacyjną i doradczą dla instytucji,
-                samorządów, szkół, organizacji i społeczności lokalnych.
-                Pracujemy w trzech obszarach — od edukacji o sztucznej
-                inteligencji, przez wspólne tworzenie narzędzi cyfrowych, po
-                facylitację procesów obywatelskich.
-              </p>
-            </header>
-
-            <figure class="section-art section-art--offer">
-              <img
-                src="assets/art/laser-vibe-coding.webp"
-                alt="Abstrakcyjna fala intencji budująca z modułów użyteczne narzędzie cyfrowe"
-                width="1536"
-                height="1024"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                Od rozmowy i intencji do działającego narzędzia społecznego.
-              </figcaption>
-            </figure>
-
-            <div class="offer-stack">
-              <article
-                class="offer-item offer-item--primary"
-                data-laser-art="assets/art/laser-education.webp"
-                data-laser-tag="Edukacja / świadomość"
-              >
-                <div class="offer-index" aria-hidden="true">01</div>
-                <div>
-                  <p class="micro-label">Główny obszar działania</p>
-                  <h3>Edukacja o AI</h3>
-                  <p>
-                    Warsztaty i wykłady dopasowane do odbiorcy — od pierwszego
-                    kontaktu ze sztuczną inteligencją po zaawansowane tematy
-                    społeczno-polityczne. Pracujemy z seniorami, młodzieżą,
-                    edukatorami, kadrami instytucji publicznych, liderami
-                    lokalnymi i mieszkańcami.
-                  </p>
-                  <p>
-                    Uczymy nie tylko obsługi konkretnych narzędzi, ale też tego,
-                    jak o AI myśleć i jak o niej rozmawiać. Łączymy praktykę z
-                    refleksją, bo to ona zostaje na dłużej niż konkretna wersja
-                    chatbota.
-                  </p>
-                  <p class="quiet-line">
-                    Każdy format dobieramy długością, formą i głębokością do
-                    odbiorcy — od pojedynczego wykładu po cykl warsztatów.
-                  </p>
-                </div>
-              </article>
-
-              <article
-                class="offer-item"
-                data-laser-art="assets/art/laser-vibe-coding.webp"
-                data-laser-tag="Tworzenie / sprawczość"
-              >
-                <div class="offer-index" aria-hidden="true">02</div>
-                <div>
-                  <h3>Vibe coding i projekty cyfrowo-społeczne</h3>
-                  <p>
-                    Vibe coding to tworzenie narzędzi cyfrowych w rozmowie z AI:
-                    opisujesz, co ma powstać, i widzisz efekt w krótkim czasie.
-                    Dla młodzieży to umiejętność, której prawie nikt jeszcze nie
-                    uczy — łączy kreatywność z kompetencjami cyfrowymi i daje
-                    realne poczucie sprawczości.
-                  </p>
-                  <p>
-                    Uczestnicy budują rzeczy, których faktycznie brakuje:
-                    aplikacje i narzędzia ułatwiające codzienność w dzielnicy,
-                    szkole czy mieście.
-                  </p>
-                </div>
-              </article>
-
-              <article
-                class="offer-item"
-                data-laser-art="assets/art/laser-facilitation.webp"
-                data-laser-tag="Partycypacja / wspólna decyzja"
-              >
-                <div class="offer-index" aria-hidden="true">03</div>
-                <div>
-                  <h3>Facylitacja procesów partycypacyjnych</h3>
-                  <p>
-                    Prowadzimy konsultacje społeczne, budżety obywatelskie,
-                    panele obywatelskie i debaty. Tam, gdzie wnosi to realną
-                    wartość, sięgamy po AI — do analizy wniosków, wizualizacji
-                    danych czy zwiększania dostępności dla różnych grup.
-                  </p>
-                </div>
-              </article>
-            </div>
-
-            <aside class="partners-section" aria-labelledby="partners-heading">
-              <!-- Network visualization (SVG overlay) -->
-              <svg
-                class="partners-network"
-                aria-hidden="true"
-                width="100%"
-                height="100%"
-              ></svg>
-
-              <div class="partners-header">
-                <h2 id="partners-heading">Z kim pracowaliśmy</h2>
-                <p class="partners-intro">
-                  Sieć instytucji kultury, samorządów, uczelni i organizacji
-                  społecznych, które wspólnie oswajają sztuczną inteligencję.
-                </p>
-              </div>
-
-              <div class="partners-grid" data-partners-grid>
-                <!-- Edukacja & Nauka -->
-                <div class="partner-category">
-                  <p class="partner-category-label">Edukacja & Nauka</p>
-                  <ul class="partner-list" role="list">
-                    <li>Uniwersytet Mikołaja Kopernika</li>
-                    <li>Toruński Uniwersytet Trzeciego Wieku</li>
-                  </ul>
-                </div>
-
-                <!-- Samorząd & Administracja -->
-                <div class="partner-category">
-                  <p class="partner-category-label">Samorząd & Administracja</p>
-                  <ul class="partner-list" role="list">
-                    <li>Urząd Miasta Torunia</li>
-                    <li>Urząd Miasta Bydgoszczy</li>
-                    <li>
-                      Laboratoria Miejskie w Toruniu, Bydgoszczy i Szczecinie
-                    </li>
-                  </ul>
-                </div>
-
-                <!-- Kultura & Sztuka -->
-                <div class="partner-category">
-                  <p class="partner-category-label">Kultura & Sztuka</p>
-                  <ul class="partner-list" role="list">
-                    <li>Centrum Sztuki Współczesnej w Toruniu</li>
-                    <li>TCUS</li>
-                  </ul>
-                </div>
-
-                <!-- Fundacje & Organizacje -->
-                <div class="partner-category">
-                  <p class="partner-category-label">Fundacje & Organizacje</p>
-                  <ul class="partner-list" role="list">
-                    <li>Fundacja im. Stefana Batorego</li>
-                    <li>Fundacja Stocznia</li>
-                    <li>FISE</li>
-                    <li>Pracownia Zrównoważonego Rozwoju</li>
-                  </ul>
-                </div>
-              </div>
-            </aside>
-
-            <p class="section-cta">
-              Wycenę ustalamy indywidualnie — zależnie od formatu, grupy
-              odbiorców i zakresu współpracy.
-              <a href="#kontakt">Porozmawiajmy o współpracy</a>
-            </p>
-          </div>
-        </section>
-
-        <!-- =============================================
-           SEKCJA: CO ROBIMY — Treść: Blok 5
-      ============================================== -->
-        <section id="co-robimy" aria-labelledby="co-robimy-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-          <!-- Miejsce na interaktywną mapę działań w v1.5 -->
-          <div class="content-section content-section--wide">
-            <header class="section-intro">
-              <p class="section-kicker">Co robimy</p>
-              <h2 id="co-robimy-heading">Inicjatywy w ruchu</h2>
-              <p class="section-lead">
-                Część naszych inicjatyw już działa, część jest w trakcie
-                realizacji. Pokazujemy jedno i drugie — widać po tym kierunek, w
-                którym zmierzamy.
-              </p>
-            </header>
-
-            <figure class="section-art section-art--activity">
-              <img
-                src="assets/art/laser-projects.webp"
-                alt="Abstrakcyjna mapa miasta połączona siecią lokalnych projektów wykorzystujących AI"
-                width="1536"
-                height="1024"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                Nie jeden wielki system, lecz konstelacja narzędzi
-                odpowiadających na konkretne potrzeby.
-              </figcaption>
-            </figure>
-
-            <div class="activity-layout">
-              <article class="activity-now">
-                <p class="status-label status-label--live">Działa już teraz</p>
-                <div class="program-list">
-                  <article
-                    data-laser-art="assets/art/laser-flow.webp"
-                    data-laser-tag="Mikrogranty / rozwój"
-                  >
-                    <h3>Lucid Flow</h3>
-                    <p>
-                      Program mikrograntów dla studentów — comiesięczne wsparcie
-                      dla najlepszych narzędzi i projektów cyfrowych tworzonych
-                      z AI.
-                    </p>
-                  </article>
-                  <article
-                    data-laser-art="assets/art/laser-sensei.webp"
-                    data-laser-tag="Mentoring / przekazywanie wiedzy"
-                  >
-                    <h3>Lucid Academy Sensei</h3>
-                    <p>
-                      Program mentoringu, w którym najlepsi studenci uczą innych
-                      studentów. Fundacja wspiera ich w tej roli i jednocześnie
-                      uczy, jak tłumaczyć trudne zagadnienia i przekazywać
-                      wiedzę dalej.
-                    </p>
-                  </article>
-                  <article
-                    data-laser-art="assets/art/laser-journeys.webp"
-                    data-laser-tag="Kultura / lokalność"
-                  >
-                    <h3>LA Journeys</h3>
-                    <p>
-                      Kulturalna część naszej pracy. Wyciągamy studentów sprzed
-                      ekranów i wprowadzamy w lokalną społeczność — ku sztuce
-                      tworzonej przez ludzi, więziom i rozmowom, które zostają.
-                    </p>
-                  </article>
-                  <article
-                    data-laser-art="assets/art/laser-events.webp"
-                    data-laser-tag="Mapa / święto dzielnicy"
-                  >
-                    <h3>Mapa Święta Bydgoskiego Przedmieścia</h3>
-                    <p>
-                      Interaktywny przewodnik po XVII Święcie Bydgoskiego
-                      Przedmieścia: mapa rysowana z prawdziwej geometrii
-                      dzielnicy, program obu dni i planer liczący czas przejścia
-                      między wydarzeniami.
-                      <!-- stopPropagation, bo script.js zamienia każdy kafelek
-                           w przycisk otwierający nakładkę z grafiką -->
-                      <a
-                        class="inline-link"
-                        href="projekty/swietoBP/"
-                        onclick="event.stopPropagation()"
-                        >Otwórz mapę →</a
-                      >
-                    </p>
-                  </article>
-                  <article
-                    data-laser-art="assets/art/laser-events.webp"
-                    data-laser-tag="Mapa / święto dzielnicy"
-                  >
-                    <h3>Mapa Święta Chełmińskiego Przedmieścia</h3>
-                    <p>
-                      Plan terenu IX Święta Chełmionki: trzydzieści dwa stoiska
-                      z numeracją organizatorów, scena godzina po godzinie i mapa
-                      rysowana z prawdziwej geometrii parku przy Toruńskich
-                      Wodociągach. Niedziela 13 września, 12:00–15:00.
-                      <a
-                        class="inline-link"
-                        href="projekty/swietoCHP/"
-                        onclick="event.stopPropagation()"
-                        >Otwórz mapę →</a
-                      >
-                    </p>
-                  </article>
-                </div>
-              </article>
-
-              <div class="activity-roadmap">
-                <article
-                  class="roadmap-group"
-                  data-laser-art="assets/art/laser-projects.webp"
-                  data-laser-tag="Projekty / lokalne systemy"
-                >
-                  <p class="status-label">W realizacji — projekty</p>
-                  <p class="roadmap-lead">
-                    Pracujemy metodą szybkiego tworzenia narzędzi cyfrowych we
-                    współpracy z AI: nie kilka dużych systemów, lecz zestaw
-                    konkretnych narzędzi odpowiadających na lokalne potrzeby.
-                  </p>
-                  <ul class="project-list" role="list">
-                    <li>
-                      <span>Toruń dla mieszkańców</span> konstelacja narzędzi
-                      cyfrowych ułatwiających codzienne sprawy w mieście.
-                    </li>
-                    <li>
-                      <span>Toruń nieznany</span> mapa turystyczna mniej
-                      oczywistych miejsc i historii Torunia.
-                    </li>
-                    <li>
-                      <span>Mapa Zieleni Miejskiej [2027]</span> dostęp do
-                      informacji o miejskiej zieleni.
-                    </li>
-                    <li>
-                      <span>CulturLAB</span> sieć współpracy lokalnych
-                      instytucji kultury.
-                    </li>
-                    <li>
-                      <span>Poradnik obywatela</span> przewodnik po sprawach
-                      urzędowych napisany zrozumiałym językiem.
-                    </li>
-                    <li>
-                      <span>Budżet Obywatelski z AI</span> narzędzia wspierające
-                      mieszkańców w przygotowaniu wniosków.
-                    </li>
-                    <li>
-                      <span>Aplikacja wspierająca osoby z ADHD</span> cyfrowe
-                      wsparcie codziennej organizacji.
-                    </li>
-                    <li>
-                      <span>Gra edukacyjna z neuronauk</span> interaktywne
-                      przybliżenie działania mózgu.
-                    </li>
-                    <li>
-                      <span>Biblioteka Arcanów</span> interaktywna gra do nauki
-                      języka japońskiego.
-                    </li>
-                  </ul>
-                </article>
-
-                <article
-                  class="roadmap-group"
-                  data-laser-art="assets/art/laser-events.webp"
-                  data-laser-tag="Wydarzenia / kultura AI"
-                >
-                  <p class="status-label">
-                    W realizacji — działania i wydarzenia
-                  </p>
-                  <ul class="project-list project-list--compact" role="list">
-                    <li>
-                      <span
-                        >Interaktywna mapa Święta Bydgoskiego Przedmieścia [lato
-                        2026]</span
-                      >
-                      cyfrowy przewodnik po miejscach i wydarzeniach dzielnicy.
-                    </li>
-                    <li>
-                      <span>HauntedHUB</span> gra miejska łącząca poznawanie
-                      Torunia, zabawę i społeczne zastosowania AI.
-                    </li>
-                    <li>
-                      <span>Przywracanie wspomnień seniorów</span> projekt z
-                      Toruńskim Uniwersytetem Trzeciego Wieku.
-                    </li>
-                    <li>
-                      <span>Wystawa „Budzące się AI”</span> o obecności
-                      sztucznej inteligencji w kulturze i pytaniach, które
-                      stawia.
-                    </li>
-                    <li>
-                      <span>AI na Forum Praktyków Partycypacji</span> udział w
-                      ogólnopolskim forum partycypacji obywatelskiej.
-                    </li>
-                  </ul>
-                </article>
-              </div>
-            </div>
-
-            <p class="section-note section-note--closing">
-              Lista będzie się zmieniać — kończymy jedne projekty, zaczynamy
-              następne. To naturalny rytm organizacji działającej blisko
-              realnych potrzeb.
-            </p>
-          </div>
-        </section>
-
-        <!-- =============================================
-           SEKCJA: ZESPÓŁ — Treść: Blok 6
-      ============================================== -->
-        <section id="zespol" aria-labelledby="zespol-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-          <!-- Miejsce na rozwijane bio w v1.5 -->
-          <div class="content-section content-section--wide team-section">
-            <header class="section-intro">
-              <p class="section-kicker">Zespół</p>
-              <h2 id="zespol-heading">Ludzie stojący za Lucid Academy</h2>
-              <p class="section-lead">
-                Lucid Academy tworzą ludzie łączący świat akademicki,
-                technologię i działania społeczne.
-              </p>
-            </header>
-
-            <div class="founder-profile">
-              <img
-                class="founder-mark"
-                src="assets/piotr-jarczyk.png"
-                alt="Piotr Jarczyk — założyciel i prezes Lucid Academy"
-                width="128"
-                height="128"
-                loading="lazy"
-                decoding="async"
-              />
-              <article>
-                <p class="micro-label">Założyciel i prezes fundacji</p>
-                <h3>Piotr Jarczyk</h3>
-                <p>
-                  Z wykształcenia prawnik, po pięciu latach studiów
-                  psychologicznych. Od ponad trzech lat prowadzi szkolenia i
-                  wykłady o sztucznej inteligencji dla bardzo różnych odbiorców
-                  — od seniorów i mieszkańców mniejszych miejscowości, przez
-                  edukatorów i kadry instytucji publicznych, po studentów i
-                  liderów lokalnych.
-                </p>
-                <p>
-                  Na Uniwersytecie Mikołaja Kopernika prowadzi autorskie zajęcia
-                  o AI w Katedrze Kognitywistyki. Fundację Lucid Academy założył
-                  w 2025 roku — z przekonania, że wartościowe projekty
-                  edukacyjne i społeczne potrzebują miejsca, w którym mogą trwać
-                  i realnie zmieniać rzeczywistość.
-                </p>
-                <a href="mailto:piotr.jarczyk.ai@gmail.com" class="inline-link">
-                  piotr.jarczyk.ai@gmail.com
-                </a>
-              </article>
-            </div>
-
-            <figure class="section-art section-art--team">
-              <img
-                src="assets/zdjecia/grupowe.jpg"
-                alt="Sympatycy Lucid Academy — społeczność ludzi wspierających misję fundacji"
-                width="1200"
-                height="800"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>Członkowie i sympatycy Lucid Academy</figcaption>
-            </figure>
-
-            <!-- =============================================
-               SEKCJA: Sympatycy Lucid Academy (overlapped gallery)
-          ============================================== -->
-          </div>
-        </section>
-
-        <!-- =============================================
-           SEKCJA: KONTAKT — Treść: Blok 7
-      ============================================== -->
-        <section id="kontakt" aria-labelledby="kontakt-heading">
-          <span class="timeline-node" aria-hidden="true"></span>
-          <!-- Miejsce na formularz kontaktowy w v1.5 -->
-          <div class="content-section content-section--wide contact-section">
-            <header class="section-intro">
-              <p class="section-kicker">Kontakt</p>
-              <h2 id="kontakt-heading">Porozmawiajmy o współpracy</h2>
-              <p class="section-lead">
-                Chętnie porozmawiamy o warsztatach, projektach, partnerstwie
-                przy działaniach edukacyjnych i kulturalnych. Napisz lub
-                zadzwoń.
-              </p>
-            </header>
-
-            <figure class="section-art section-art--contact">
-              <img
-                src="assets/art/laser-events.webp"
-                alt="Abstrakcyjny świetlny sygnał rozchodzący się przez sieć miasta"
-                width="1536"
-                height="1024"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>
-                Zacznijmy od sygnału. Resztę możemy zaprojektować wspólnie.
-              </figcaption>
-            </figure>
-
-            <div class="contact-grid">
-              <address class="contact-card">
-                <img
-                  src="assets/logo-lockup.png"
-                  alt="Lucid Academy"
-                  width="140"
-                  height="48"
-                  class="contact-logo"
-                  decoding="async"
-                />
-                <p class="micro-label">Dane kontaktowe</p>
-                <h3>Fundacja Lucid Academy</h3>
-                <p>Piotr Jarczyk — założyciel i prezes</p>
-                <a
-                  href="mailto:piotr.jarczyk.ai@gmail.com"
-                  class="contact-mail"
-                >
-                  piotr.jarczyk.ai@gmail.com
-                </a>
-                <p class="contact-phone">+48 693 10 70 10</p>
-              </address>
-
-              <div class="formal-card">
-                <p class="micro-label">Dane formalne</p>
-                <dl class="formal-list">
-                  <div>
-                    <dt>KRS</dt>
-                    <dd>0001213720</dd>
-                  </div>
-                  <div>
-                    <dt>NIP</dt>
-                    <dd>9562408656</dd>
-                  </div>
-                  <div>
-                    <dt>REGON</dt>
-                    <dd>543572049</dd>
-                  </div>
-                </dl>
-                <p>Siedziba: ul. Hieronima Derdowskiego 3/9, 87-100, Toruń</p>
-              </div>
-            </div>
-
-            <p class="contact-closing">
-              Wycenę współpracy ustalamy indywidualnie — zależnie od formatu,
-              grupy odbiorców i zakresu działań.
-            </p>
-          </div>
-        </section>
-      </div>
+      </section>
     </main>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"
-      defer
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"
-      defer
-    ></script>
-    <script src="script.js" defer></script>
   </body>
 </html>
