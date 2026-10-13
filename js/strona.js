@@ -123,6 +123,7 @@
   function scramble(el) {
     const docelowe = el.textContent;
     const znaki = "aąbcćdeęfghijklłmnńoóprsśtuwyzźż#%&+=<>/*";
+    const ZNAKI = znaki.toUpperCase();
     const czas = 1150;
     const krok = 48;
     const start = performance.now();
@@ -138,7 +139,9 @@
         let tekst = "";
         for (let i = 0; i < docelowe.length; i++) {
           const prog = 0.18 + 0.82 * (i / docelowe.length);
-          tekst += postep >= prog ? docelowe[i] : znaki[Math.floor(Math.random() * znaki.length)];
+          // Wielka litera losuje spośród wielkich, żeby słowo nie „skakało” wysokością
+          const pula = docelowe[i] !== docelowe[i].toLowerCase() ? ZNAKI : znaki;
+          tekst += postep >= prog ? docelowe[i] : pula[Math.floor(Math.random() * pula.length)];
         }
         el.textContent = tekst;
       }
