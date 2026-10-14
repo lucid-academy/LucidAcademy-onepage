@@ -197,13 +197,116 @@
     zaplanuj();
   }
 
+  /* ---------- 05 · Co budujemy: galeria zrzutów (jedno okno dla wszystkich kafli) ---------- */
+
+  // 1 zrzut, 2–4 zrzuty, 5–21 zrzutów, 22–24 zrzuty…
+  function odmiana(n, [jeden, kilka, wiele]) {
+    if (n === 1) return jeden;
+    const j = n % 10, d = n % 100;
+    return j >= 2 && j <= 4 && (d < 12 || d > 14) ? kilka : wiele;
+  }
+
+  const galeria = (() => {
+    let okno = null, el = null, zrzuty = [], biezacy = 0, wywolujacy = null;
+
+    function przycisk(klasa, etykieta) {
+      const p = utworz("button", `galeria__przycisk ${klasa}`);
+      p.type = "button";
+      p.append(utworz("span", "sr-only", etykieta));
+      return p;
+    }
+
+    function zbuduj() {
+      okno = utworz("dialog", "galeria");
+      okno.setAttribute("aria-labelledby", "galeria-tytul");
+      const ramka = utworz("div", "galeria__ramka");
+
+      const naglowek = utworz("div", "galeria__naglowek");
+      const licznik = utworz("p", "galeria__licznik");
+      const tytul = utworz("h2", "galeria__tytul");
+      tytul.id = "galeria-tytul";
+      const zamknij = przycisk("galeria__zamknij", "Zamknij galerię");
+      naglowek.append(licznik, tytul, zamknij);
+
+      const kadr = utworz("figure", "galeria__kadr");
+      const obraz = utworz("img", "galeria__obraz");
+      obraz.decoding = "async";
+      const podpis = utworz("figcaption", "galeria__podpis");
+      kadr.append(obraz, podpis);
+
+      const poprzedni = przycisk("galeria__poprzedni", "Poprzedni zrzut");
+      const nastepny = przycisk("galeria__nastepny", "Następny zrzut");
+      const komunikat = utworz("p", "sr-only");
+      komunikat.setAttribute("aria-live", "polite");
+
+      ramka.append(naglowek, kadr, poprzedni, nastepny, komunikat);
+      okno.append(ramka);
+      document.body.append(okno);
+      el = { licznik, tytul, kadr, obraz, podpis, poprzedni, nastepny, komunikat };
+
+      zamknij.addEventListener("click", () => okno.close());
+      poprzedni.addEventListener("click", () => pokaz(biezacy - 1));
+      nastepny.addEventListener("click", () => pokaz(biezacy + 1));
+      // Klik w przyciemnione tło (poza ramką) zamyka okno
+      okno.addEventListener("click", (zdarzenie) => { if (zdarzenie.target === okno) okno.close(); });
+      okno.addEventListener("keydown", (zdarzenie) => {
+        const kierunek = { ArrowRight: 1, ArrowLeft: -1 }[zdarzenie.key];
+        if (kierunek) { zdarzenie.preventDefault(); pokaz(biezacy + kierunek); }
+        else if (zdarzenie.key === "Home") { zdarzenie.preventDefault(); pokaz(0); }
+        else if (zdarzenie.key === "End") { zdarzenie.preventDefault(); pokaz(zrzuty.length - 1); }
+      });
+      // Przesunięcie palcem w bok: następny albo poprzedni zrzut
+      let start = null;
+      kadr.addEventListener("pointerdown", (z) => { start = { x: z.clientX, y: z.clientY }; });
+      kadr.addEventListener("pointerup", (z) => {
+        if (!start) return;
+        const dx = z.clientX - start.x, dy = z.clientY - start.y;
+        start = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) pokaz(biezacy + (dx < 0 ? 1 : -1));
+      });
+      kadr.addEventListener("pointercancel", () => { start = null; });
+      // Esc obsługuje sam <dialog>; po zamknięciu fokus wraca do miniatury
+      okno.addEventListener("close", () => {
+        korzen.classList.remove("galeria-otwarta");
+        wywolujacy?.focus();
+      });
+    }
+
+    function pokaz(nr) {
+      const ile = zrzuty.length;
+      biezacy = (nr + ile) % ile;
+      const zrzut = zrzuty[biezacy];
+      el.obraz.src = zrzut.obraz;
+      el.obraz.alt = zrzut.alt;
+      el.podpis.textContent = zrzut.podpis || "";
+      el.podpis.hidden = !zrzut.podpis;
+      el.licznik.replaceChildren(znakZachety(), ` ${biezacy + 1} / ${ile}`);
+      el.komunikat.textContent = `Zrzut ${biezacy + 1} z ${ile}`;
+      el.poprzedni.hidden = el.nastepny.hidden = ile < 2;
+      // Sąsiednie zrzuty wczytują się zawczasu, żeby przewijanie nie czekało na sieć
+      if (ile > 1) for (const d of [1, -1]) new Image().src = zrzuty[(biezacy + d + ile) % ile].obraz;
+    }
+
+    function otworz(kafel, przyciskMiniatury) {
+      if (!okno) zbuduj();
+      zrzuty = kafel.galeria;
+      wywolujacy = przyciskMiniatury;
+      el.tytul.textContent = kafel.nazwa;
+      pokaz(0);
+      korzen.classList.add("galeria-otwarta");
+      okno.showModal();
+      (zrzuty.length > 1 ? el.nastepny : okno.querySelector(".galeria__zamknij")).focus();
+    }
+
+    return { otworz };
+  })();
+
   /* ---------- 05 · Co budujemy: kafle z kafle.json i filtr ---------- */
 
   const STATUSY = {
     "otwarte": { klasa: "kafel--otwarte", etykieta: "Otwarte demo" },
-    "na-zyczenie": { klasa: "kafel--fragment", etykieta: "Demo na życzenie" },
+    "na-zyczenie": { klasa: "kafel--na-zyczenie", etykieta: "Demo na życzenie" },
   };
-  const WYGASZENIA = ["prawo", "lewo", "dol", "prawo-dol", "boki"];
 
   function sprawdzKafel(kafel, nr, kategorie) {
     const bledy = [];
@@ -215,9 +318,16 @@
     if (kafel.status === "otwarte" && !(Array.isArray(kafel.przyciski) && kafel.przyciski.every((p) => p.adres))) {
       bledy.push("otwarte demo potrzebuje przycisków z adresami");
     }
-    if (kafel.wygaszenie && !WYGASZENIA.includes(kafel.wygaszenie)) bledy.push(`nieznane wygaszenie „${kafel.wygaszenie}”`);
-    if (bledy.length) console.error(`[kafle.json] kafel nr ${nr + 1} (${kafel.nazwa || "bez nazwy"}) pominięty: ${bledy.join("; ")}`);
-    return bledy.length === 0;
+    if (bledy.length) {
+      console.error(`[kafle.json] kafel nr ${nr + 1} (${kafel.nazwa || "bez nazwy"}) pominięty: ${bledy.join("; ")}`);
+      return false;
+    }
+    // Wadliwa galeria nie usuwa kafla — kafel zostaje, tylko bez galerii
+    if (kafel.galeria && !(Array.isArray(kafel.galeria) && kafel.galeria.length && kafel.galeria.every((z) => z && z.obraz && z.alt))) {
+      console.error(`[kafle.json] kafel „${kafel.nazwa}”: galeria musi być listą zrzutów z polami „obraz” i „alt” — pokazuję kafel bez galerii`);
+      delete kafel.galeria;
+    }
+    return true;
   }
 
   function zbudujKafel(kafel, nr) {
@@ -233,9 +343,8 @@
     const idNazwy = `kafel-${nr + 1}`;
     karta.setAttribute("aria-labelledby", idNazwy);
 
-    // Podgląd: ostry zrzut albo zajawka (wycinek przechodzący w tło)
+    // Podgląd: miniatura; jeśli kafel ma galerię, klik otwiera kolejne zrzuty
     const podglad = utworz("div", "kafel__podglad");
-    if (naZyczenie) podglad.dataset.wygaszenie = kafel.wygaszenie || "prawo";
     if (kafel.fokus) podglad.style.setProperty("--fokus", kafel.fokus);
 
     const obraz = utworz("img");
@@ -244,13 +353,22 @@
     obraz.loading = "lazy";
     obraz.decoding = "async";
     obraz.addEventListener("error", () => podglad.classList.add("kafel__podglad--brak"), { once: true });
-    podglad.append(obraz);
 
-    if (naZyczenie) {
-      const znacznik = utworz("span", "kafel__fragment");
+    if (kafel.galeria) {
+      const ile = kafel.galeria.length;
+      const opisZrzutow = `${ile} ${odmiana(ile, ["zrzut", "zrzuty", "zrzutów"])}`;
+      const przycisk = utworz("button", "kafel__galeria");
+      przycisk.type = "button";
+      przycisk.setAttribute("aria-haspopup", "dialog");
+      przycisk.setAttribute("aria-label", `Zobacz zrzuty ekranu: ${kafel.nazwa} (${opisZrzutow})`);
+      const znacznik = utworz("span", "kafel__zrzuty");
       znacznik.setAttribute("aria-hidden", "true");
-      znacznik.append(znakZachety(), "fragment", utworz("span", "kursor"));
-      podglad.append(znacznik);
+      znacznik.append(znakZachety(), ` ${opisZrzutow}`);
+      przycisk.append(obraz, znacznik);
+      przycisk.addEventListener("click", () => galeria.otworz(kafel, przycisk));
+      podglad.append(przycisk);
+    } else {
+      podglad.append(obraz);
     }
 
     // Opis

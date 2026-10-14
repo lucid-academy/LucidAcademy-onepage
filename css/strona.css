@@ -643,49 +643,35 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
           mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 
-/* Zajawka „na życzenie”: wycinek przechodzi w tło, na wygaszeniu leżą linie skanu.
-   To wyłącznie estetyka — o tym, co widać, decyduje kadr zapisanego pliku. */
-.kafel--fragment .kafel__podglad::before,
-.kafel--fragment .kafel__podglad::after {
+/* Miniatura z galerią: cała ramka podglądu jest przyciskiem, w rogu licznik zrzutów */
+.kafel__galeria {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: zoom-in;
+}
+.kafel__galeria:focus-visible { outline-offset: -4px; }
+.kafel__galeria img { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.kafel__galeria:hover img { transform: scale(1.03); }
+
+/* Demo na życzenie: linie skanu na miniaturze. Estetyka, nie zabezpieczenie —
+   o tym, co widać, decyduje kadr zapisanego pliku. */
+.kafel--na-zyczenie .kafel__podglad::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, .05) 0 1px, transparent 1px 4px);
   pointer-events: none;
 }
-.kafel--fragment .kafel__podglad::before { background: var(--wyg-tlo); }
-.kafel--fragment .kafel__podglad::after {
-  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, .075) 0 1px, transparent 1px 4px);
-  -webkit-mask-image: var(--wyg-maska);
-          mask-image: var(--wyg-maska);
-}
 
-[data-wygaszenie="prawo"] {
-  --wyg-tlo: linear-gradient(90deg, transparent 44%, rgba(12, 7, 32, .74) 76%, var(--ground) 97%);
-  --wyg-maska: linear-gradient(90deg, transparent 42%, #000 84%);
-}
-[data-wygaszenie="lewo"] {
-  --wyg-tlo: linear-gradient(270deg, transparent 44%, rgba(12, 7, 32, .74) 76%, var(--ground) 97%);
-  --wyg-maska: linear-gradient(270deg, transparent 42%, #000 84%);
-}
-[data-wygaszenie="dol"] {
-  --wyg-tlo: linear-gradient(180deg, transparent 40%, rgba(12, 7, 32, .74) 74%, var(--ground) 97%);
-  --wyg-maska: linear-gradient(180deg, transparent 38%, #000 82%);
-}
-[data-wygaszenie="prawo-dol"] {
-  --wyg-tlo:
-    linear-gradient(90deg, transparent 52%, rgba(12, 7, 32, .7) 82%, var(--ground) 99%),
-    linear-gradient(180deg, transparent 48%, rgba(12, 7, 32, .7) 80%, var(--ground) 99%);
-  --wyg-maska:
-    linear-gradient(90deg, transparent 50%, #000 88%),
-    linear-gradient(180deg, transparent 46%, #000 86%);
-}
-[data-wygaszenie="boki"] {
-  --wyg-tlo: linear-gradient(90deg, var(--ground) 2%, transparent 30%, transparent 70%, var(--ground) 98%);
-  --wyg-maska: linear-gradient(90deg, #000 6%, transparent 30%, transparent 70%, #000 94%);
-}
-
-.kafel__fragment {
+.kafel__zrzuty {
   position: absolute;
   right: 12px;
   bottom: 10px;
@@ -693,12 +679,14 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   padding: 6px 9px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: rgba(12, 7, 32, .78);
+  background: rgba(12, 7, 32, .84);
   color: var(--ink);
   font: 400 1rem/1 var(--mono);
+  transition: border-color .2s;
 }
-.kafel__fragment .etykieta__znak { margin-right: .5ch; }
-.kafel__fragment .kursor { height: 1em; vertical-align: -.16em; }
+.kafel__zrzuty .etykieta__znak { margin-right: .1ch; }
+.kafel__galeria:hover .kafel__zrzuty,
+.kafel__galeria:focus-visible .kafel__zrzuty { border-color: var(--violet); }
 
 /* Gdy obrazu brak, zostaje spokojna plansza zamiast ikony zepsutego pliku */
 .kafel__podglad--brak img { visibility: hidden; }
@@ -1339,10 +1327,144 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   gap: 4px 24px;
 }
 
+/* ---------- Galeria zrzutów (okno <dialog>) ---------- */
+
+html.galeria-otwarta { overflow: hidden; }
+
+.galeria {
+  width: min(100% - 32px, 1280px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--linia-mocna);
+  border-radius: 16px;
+  background: #0E0826;
+  color: var(--muted);
+  box-shadow: 0 30px 120px -20px rgba(0, 0, 0, .8);
+}
+.galeria::backdrop {
+  background: rgba(6, 3, 16, .84);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+}
+
+.galeria__ramka { position: relative; }
+
+.galeria__naglowek {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 10px 10px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.galeria__licznik {
+  flex: none;
+  color: var(--muted);
+  font: 400 1rem/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.galeria__tytul {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.galeria__kadr {
+  margin: 0;
+  padding: 18px 84px 20px;
+  touch-action: pan-y;
+}
+.galeria__obraz {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100dvh - 210px);
+  margin-inline: auto;
+  border-radius: 8px;
+  background: #0A0618;
+}
+.galeria__podpis {
+  max-width: 48em;
+  margin: 14px auto 0;
+  color: var(--ink);
+  text-align: center;
+}
+
+.galeria__przycisk {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(12, 7, 32, .82);
+  color: var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color .2s, background-color .2s;
+}
+.galeria__przycisk:hover { border-color: var(--violet); background: var(--surface); }
+.galeria__przycisk[hidden] { display: none; }
+.galeria__przycisk::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  -webkit-mask: var(--ikona) center / contain no-repeat;
+          mask: var(--ikona) center / contain no-repeat;
+}
+.galeria__zamknij { border-radius: var(--promien); --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.galeria__poprzedni,
+.galeria__nastepny {
+  position: absolute;
+  top: calc(50% + 30px);
+  translate: 0 -50%;
+}
+.galeria__poprzedni { left: 18px; --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M10 3.5L5.5 8l4.5 4.5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.galeria__nastepny { right: 18px; --ikona: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5l4.5 4.5L6 12.5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+/* Telefon: okno na cały ekran, strzałki pod zrzutem */
+@media (max-width: 719.98px) {
+  .galeria {
+    width: 100%;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+  .galeria__ramka {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .galeria__kadr {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 0 96px;
+  }
+  .galeria__obraz { border-radius: 0; max-height: calc(100dvh - 220px); }
+  .galeria__podpis { padding-inline: var(--margines); }
+  .galeria__poprzedni,
+  .galeria__nastepny { top: auto; bottom: 24px; translate: none; }
+  .galeria__poprzedni { left: calc(50% - 64px); }
+  .galeria__nastepny { right: calc(50% - 64px); }
+}
+
 /* ---------- Ograniczony ruch: bez scramble, bez parallaxu, bez migania ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   .js [data-wejscie] { opacity: 1; transform: none; transition: none; }
   .etykieta.aktywna .kursor { animation: none; }
   .przycisk--glowny:hover { transform: none; }
+  .kafel__galeria:hover img { transform: none; }
 }
