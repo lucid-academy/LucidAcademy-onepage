@@ -8,6 +8,8 @@
   "use strict";
 
   const korzen = document.documentElement;
+  // Moduł trybu sieci leży obok tego pliku (js/siec.js); adres liczony od skryptu, nie od strony
+  const adresModuluSieci = new URL("siec.js", document.currentScript?.src || new URL("js/", document.baseURI)).href;
   const ograniczonyRuch = window.matchMedia("(prefers-reduced-motion: reduce)");
   const bezRuchu = () => ograniczonyRuch.matches;
   const maObserwatora = "IntersectionObserver" in window;
@@ -427,7 +429,7 @@
       link.href = "#kontakt";
       komunikat.append(link, " — chętnie je pokażemy.");
       lista.replaceWith(komunikat);
-      return;
+      return null;
     }
 
     const kategorie = Array.isArray(dane.kategorie) ? dane.kategorie : [];
@@ -463,9 +465,37 @@
     pokaz("");
     // Komunikat dla czytników ekranu dopiero przy zmianie filtra, nie przy wczytaniu
     licznik.setAttribute("aria-live", "polite");
+    return { kategorie, kafle: wpisy };
   }
 
-  wczytajKafle();
+  // Tryb sieci korzysta z tej samej, już sprawdzonej listy projektów
+  const daneKafli = wczytajKafle();
+
+  /* ---------- Tryb sieci (pilot wersji 3): moduł wczytywany dopiero na żądanie ---------- */
+
+  const przyciskSieci = document.querySelector(".tryb-sieci");
+  let modulSieci = null;
+
+  async function otworzSiec() {
+    if (przyciskSieci.getAttribute("aria-busy") === "true") return;
+    przyciskSieci.setAttribute("aria-busy", "true");
+    try {
+      modulSieci ||= await import(adresModuluSieci);
+      const dane = await daneKafli;
+      await modulSieci.otworz({ kafle: dane?.kafle || [], wywolujacy: przyciskSieci, galeria: galeria.otworz });
+    } catch (blad) {
+      console.error("[tryb sieci] Nie udało się otworzyć trybu sieci:", blad);
+    } finally {
+      przyciskSieci.removeAttribute("aria-busy");
+    }
+  }
+
+  if (przyciskSieci && typeof HTMLDialogElement === "function") {
+    przyciskSieci.hidden = false;
+    przyciskSieci.addEventListener("click", otworzSiec);
+    // Bezpośredni link do trybu: ?tryb=siec
+    if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec();
+  }
 
   /* ---------- Licznik odwiedzin (GoatCounter) ---------- */
   // Jak na obecnej stronie: liczy tylko na lucidacademy.pl. Bez zewnętrznego skryptu —

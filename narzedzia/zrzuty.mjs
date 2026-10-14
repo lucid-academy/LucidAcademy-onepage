@@ -68,6 +68,7 @@ const panel = (id) => async (strona) => {
   await strona.waitForTimeout(1200);
 };
 
+// Strona BO ma też ciemny wariant (prefers-color-scheme) i to on trafia na zrzuty
 const BO = "https://lucid-academy.github.io/ai-lab/bo-torun-2027.html";
 const PURDA = "https://lucid-academy.github.io/olsztyn/";
 const ZAGLE = "https://lucid-academy.github.io/ai-lab/zagle-2026-karta-morska.html";
@@ -105,6 +106,52 @@ const ukryjTekst = (wzor) => async (strona) => {
 
 // Wyprawy: od intro do portalu, potem zakładka Profil
 const portalWypraw = kroki(klik("#btn-skip", 500), klik("#btn-doc", 1200), klik("#tab-profil", 900));
+// Odznaka „Tajemniczy hub” zdradzałaby miejsce gry: podpis znika, ikona zostaje
+const ukryjHub = ukryjTekst(/\bhub\b/);
+// Styl portalu z przełącznika na karcie profilu (Historyczny, Fantasy, Cyberpunk)
+const stylWypraw = (nazwa) => klik(`#pan-profil :is(button, [role=button], label):has-text("${nazwa}")`);
+
+// Purda: karta z bestiariusza (tryb mapy „Bestiariusz”, potem pinezka miejsca)
+const kartaBestiariusza = (miejsce) => kroki(pominIntroPurdy, klik("#tryb-bestiariusz"), klik(`button.pin:has-text("${miejsce}")`, 1800));
+
+// Mapa zieleni: karta miejsca w zakładce Atlas, wybrana z listy po wartości
+const kartaAtlasu = (wartosc) => kroki(klik("#tab-atlas", 1200), async (strona) => {
+  await strona.selectOption("#atlasSelect", wartosc);
+  await strona.waitForTimeout(1800);
+});
+
+// Mapa zieleni: kadr od góry okna do dolnej krawędzi karty miejsca (stopka i tak jest ukryta)
+function kadrAtlasu() {
+  const karta = document.getElementById("atlasKarta");
+  const dol = Math.min(window.innerHeight, Math.round(karta.getBoundingClientRect().bottom + 32));
+  return { x: 0, y: 0, width: window.innerWidth, height: dol };
+}
+
+// ISKRA: blok „Stara zajezdnia tramwajowa” z sekcji Wizualizacje potencjału. Kadr obejmuje
+// nagłówek i parę zdjęć przed/po; kolumna z cytatami zostaje poza nim. „miniatura”: same zdjęcia, 16:10.
+const wizualizacjeIskry = kroki(
+  klik('button.nav-tab:has-text("Wizualizacje potencjału")', 1500),
+  async (strona) => {
+    await strona.evaluate(() => {
+      const blok = [...document.querySelectorAll(".potential-block")].find((b) => /zajezdni/i.test(b.textContent));
+      window.scrollTo({ top: blok.getBoundingClientRect().top + window.scrollY - 64, behavior: "instant" });
+    });
+    await strona.waitForTimeout(900);
+  },
+);
+function kadrPrzedPo(miniatura) {
+  const blok = [...document.querySelectorAll(".potential-block")].find((b) => /zajezdni/i.test(b.textContent));
+  const b = blok.getBoundingClientRect();
+  if (miniatura) {
+    const siatka = blok.querySelector(".before-after-grid").getBoundingClientRect();
+    return { x: siatka.left, y: siatka.top, width: siatka.width, height: Math.round(siatka.width / 1.6) };
+  }
+  const media = blok.querySelector(".visual-media").getBoundingClientRect();
+  return { x: b.left, y: b.top, width: media.right - b.left, height: b.bottom - b.top };
+}
+
+// Ciepło: widok z górnych zakładek aplikacji (Mapa osiedli, Scenariusz 2040…)
+const widokCiepla = (nazwa) => klik(`button:has-text("${nazwa}")`, 2200);
 
 // Wyprawy: kadr między górnym paskiem a dolnymi zakładkami (oba ukryte)
 function srodekAplikacji() {
@@ -169,10 +216,11 @@ const PRZEPISY = [
     film: { adres: `${BYDGOSKIE}img/intro/intro.mp4`, sekunda: 12, proporcje: 16 / 10 },
   },
   {
-    // Nagłówek z liczbami i wyborem okręgu, ciaśniej niż całe okno
+    // Nagłówek z liczbami i wyborem okręgu, ciaśniej niż całe okno; wariant ciemny
     id: "bo-torun-2027",
     rodzaj: "otwarte",
-    adres: "https://lucid-academy.github.io/ai-lab/bo-torun-2027.html",
+    adres: BO,
+    ciemny: true,
     kadr: () => ({ x: 60, y: 30, width: 1280, height: 800 }),
   },
   {
@@ -186,14 +234,10 @@ const PRZEPISY = [
     },
   },
   {
-    // Rysowana mapa nabrzeży z przełącznikiem dni (sekcja „Co gdzie się dzieje”)
+    // Całe okno, jak przy Purdzie: nagłówek, menu, przełącznik dni i góra rysowanej mapy
     id: "zagle-2026",
     rodzaj: "otwarte",
-    adres: "https://lucid-academy.github.io/ai-lab/zagle-2026-karta-morska.html",
-    kadr: () => {
-      const m = document.getElementById("mapa").getBoundingClientRect();
-      return { x: m.left, y: m.top, width: m.width, height: Math.round(m.width / 1.6) };
-    },
+    adres: ZAGLE,
   },
 
   /* ===== Dema na życzenie: wycinek, bez adresu w repozytorium ===== */
@@ -209,6 +253,7 @@ const PRZEPISY = [
       await strona.waitForTimeout(1200);
       await strona.click("#tab-profil");        // zakładka Profil
       await strona.waitForTimeout(900);
+      await stylWypraw("Fantasy")(strona);     // zielony styl fantasy
       // Przewiń panel tak, żeby siatka osiągnięć nie chowała się pod paskiem zakładek
       await strona.evaluate(() => {
         const siatka = document.getElementById("ach-grid");
@@ -217,6 +262,7 @@ const PRZEPISY = [
         if (el) el.scrollTop += siatka.getBoundingClientRect().bottom - (window.innerHeight - 96);
       });
       await strona.waitForTimeout(400);
+      await ukryjHub(strona);
     },
     ukryj: [".hdr", "#scr-intro", "#pan-mapa", "#pan-projekt", ".tabbar", "#ach-detail", "#pan-profil .styles", "#pan-profil .note"],
     kadr: () => {
@@ -227,7 +273,7 @@ const PRZEPISY = [
       const dol = siatka.getBoundingClientRect().bottom + 16;
       return { x: 0, y: gora, width: window.innerWidth, height: dol - gora };
     },
-    zakazane: [/toru[nń]/i, /interaktywne wyprawy/i, /kulturalny hub/i, /zamek dyb/i, /park miejski/i],
+    zakazane: [/toru[nń]/i, /interaktywne wyprawy/i, /\bhub\b/i, /zamek dyb/i, /park miejski/i],
     szerokosc: 600,
   },
   {
@@ -276,52 +322,9 @@ const PRZEPISY = [
     zakazaneElementy: ["img", "picture", "video", "blockquote", "q", "[class*=quote]", "#rmodal", "#walkOverlay", "#torunCompass", "#copernicusGuide"],
     zakazane: [/„/, /spacer/i, /raport #/i],
   },
-  {
-    // Bez: osi, wartości, nagłówka z procentami, logo i nazwy klienta
-    id: "szczecinski-dziennik-sezonu",
-    rodzaj: "na-zyczenie",
-    ukryj: [
-      "img", "#tip", "body > :first-child",
-      "section:has(svg[viewBox]) h2", "section:has(svg[viewBox]) p", ".controls", ".plate .controls",
-      "svg .bl", "svg .gl", "svg .ax", "svg .anno", "svg .anno-l", "svg .vlab", "svg .vlab-2", "svg .xh", "svg .hi",
-      "svg text",
-    ],
-    kadr: () => {
-      // Prawa część sezonu: wzrost aż do szczytu w sierpniu (~150% w kaflu)
-      const wykres = [...document.querySelectorAll("svg[viewBox]")].find((s) => s.querySelector(".l26"));
-      const r = wykres.getBoundingClientRect();
-      const szer = 440, wys = 275;
-      return { x: r.right - szer - 20, y: r.top + r.height / 2 - wys / 2 + 4, width: szer, height: wys };
-    },
-    brakTekstu: true,
-    zakazane: [/[żz]egl/i, /\d/, /%/],
-  },
-  {
-    // Bez: legendy z liczbami i wartości
-    id: "cieplo-bydgoszczy-2040",
-    rodzaj: "na-zyczenie",
-    // Widok „Mapa bez kafelków” — przełącznik samej strony. Zostają granice osiedli,
-    // znikają numery dróg z podkładu OSM, które dałoby się wziąć za liczby.
-    przygotuj: async (strona) => {
-      await strona.evaluate(() => {
-        const przelacznik = document.getElementById("basemapToggle");
-        if (przelacznik && przelacznik.getAttribute("aria-pressed") === "false") przelacznik.click();
-      });
-      await strona.waitForTimeout(2600);
-    },
-    ukryj: [
-      "#mapNote", "#toast", ".leaflet-control-container", ".leaflet-tooltip-pane", ".leaflet-popup-pane",
-      ".leaflet-tile-pane", "[class*=legend]", "#leafletMap ~ *", "aside",
-    ],
-    kadr: () => {
-      // Środek miasta: najciemniejsze osiedla (~150% w kaflu)
-      const mapa = document.getElementById("leafletMap").getBoundingClientRect();
-      const szer = 440, wys = 275;
-      return { x: mapa.left + mapa.width / 2 - szer / 2 + 4, y: mapa.top + mapa.height / 2 - wys / 2 + 8, width: szer, height: wys };
-    },
-    brakTekstu: true,
-    zakazane: [/\d/, /urządze/i],
-  },
+  // Ciepło Bydgoszczy 2040: miniatura powstaje z pierwszego kadru galerii (pętla pod GALERIE).
+  // Szczeciński Dziennik Sezonu: miniatura i galeria to zrzuty dostarczone przez zespół
+  // (wartości bezwzględne lekko rozmyte). Ten skrypt ich nie robi i nie nadpisuje.
 ];
 
 /* ---------- Kadry galerii: kilka widoków na kafel ---------- */
@@ -343,20 +346,21 @@ const GALERIE = [
   { id: "swieto-bydgoskie-4", kafel: "swieto-bydgoskie", rodzaj: "otwarte", adres: BYDGOSKIE, localStorage: BEZ_INTRA_BP, przygotuj: panel("sekcja-przyjaciele") },
 
   /* ----- Budżet Obywatelski Torunia 2027 ----- */
-  { id: "bo-torun-2027-1", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO },
-  { id: "bo-torun-2027-2", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, przygotuj: doNaglowka("Chętnych jest więcej", 96) },
-  { id: "bo-torun-2027-3", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, przygotuj: doNaglowka("Mapa projektów", 96) },
-  { id: "bo-torun-2027-4", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, przygotuj: doNaglowka("Wszystkie 130", 96) },
+  { id: "bo-torun-2027-1", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, ciemny: true },
+  { id: "bo-torun-2027-2", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, ciemny: true, przygotuj: doNaglowka("Chętnych jest więcej", 96) },
+  { id: "bo-torun-2027-3", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, ciemny: true, przygotuj: doNaglowka("Mapa projektów", 96) },
+  { id: "bo-torun-2027-4", kafel: "bo-torun-2027", rodzaj: "otwarte", adres: BO, ciemny: true, przygotuj: doNaglowka("Wszystkie 130", 96) },
 
   /* ----- Wędrówki po gminie Purda (Glosariusz Olsztyna) ----- */
   { id: "wedrowki-purda-1", kafel: "wedrowki-purda", rodzaj: "otwarte", adres: PURDA },
   { id: "wedrowki-purda-2", kafel: "wedrowki-purda", rodzaj: "otwarte", adres: PURDA, przygotuj: async (strona) => { await pominIntroPurdy(strona); } },
   {
+    // Karta z bestiariusza: ilustracja i opis Południcy ze Smutnej Góry (samo okno karty)
     id: "wedrowki-purda-3", kafel: "wedrowki-purda", rodzaj: "otwarte", adres: PURDA,
-    przygotuj: async (strona) => {
-      await pominIntroPurdy(strona);
-      await strona.click('button:has-text("Klewki")');
-      await strona.waitForTimeout(1500);
+    przygotuj: kartaBestiariusza("Smutna Góra"),
+    kadr: () => {
+      const r = document.querySelector(".modal__panel").getBoundingClientRect();
+      return { x: r.left, y: r.top, width: r.width, height: r.height };
     },
   },
 
@@ -377,33 +381,50 @@ const GALERIE = [
   /* ----- Interaktywne wyprawy miejskie — Bez: mapy, nazw lokalizacji i tytułu z intro ----- */
   ...[
     // Ten sam portal w trzech stylach: jeden silnik, różne narracje
-    { id: "wyprawy-torun-1", przygotuj: portalWypraw },
-    { id: "wyprawy-torun-2", przygotuj: kroki(portalWypraw, klik('#pan-profil :is(button, [role=button], label):has-text("Fantasy")')) },
-    { id: "wyprawy-torun-3", przygotuj: kroki(portalWypraw, klik('#pan-profil :is(button, [role=button], label):has-text("Cyberpunk")')) },
+    { id: "wyprawy-torun-1", przygotuj: kroki(portalWypraw, stylWypraw("Fantasy")) },
+    { id: "wyprawy-torun-3", przygotuj: portalWypraw },
+    { id: "wyprawy-torun-4", przygotuj: kroki(portalWypraw, stylWypraw("Cyberpunk")) },
   ].map((k) => ({
     ...k,
+    przygotuj: kroki(k.przygotuj, ukryjHub),
     kafel: "wyprawy-torun",
     rodzaj: "na-zyczenie",
     okno: { width: 390, height: 844 },
     ukryj: [".hdr", "#scr-intro", "#pan-mapa", "#pan-projekt", ".tabbar", "#ach-detail"],
     kadr: srodekAplikacji,
-    zakazane: [/toru[nń]/i, /interaktywne wyprawy/i, /kulturalny hub/i, /zamek dyb/i, /park miejski/i],
+    zakazane: [/toru[nń]/i, /interaktywne wyprawy/i, /\bhub\b/i, /zamek dyb/i, /park miejski/i],
     szerokosc: 780,
   })),
+  {
+    // Plakat filmu, który otwiera pierwszą wyprawę: pięć postaci na nocnej ulicy.
+    // Adres pliku jest w zrodla-prywatne.json (klucz „wyprawy-torun-plakat”), nie tutaj.
+    // Bez: szyldu z nazwą miejsca w lewym górnym rogu. Wycinek zaczyna się na prawo od niego;
+    // skrypt sprawdza wymiary obrazu i to, że wycinek omija obszar szyldu.
+    id: "wyprawy-torun-2",
+    kafel: "wyprawy-torun",
+    rodzaj: "na-zyczenie",
+    film: { zrodlo: "wyprawy-torun-plakat", sekunda: 0 },
+    wymiary: { width: 1264, height: 720 },
+    wycinek: { x: 200, y: 0, width: 1064, height: 720 },
+    zakazanyObszar: { x: 96, y: 136, width: 100, height: 112 },
+  },
 
   /* ----- Mapa zieleni Torunia — Bez: stopki; ukrywamy też podpis ze źródłem danych ----- */
+  // Karty Atlasu tylko z miejscami, których zdjęcia są nasze (zdjęcie Angielskiego Ogrodu nie jest)
   ...[
     { id: "mapa-zieleni-1" },
-    { id: "mapa-zieleni-2", krok: klik("#tab-atlas") },
-    { id: "mapa-zieleni-3", krok: klik("#tab-planer") },
-    { id: "mapa-zieleni-4", krok: klik("#tab-paszport") },
-  ].map(({ id, krok }) => ({
+    { id: "mapa-zieleni-2", krok: kartaAtlasu("dziki-brzeg-wisly"), kadr: kadrAtlasu },
+    { id: "mapa-zieleni-3", krok: kartaAtlasu("bydgoskie-bzy"), kadr: kadrAtlasu },
+    { id: "mapa-zieleni-4", krok: klik("#tab-planer") },
+    { id: "mapa-zieleni-5", krok: klik("#tab-paszport") },
+  ].map(({ id, krok, kadr }) => ({
     id,
     kafel: "mapa-zieleni",
     rodzaj: "na-zyczenie",
     przygotuj: kroki(...(krok ? [krok] : []), ukryjTekst(/dane: (um|urz)|urz[ąa]d miasta|mapę przygotowało/)),
     ukryj: ["footer"],
-    kadr: () => ({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }),
+    kadr: kadr || (() => ({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })),
+    zakazaneElementy: ['img[src*="angielski-ogrod"]'],
     zakazane: [/mapę przygotowało/i, /dane: urząd/i, /dane: um/i, /urz[ąa]d miasta/i],
   })),
 
@@ -428,8 +449,27 @@ const GALERIE = [
   })),
 
   /* ----- ISKRA — Bez: cytatów, zdjęć, biblioteki raportów i trybu spaceru z przewodnikiem ----- */
+  {
+    // Wyjątek od „Bez zdjęć”, o który poprosił zespół: para przed/po ze starej zajezdni
+    // (stan obecny i wizualizacja AI). Cytaty z raportów zostają poza kadrem i są ukryte.
+    id: "iskra-atlas-glosow-1",
+    kafel: "iskra-atlas-glosow",
+    rodzaj: "na-zyczenie",
+    przygotuj: kroki(wizualizacjeIskry, ukryjTekst(/„|spacer|raport #/)),
+    ukryj: [
+      "#torunCompass", "#copernicusGuide", ".walk-fab", "#walkOverlay", "#lightbox", "#rmodal",
+      ".cursor-spotlight", ".lucid-credit", "#scrollProg", "nav",
+      "blockquote", "q", "[class*=quote]", ".hero-bg-photo", ".note-draft",
+    ],
+    kadr: kadrPrzedPo,
+    kadrArg: false,
+    zakazaneElementy: [
+      "img:not(.before-after-grid img)", "picture:not(.before-after-grid picture)", "video", "blockquote", "q", "[class*=quote]",
+      "#rmodal", "#walkOverlay", "#torunCompass", "#copernicusGuide", ".hero-bg-photo",
+    ],
+    zakazane: [/„/, /spacer/i, /raport #/i],
+  },
   ...[
-    { id: "iskra-atlas-glosow-1", naglowek: null },
     { id: "iskra-atlas-glosow-2", naglowek: "Charakterystyka uczestników" },
     { id: "iskra-atlas-glosow-3", naglowek: "Najczęściej wskazywane miejsca" },
   ].map(({ id, naglowek }) => ({
@@ -451,59 +491,31 @@ const GALERIE = [
     zakazane: [/„/, /spacer/i, /raport #/i],
   })),
 
-  /* ----- Ciepło Bydgoszczy 2040 — Bez: legendy z liczbami i wartości ----- */
-  {
-    // Widok aplikacji bez żadnej liczby: zostają nazwa, zakładki, tytuł widoku i mapa osiedli
-    id: "cieplo-bydgoszczy-2040-1",
+  /* ----- Ciepło Bydgoszczy 2040 — dane publiczne: wartości, legenda i scenariusz mogą być widoczne ----- */
+  ...[
+    { id: "cieplo-bydgoszczy-2040-1", przygotuj: async (strona) => { await strona.waitForTimeout(1500); } },
+    { id: "cieplo-bydgoszczy-2040-2", przygotuj: kroki(widokCiepla("Scenariusz 2040"), doNaglowka("Założenia scenariusza", 96)) },
+    { id: "cieplo-bydgoszczy-2040-3", przygotuj: widokCiepla("Scenariusz 2040") },
+  ].map((k) => ({
+    ...k,
     kafel: "cieplo-bydgoszczy-2040",
     rodzaj: "na-zyczenie",
-    przygotuj: kroki(bezKafelkow, ukryjTekst(/\b(?!2040\b)\d+|%|urządze/)),
-    ukryj: [
-      "#mapNote", "#toast", ".leaflet-control-container", ".leaflet-tooltip-pane", ".leaflet-popup-pane",
-      ".leaflet-tile-pane", "[class*=legend]", "aside", "footer",
-    ],
-    kadr: () => ({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }),
-    // Liczby to wartości; „ETS2” i „2040” to nazwy, więc są dozwolone
-    zakazane: [/\b(?!2040\b)\d+/, /%/, /urządze/i],
-  },
-  {
-    id: "cieplo-bydgoszczy-2040-2",
-    kafel: "cieplo-bydgoszczy-2040",
-    rodzaj: "na-zyczenie",
-    przygotuj: kroki(bezKafelkow, klik('button:has-text("Okręgi wyborcze")', 2400), async (strona) => {
-      await strona.evaluate(() => {
-        const r = document.getElementById("leafletMap").getBoundingClientRect();
-        window.scrollBy({ top: r.top - 24, behavior: "instant" });
-      });
-      await strona.waitForTimeout(600);
-    }),
-    ukryj: [
-      "#mapNote", "#toast", ".leaflet-control-container", ".leaflet-tooltip-pane", ".leaflet-popup-pane",
-      ".leaflet-tile-pane", "[class*=legend]", "#leafletMap ~ *", "aside",
-      // przyklejony pasek aplikacji (nazwa z liczbą, zakładki) wchodziłby na górę mapy
-      "header", "body > :first-child",
-    ],
-    kadr: obrysyCiepla,
-    brakTekstu: true,
-    zakazane: [/\d/, /urządze/i],
-  },
+    ukryj: ["#toast", ".leaflet-popup-pane"],
+  })),
 ];
 
 // Część miniatur dem na życzenie powstaje z kadrów galerii: te same listy „Bez” i ta sama kontrola
 for (const [kafel, zKadru, zmiany] of [
   ["mapa-zieleni", "mapa-zieleni-1", {}],
   ["krosno-konsultacje", "krosno-konsultacje-1", {}],
-  ["iskra-atlas-glosow", "iskra-atlas-glosow-1", {
-    // Lewa część bloku tytułowego w proporcjach kafla: tytuł i pierwsze liczby
-    kadr: () => {
-      const r = document.querySelector(".hero").getBoundingClientRect();
-      return { x: 0, y: Math.max(0, r.top), width: Math.round(r.height * 1.6), height: Math.round(r.height) };
-    },
-    kadrArg: undefined,
-  }],
+  // Sama para zdjęć przed/po w proporcjach kafla
+  ["iskra-atlas-glosow", "iskra-atlas-glosow-1", { kadrArg: true }],
+  ["cieplo-bydgoszczy-2040", "cieplo-bydgoszczy-2040-1", {}],
 ]) {
+  const przepis = { ...GALERIE.find((g) => g.id === zKadru), id: kafel, kafel, szerokosc: 800, ...zmiany };
   const nr = PRZEPISY.findIndex((p) => p.id === kafel);
-  PRZEPISY.splice(nr, 1, { ...GALERIE.find((g) => g.id === zKadru), id: kafel, kafel, szerokosc: 800, ...zmiany });
+  if (nr === -1) PRZEPISY.push(przepis);
+  else PRZEPISY.splice(nr, 1, przepis);
 }
 
 /* ---------- Pomocnicze ---------- */
@@ -601,16 +613,17 @@ function kontrolaKadru({ kadr, zakazaneElementy }) {
 }
 
 // PNG → WebP o zadanej szerokości, w samej przeglądarce (bez dodatkowych bibliotek).
-// „proporcje” (np. 16 / 10) wycinają środek obrazu o takich proporcjach.
-async function doWebp(przegladarka, png, szerokosc, jakosc = 0.84, proporcje = null) {
+// „wycinek” ({ x, y, width, height }) bierze tylko ten prostokąt obrazu;
+// „proporcje” (np. 16 / 10) wycinają z niego środek o takich proporcjach.
+async function doWebp(przegladarka, png, szerokosc, jakosc = 0.84, proporcje = null, wycinek = null) {
   const strona = await przegladarka.newPage();
-  const b64 = await strona.evaluate(async ({ dane, szerokosc, jakosc, proporcje }) => {
+  const b64 = await strona.evaluate(async ({ dane, szerokosc, jakosc, proporcje, wycinek }) => {
     const blob = await (await fetch(`data:image/png;base64,${dane}`)).blob();
     const pelny = await createImageBitmap(blob);
-    let [sx, sy, sw, sh] = [0, 0, pelny.width, pelny.height];
+    let [sx, sy, sw, sh] = wycinek ? [wycinek.x, wycinek.y, wycinek.width, wycinek.height] : [0, 0, pelny.width, pelny.height];
     if (proporcje) {
-      if (sw / sh > proporcje) { sw = Math.round(sh * proporcje); sx = Math.round((pelny.width - sw) / 2); }
-      else { sh = Math.round(sw / proporcje); sy = Math.round((pelny.height - sh) / 2); }
+      if (sw / sh > proporcje) { const n = Math.round(sh * proporcje); sx += Math.round((sw - n) / 2); sw = n; }
+      else { const n = Math.round(sw / proporcje); sy += Math.round((sh - n) / 2); sh = n; }
     }
     const szer = Math.min(szerokosc, sw);
     const wys = Math.round((sh * szer) / sw);
@@ -621,9 +634,32 @@ async function doWebp(przegladarka, png, szerokosc, jakosc = 0.84, proporcje = n
     let s = "";
     for (let i = 0; i < wynik.length; i += 0x8000) s += String.fromCharCode(...wynik.subarray(i, i + 0x8000));
     return btoa(s);
-  }, { dane: png.toString("base64"), szerokosc, jakosc, proporcje });
+  }, { dane: png.toString("base64"), szerokosc, jakosc, proporcje, wycinek });
   await strona.close();
   return Buffer.from(b64, "base64");
+}
+
+// Kadr z pliku (plakat, klatka filmu) nie ma DOM-u do sprawdzenia. Przy demie na życzenie
+// wycinek ustala się ręcznie po obejrzeniu obrazu, a skrypt pilnuje dwóch rzeczy: że obraz
+// ma te same wymiary co wtedy i że wycinek nie zahacza o obszar z listy „Bez”.
+function kontrolaWycinka(png, { rodzaj, wymiary, wycinek, zakazanyObszar }) {
+  const bledy = [];
+  if (rodzaj === "na-zyczenie" && (!wycinek || !wymiary)) {
+    return ["kadr z pliku przy demie na życzenie wymaga pól „wymiary” i „wycinek”"];
+  }
+  if (!wycinek) return bledy;
+  const szer = png.readUInt32BE(16), wys = png.readUInt32BE(20); // nagłówek IHDR pliku PNG
+  if (wymiary && (szer !== wymiary.width || wys !== wymiary.height)) {
+    bledy.push(`obraz ma ${szer}×${wys} zamiast ${wymiary.width}×${wymiary.height}: wycinek trzeba ustalić na nowo`);
+  }
+  if (wycinek.x < 0 || wycinek.y < 0 || wycinek.x + wycinek.width > szer || wycinek.y + wycinek.height > wys) {
+    bledy.push("wycinek wychodzi poza obraz");
+  }
+  const z = zakazanyObszar;
+  if (z && wycinek.x < z.x + z.width && wycinek.x + wycinek.width > z.x && wycinek.y < z.y + z.height && wycinek.y + wycinek.height > z.y) {
+    bledy.push("wycinek obejmuje obszar z listy „Bez”");
+  }
+  return bledy;
 }
 
 /* ---------- Zrzut jednego kafla ---------- */
@@ -634,7 +670,13 @@ async function zrzut(przegladarka, przepis, adres, opcje) {
 
   // Najpierw rozpoznanie kadru przy skali 1, potem zrzut w skali dobranej do ~800 px
   // Domyślnie bez animacji strony źródłowej; „ruch: true” tam, gdzie kadr jest właśnie animacją (intro)
-  const kontekst = await przegladarka.newContext({ viewport: okno, deviceScaleFactor: opcje.skala || 1, reducedMotion: przepis.ruch ? "no-preference" : "reduce" });
+  // „ciemny: true”: strona dostaje prefers-color-scheme: dark (np. ciemny wariant BO)
+  const kontekst = await przegladarka.newContext({
+    viewport: okno,
+    deviceScaleFactor: opcje.skala || 1,
+    reducedMotion: przepis.ruch ? "no-preference" : "reduce",
+    colorScheme: przepis.ciemny ? "dark" : "light",
+  });
   if (opcje.kontekstHook) await opcje.kontekstHook(kontekst);
   // Zrzuty nie nabijają liczników odwiedzin
   await kontekst.route(/goatcounter\.com|gc\.zgo\.at/, (trasa) => trasa.abort());
@@ -731,14 +773,25 @@ export async function zrobZrzuty(opcje = {}) {
     try {
       let png, opisKadru, skala = 1, tekstyWKadrze = 0;
       if (przepis.film) {
-        // Klatka z filmu otwartego dema: bez kontroli tekstu (film jest publiczny w całości)
+        // Klatka z filmu albo obraz (np. plakat). Otwarte demo: plik jest publiczny w całości.
+        // Demo na życzenie: adres z zrodla-prywatne.json i obowiązkowy wycinek (kontrolaWycinka).
+        const adresPliku = przepis.film.zrodlo ? zrodla[przepis.film.zrodlo] : przepis.film.adres;
+        if (!adresPliku) {
+          raport.push({ id: przepis.id, wynik: "POMINIĘTY — brak adresu w zrodla-prywatne.json" });
+          continue;
+        }
         try {
-          png = await klatkaFilmu(przegladarka, przepis.film);
+          png = await klatkaFilmu(przegladarka, { adres: adresPliku, sekunda: przepis.film.sekunda });
         } catch (blad) {
           raport.push({ id: przepis.id, wynik: "POMINIĘTY — brak ffmpeg albo filmu pod adresem", bledy: [String(blad.message || blad).split("\n")[0].slice(0, 200)] });
           continue;
         }
-        opisKadru = `klatka ${przepis.film.sekunda} s`;
+        const bledyWycinka = kontrolaWycinka(png, przepis);
+        if (bledyWycinka.length) {
+          raport.push({ id: przepis.id, wynik: "BŁĄD KONTROLI — plik nie zapisany", bledy: bledyWycinka });
+          continue;
+        }
+        opisKadru = przepis.wycinek ? `wycinek ${przepis.wycinek.width}×${przepis.wycinek.height} z pliku` : `klatka ${przepis.film.sekunda} s`;
       } else {
         const adres = zrodla[przepis.kafel || przepis.id] || przepis.adres;
         if (!adres) {
@@ -761,7 +814,7 @@ export async function zrobZrzuty(opcje = {}) {
         opisKadru = `kadr ${wlasciwy.kadr.width}×${wlasciwy.kadr.height}, skala ${skala}`;
         tekstyWKadrze = wlasciwy.teksty.length;
       }
-      const webp = await doWebp(przegladarka, png, przepis.szerokosc, 0.84, przepis.film?.proporcje || null);
+      const webp = await doWebp(przegladarka, png, przepis.szerokosc, 0.84, przepis.film?.proporcje || null, przepis.wycinek || null);
       writeFileSync(plik, webp);
       if (opcje.podglad) {
         mkdirSync(path.join(KORZEN, "narzedzia", "podglad"), { recursive: true });

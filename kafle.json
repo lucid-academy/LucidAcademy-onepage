@@ -6,7 +6,7 @@
     "Przy statusie na-zyczenie NIE wpisuj adresu strony. Ten plik jest publiczny.",
     "obraz: miniatura 16:10 w assets/kafle/ (robi ją narzedzia/zrzuty.mjs). alt: opis tego, co widać na obrazie.",
     "kadr: \"poziomy\" albo \"pionowy\" (strony robione pod telefon, fotografowane przy 390 px).",
-    "galeria (opcjonalnie): lista zrzutów otwieranych po kliknięciu miniatury, każdy { obraz, alt, podpis? }. Pliki w assets/galeria/ robi narzedzia/zrzuty.mjs; przy demach na życzenie na zrzutach nie może być nic z listy „Bez”.",
+    "galeria (opcjonalnie): lista zrzutów otwieranych po kliknięciu miniatury, każdy { obraz, alt, podpis? }. Pliki w assets/galeria/ robi narzedzia/zrzuty.mjs albo dostarcza zespół (tak jest przy Szczecińskim Dzienniku Sezonu, z rozmytymi liczbami gości); przy demach na życzenie na zrzutach nie może być nic z listy „Bez”.",
     "fokus (opcjonalnie): który fragment miniatury ma być widoczny, np. \"50% 0%\" (góra) albo \"30% 60%\".",
     "dopisek (opcjonalnie): drugie zdanie pod opisem.",
     "atrybucja (opcjonalnie): wymagane oznaczenie źródła, np. gdy na zrzucie widać dane OpenStreetMap."
@@ -17,7 +17,7 @@
       "nazwa": "IX Święto Chełmińskiego Przedmieścia",
       "typ": "Kultura i turystyka",
       "status": "otwarte",
-      "zdanie": "48 wydarzeń na planie parku przy Toruńskich Wodociągach. Każde ma numer na mapie, więc od razu widać, co jest gdzie i o której.",
+      "zdanie": "Interaktywny plan święta: 48 wydarzeń oznaczonych numerami na mapie parku przy Toruńskich Wodociągach, wraz z programem i archiwum poprzednich edycji.",
       "obraz": "assets/kafle/swieto-chelminskie.webp",
       "alt": "Kadr z intro strony: magnes „2026 · IX Święto Chełmińskiego Przedmieścia” z rysunkiem kamienicy z muru pruskiego i podpisem „13 września 2026 · park przy Toruńskich Wodociągach”.",
       "atrybucja": "Plan terenu na podstawie danych © autorzy OpenStreetMap",
@@ -29,7 +29,7 @@
         {
           "obraz": "assets/galeria/swieto-chelminskie-1.webp",
           "alt": "Ostatni kadr intro: magnes IX Święta Chełmińskiego Przedmieścia na ciemnym tle, pod nim data i miejsce święta.",
-          "podpis": "Intro: magnesy z kolejnych edycji, na końcu tegoroczny"
+          "podpis": "Intro: magnesy z kolejnych edycji święta"
         },
         {
           "obraz": "assets/galeria/swieto-chelminskie-2.webp",
@@ -39,12 +39,12 @@
         {
           "obraz": "assets/galeria/swieto-chelminskie-3.webp",
           "alt": "Otwarty panel „Program — 48 wydarzeń”: lista punktów z numerami z planu, m.in. animacje z harcerzami, dmuchańce, warsztaty artystyczne i stoisko bibliotek.",
-          "podpis": "Program: każde wydarzenie z numerem na planie"
+          "podpis": "Program z numeracją zgodną z planem parku"
         },
         {
           "obraz": "assets/galeria/swieto-chelminskie-4.webp",
           "alt": "Panel „Pamięć Chełmionki”: siatka magnesów z edycji od 2018 do 2026 i lista budynków, które trafiły na magnesy.",
-          "podpis": "Pamięć: magnesy z poprzednich edycji"
+          "podpis": "Archiwum magnesów z edycji 2018–2026"
         }
       ]
     },
@@ -52,7 +52,7 @@
       "nazwa": "XVII Święto Bydgoskiego Przedmieścia",
       "typ": "Kultura i turystyka",
       "status": "otwarte",
-      "zdanie": "Dwa dni i 55 wydarzeń w 17 miejscach dzielnicy. Planer układa wybrane punkty po godzinach i liczy czas przejścia między nimi.",
+      "zdanie": "Program dwóch dni: 55 wydarzeń w 17 lokalizacjach. Planer układa wybrane punkty w harmonogram i uwzględnia czas przejścia między nimi.",
       "obraz": "assets/kafle/swieto-bydgoskie.webp",
       "alt": "Kadr z filmu otwierającego stronę: brukowana ulica z willami w złotym świetle, na środku stara księga na pulpicie.",
       "atrybucja": "Mapa na podstawie danych © autorzy OpenStreetMap",
@@ -64,7 +64,7 @@
         {
           "obraz": "assets/galeria/swieto-bydgoskie-1.webp",
           "alt": "Kadr z filmu otwierającego stronę: brukowana ulica z willami w porannym świetle, spadające liście i księga na pulpicie pośrodku drogi.",
-          "podpis": "Intro: film, który otwiera stronę święta"
+          "podpis": "Kadr z filmu otwierającego stronę"
         },
         {
           "obraz": "assets/galeria/swieto-bydgoskie-2.webp",
@@ -79,7 +79,7 @@
         {
           "obraz": "assets/galeria/swieto-bydgoskie-4.webp",
           "alt": "Panel „Przyjaciele Święta” z listą lokali i instytucji dzielnicy, m.in. Trafo Cafe i Rada Okręgu nr 13, oraz serduszka w ich miejscach na mapie.",
-          "podpis": "Przyjaciele: lokale i instytucje z dzielnicy"
+          "podpis": "Przyjaciele Święta: lokale i instytucje dzielnicy"
         }
       ]
     },
@@ -87,9 +87,9 @@
       "nazwa": "Budżet Obywatelski Torunia 2027",
       "typ": "Partycypacja",
       "status": "otwarte",
-      "zdanie": "Mieszkaniec w kilka minut znajduje projekty ze swojej okolicy i rozumie, jak liczone są głosy.",
+      "zdanie": "Serwis demonstracyjny na oficjalnych danych: projekty w podziale na okręgi, zestawienie kosztów z dostępnymi środkami i zasady liczenia głosów.",
       "obraz": "assets/kafle/bo-torun-2027.webp",
-      "alt": "Strona Budżetu Obywatelskiego Torunia 2027: nagłówek „Głosowanie zakończone — czekamy na wyniki”, cztery liczby (130 pomysłów, 35 dla całego miasta, 95 w 13 okręgach, 6 głosów na mieszkańca) i wybór okręgu.",
+      "alt": "Strona Budżetu Obywatelskiego Torunia 2027 w ciemnym wariancie: nagłówek „Głosowanie zakończone — czekamy na wyniki”, cztery liczby (130 pomysłów, 35 dla całego miasta, 95 w 13 okręgach, 6 głosów na mieszkańca) i wybór okręgu.",
       "kadr": "poziomy",
       "przyciski": [
         { "etykieta": "Otwórz", "adres": "https://lucid-academy.github.io/ai-lab/bo-torun-2027.html" }
@@ -97,23 +97,23 @@
       "galeria": [
         {
           "obraz": "assets/galeria/bo-torun-2027-1.webp",
-          "alt": "Początek strony: nagłówek „Głosowanie zakończone — czekamy na wyniki”, cztery liczby (130 pomysłów, 35 dla całego miasta, 95 w 13 okręgach, 6 głosów na mieszkańca) i wybór okręgu.",
+          "alt": "Początek strony w ciemnym wariancie: pasek „Prototyp”, nagłówek „Głosowanie zakończone — czekamy na wyniki”, cztery liczby (130 pomysłów, 35 dla całego miasta, 95 w 13 okręgach, 6 głosów na mieszkańca) i wybór okręgu.",
           "podpis": "Stan głosowania i wybór okręgu"
         },
         {
           "obraz": "assets/galeria/bo-torun-2027-2.webp",
           "alt": "Sekcja „Chętnych jest więcej niż pieniędzy”: wykres wartości zgłoszonych projektów wobec pieniędzy w budżecie i wykres liczby projektów w każdym okręgu.",
-          "podpis": "Ile kosztują wnioski, a ile jest w budżecie"
+          "podpis": "Wartość zgłoszonych projektów na tle budżetu"
         },
         {
           "obraz": "assets/galeria/bo-torun-2027-3.webp",
-          "alt": "Mapa projektów: zarys Torunia z Wisłą i czerwonymi punktami lokalizacji, nad nią uwaga, że to próbka 30 ze 130 projektów.",
+          "alt": "Mapa projektów: ciemny zarys Torunia z Wisłą i pomarańczowymi punktami lokalizacji, nad nią uwaga, że to próbka 30 ze 130 projektów.",
           "podpis": "Mapa projektów (próbka 30 ze 130)"
         },
         {
           "obraz": "assets/galeria/bo-torun-2027-4.webp",
           "alt": "Lista „Wszystkie 130 pomysłów”: wyszukiwarka, filtry kategorii (sport, plac zabaw, zieleń, edukacja i inne) i karty projektów z kwotami.",
-          "podpis": "130 pomysłów z wyszukiwarką i filtrami"
+          "podpis": "Katalog 130 projektów z wyszukiwarką i filtrami"
         }
       ]
     },
@@ -121,7 +121,7 @@
       "nazwa": "Wędrówki po gminie Purda",
       "typ": "Gry miejskie",
       "status": "otwarte",
-      "zdanie": "Gra wymyślona przez uczennice ze szkoły w Klebarku Wielkim, przeniesiona z papieru na interaktywną mapę z quizem i bestiariuszem.",
+      "zdanie": "Gra zaprojektowana przez uczennice szkoły w Klebarku Wielkim, przeniesiona z wersji papierowej na interaktywną mapę z quizem i bestiariuszem.",
       "obraz": "assets/kafle/wedrowki-purda.webp",
       "alt": "Gra Wędrówki po gminie Purda: ilustrowana mapa gminy z ponumerowanymi punktami trasy, startem i metą oraz kartą postaci obok.",
       "kadr": "poziomy",
@@ -141,8 +141,8 @@
         },
         {
           "obraz": "assets/galeria/wedrowki-purda-3.webp",
-          "alt": "Okno miejscowości Klewki: zdjęcie pałacu, kilka zdań historii, ramka „Warto zobaczyć” i pytanie quizowe z trzema odpowiedziami.",
-          "podpis": "Każdy punkt to historia, ciekawostka i pytanie"
+          "alt": "Karta z bestiariusza: ilustracja Południcy, postaci w białym welonie z sierpem pośród łanu zboża w pełnym słońcu, a obok opis zjawy, jej miejsce w wierzeniach słowiańskich, statystyki, wrażliwości i odporności.",
+          "podpis": "Bestiariusz: Południca ze Smutnej Góry"
         }
       ]
     },
@@ -150,9 +150,9 @@
       "nazwa": "Żagle 2026, Szczecin",
       "typ": "Kultura i turystyka",
       "status": "otwarte",
-      "zdanie": "31 jednostek i 14 miejsc wydarzeń. Odwiedzający układa własny plan, odpowiadając na cztery pytania.",
+      "zdanie": "Przewodnik po festiwalu: 31 jednostek i 14 miejsc wydarzeń. Na podstawie odpowiedzi na cztery pytania strona przygotowuje indywidualny plan zwiedzania.",
       "obraz": "assets/kafle/zagle-2026.webp",
-      "alt": "Rysowana mapa nabrzeży Odry z ponumerowanymi miejscami wydarzeń, m.in. Wały Chrobrego i Dźwigozaury, nad nią przełącznik dni festiwalu.",
+      "alt": "Strona „Żagle 2026 · Szczecin nad Odrą”: nagłówek z datami 14–16 VIII 2026, menu (Mapa, Ułóż plan, Flota, Rejsy, Czego brakuje), przełącznik dni i rysowana mapa nabrzeży Odry z ponumerowanymi miejscami wydarzeń.",
       "kadr": "poziomy",
       "przyciski": [
         { "etykieta": "Otwórz", "adres": "https://lucid-academy.github.io/ai-lab/zagle-2026-karta-morska.html" }
@@ -166,12 +166,12 @@
         {
           "obraz": "assets/galeria/zagle-2026-2.webp",
           "alt": "Sekcja „Twój plan”: trzy przystanki w sobotę po południu z godzinami, miejscem i czasem przejścia między nimi oraz podpowiedź na wypadek deszczu.",
-          "podpis": "Plan dnia ułożony z czterech odpowiedzi"
+          "podpis": "Indywidualny plan dnia na podstawie czterech odpowiedzi"
         },
         {
           "obraz": "assets/galeria/zagle-2026-3.webp",
           "alt": "„Flota Żagli 2026”: wyszukiwarka, filtry klas i typów oraz karty żaglowców ze zdjęciami, m.in. Kapitan Borchardt, Albert Johannes, Minerva i Loth Loriën.",
-          "podpis": "Flota: 31 jednostek z filtrami klas i typów"
+          "podpis": "Katalog floty: 31 jednostek z filtrami klas i typów"
         }
       ]
     },
@@ -179,25 +179,30 @@
       "nazwa": "Interaktywne wyprawy miejskie · Toruń",
       "typ": "Gry miejskie",
       "status": "na-zyczenie",
-      "zdanie": "Gra miejska dostępna przez cały sezon, a nie tylko w dniu wydarzenia. Uczestnik ma konto i osiągnięcia, organizator dostaje statystyki.",
+      "zdanie": "Platforma gier miejskich dostępna przez cały sezon. Uczestnicy mają konta i system osiągnięć, a organizator otrzymuje statystyki.",
       "obraz": "assets/kafle/wyprawy-torun.webp",
-      "alt": "Fragment profilu uczestnika gry na telefonie: karta postaci z poziomem i paskiem doświadczenia oraz siatka ośmiu osiągnięć, pięć zdobytych.",
+      "alt": "Fragment profilu uczestnika gry na telefonie w stylu fantasy: ciemnozielona karta postaci z poziomem i paskiem doświadczenia oraz siatka ośmiu osiągnięć, pięć zdobytych.",
       "kadr": "pionowy",
       "galeria": [
         {
           "obraz": "assets/galeria/wyprawy-torun-1.webp",
-          "alt": "Portal gracza w stylu historycznym: przełącznik stylu, karta postaci z poziomem i paskiem doświadczenia oraz siatka osiągnięć, pięć z ośmiu zdobytych.",
-          "podpis": "Styl historyczny"
+          "alt": "Portal gracza w stylu fantasy: przełącznik stylu (historyczny, cyberpunk, fantasy), ciemnozielona karta postaci z poziomem i paskiem doświadczenia oraz siatka osiągnięć.",
+          "podpis": "Profil uczestnika w stylu fantasy"
         },
         {
           "obraz": "assets/galeria/wyprawy-torun-2.webp",
-          "alt": "Ten sam portal w stylu fantasy: ciemnozielone tło, ta sama karta postaci i siatka osiągnięć.",
-          "podpis": "Styl fantasy"
+          "alt": "Ilustracja z filmu otwierającego pierwszą wyprawę: pięć postaci na nocnej, mokrej od deszczu ulicy — mężczyzna w okularach, kobieta w sukni z księgą, postać w masce lekarza dżumy z kolbą zielonego płynu, mężczyzna w płaszczu z krzyżem i kosturem oraz młody mężczyzna w kamizelce. Na pierwszym planie stół ze świecą w latarni, zwojami i otwartą księgą.",
+          "podpis": "Postacie z pierwszej odsłony gry"
         },
         {
           "obraz": "assets/galeria/wyprawy-torun-3.webp",
+          "alt": "Ten sam portal w stylu historycznym: jasne, piaskowe tło, karta postaci z ceglanym obramowaniem i siatka osiągnięć.",
+          "podpis": "Styl historyczny"
+        },
+        {
+          "obraz": "assets/galeria/wyprawy-torun-4.webp",
           "alt": "Ten sam portal w stylu cyberpunk: granatowe tło z fioletowymi i turkusowymi akcentami.",
-          "podpis": "Styl cyberpunk: jeden silnik, różne narracje"
+          "podpis": "Styl cyberpunk: jedna platforma, różne narracje"
         }
       ]
     },
@@ -205,7 +210,7 @@
       "nazwa": "Mapa zieleni Torunia",
       "typ": "Kultura i turystyka",
       "status": "na-zyczenie",
-      "zdanie": "Mapa, która wie, co w tym tygodniu kwitnie. Przy każdym miejscu widać, ile dni zostało do końca sezonu, a z wybranych punktów da się ułożyć spacer.",
+      "zdanie": "Sezonowa mapa zieleni miejskiej: pokazuje, co kwitnie w danym tygodniu i ile potrwa sezon w poszczególnych miejscach. W planerze z wybranych punktów powstaje trasa spaceru.",
       "obraz": "assets/kafle/mapa-zieleni.webp",
       "alt": "Mapa zieleni Torunia: pasek „Co teraz” z miejscami, w których trwa sezon, filtry pory roku i dzielnic, mapa miasta z pinezkami i lista miejsc.",
       "atrybucja": "Podkład mapy © autorzy OpenStreetMap",
@@ -214,22 +219,27 @@
         {
           "obraz": "assets/galeria/mapa-zieleni-1.webp",
           "alt": "Widok mapy: pasek „Co teraz” z czterema miejscami, w których trwa sezon, filtry pory roku i dzielnic, mapa Torunia z pinezkami i przykładowe trasy.",
-          "podpis": "Mapa: co kwitnie teraz i gdzie"
+          "podpis": "Mapa miejsc, w których trwa sezon"
         },
         {
           "obraz": "assets/galeria/mapa-zieleni-2.webp",
-          "alt": "Zakładka Atlas: karta miejsca ze zdjęciem ogrodu z pergolą, paski sezonów roślin i lista rzeczy do wypatrzenia podczas wizyty.",
-          "podpis": "Atlas: karta miejsca i sezony roślin"
+          "alt": "Zakładka Atlas, karta „Dziki brzeg Wisły”: zdjęcie zarośniętego brzegu rzeki z piaszczystą łachą, krótki opis miejsca i dwa paski sezonów (kra na Wiśle, zielony brzeg) z liczbą dni do ich początku.",
+          "podpis": "Atlas: karta „Dziki brzeg Wisły”"
         },
         {
           "obraz": "assets/galeria/mapa-zieleni-3.webp",
-          "alt": "Zakładka Planer: kreator spaceru z tempem, czasem i dystansem oraz podgląd rozmowy z mapą, w której zdanie zamienia się w trasę.",
-          "podpis": "Planer i podgląd rozmowy z mapą"
+          "alt": "Karta „Bzy na Bydgoskim Przedmieściu”: zbliżenie kwitnącego bzu, opis spaceru bocznymi uliczkami dzielnicy i pasek sezonu kwitnienia (25 kwietnia – 25 maja).",
+          "podpis": "Atlas: karta „Bzy na Bydgoskim Przedmieściu”"
         },
         {
           "obraz": "assets/galeria/mapa-zieleni-4.webp",
+          "alt": "Zakładka Planer: kreator spaceru z tempem, czasem i dystansem oraz podgląd rozmowy z mapą, w której zdanie zamienia się w trasę.",
+          "podpis": "Planer spaceru: tempo, czas i dystans"
+        },
+        {
+          "obraz": "assets/galeria/mapa-zieleni-5.webp",
           "alt": "Zakładka Paszport: zielony paszport z siatką pieczęci miejsc do odwiedzenia i zadaniem na teraz.",
-          "podpis": "Paszport: pieczęcie za odwiedzone miejsca"
+          "podpis": "Paszport z pieczęciami odwiedzonych miejsc"
         }
       ]
     },
@@ -237,8 +247,7 @@
       "nazwa": "Konsultacje: nocna sprzedaż alkoholu w Krośnie",
       "typ": "Partycypacja",
       "status": "na-zyczenie",
-      "zdanie": "Wyniki konsultacji z trzech perspektyw: mieszkańców, rad dzielnic i ciał doradczych. Strona jasno pokazuje też, czego dane nie dowodzą.",
-      "dopisek": "Przygotowane dla Urzędu Miasta Krosna na podstawie danych z konsultacji.",
+      "zdanie": "Wyniki konsultacji przedstawione z trzech perspektyw: mieszkańców, rad dzielnic i ciał doradczych, wraz z omówieniem ograniczeń danych.",
       "obraz": "assets/kafle/krosno-konsultacje.webp",
       "alt": "Nagłówek raportu „Nocna sprzedaż alkoholu w Krośnie” na tle neonowej mapy miasta, obok wynik 55,1% za ograniczeniem i pięć liczb podsumowania.",
       "kadr": "poziomy",
@@ -246,22 +255,22 @@
         {
           "obraz": "assets/galeria/krosno-konsultacje-1.webp",
           "alt": "Nagłówek raportu „Nocna sprzedaż alkoholu w Krośnie”, wynik 55,1% za ograniczeniem i pięć liczb podsumowania na tle neonowej mapy miasta.",
-          "podpis": "Wynik zbiorczy na pierwszym ekranie"
+          "podpis": "Wyniki zbiorcze konsultacji"
         },
         {
           "obraz": "assets/galeria/krosno-konsultacje-2.webp",
           "alt": "Sekcja „Ten sam problem wygląda inaczej w każdej części miasta”: tabela dzielnic z paskami poparcia i panel pełnego odczytu dzielnicy.",
-          "podpis": "Każda dzielnica osobno"
+          "podpis": "Wyniki w podziale na dzielnice"
         },
         {
           "obraz": "assets/galeria/krosno-konsultacje-3.webp",
           "alt": "Sekcja „Wiek i płeć mocno różnicują odpowiedzi”: wykresy za i przeciw ograniczeniu według grup wieku oraz struktura osób, które wypełniły ankietę.",
-          "podpis": "Kto jest za, a kto przeciw"
+          "podpis": "Odpowiedzi według wieku i płci"
         },
         {
           "obraz": "assets/galeria/krosno-konsultacje-4.webp",
           "alt": "Sekcja „Twarde liczby nie odpowiadają na każde pytanie”: dane o nocnych zakłóceniach porządku, spożywaniu w miejscach zabronionych i interwencjach.",
-          "podpis": "Twarde dane obok wyników ankiety"
+          "podpis": "Dane administracyjne na tle wyników ankiety"
         }
       ]
     },
@@ -269,20 +278,20 @@
       "nazwa": "ISKRA: Atlas głosów, ul. Sienkiewicza",
       "typ": "Partycypacja",
       "status": "na-zyczenie",
-      "zdanie": "Głosy mieszkańców z 26 spacerów badawczych, zebrane tak, żeby dało się na nich planować dzielnicę twórczą. Badanie terenowe prowadzili studenci psychologii.",
+      "zdanie": "Opinie mieszkańców zebrane podczas 26 spacerów badawczych, opracowane jako materiał do planowania dzielnicy twórczej. Badanie terenowe przeprowadzili studenci psychologii.",
       "obraz": "assets/kafle/iskra-atlas-glosow.webp",
-      "alt": "Blok tytułowy „Atlas głosów: Sienkiewicza” z liczbami badania: 26 raportów, 50 zdjęć z terenu, ponad 15 rozpoznanych miejsc i 8 tematów jakościowych.",
+      "alt": "Dwa zdjęcia starej zajezdni tramwajowej obok siebie: z lewej obecny stan (ceglane hale z bramami i torowisko), z prawej wizualizacja AI tego samego miejsca jako wieczornego placu z girlandami świateł i ludźmi przy stolikach.",
       "kadr": "poziomy",
       "galeria": [
         {
           "obraz": "assets/galeria/iskra-atlas-glosow-1.webp",
-          "alt": "Blok tytułowy „Atlas głosów: Sienkiewicza” z liczbami badania: 26 raportów, 50 zdjęć z terenu, ponad 15 rozpoznanych miejsc, 8 tematów jakościowych i średni wiek uczestników.",
-          "podpis": "Atlas głosów: liczby badania"
+          "alt": "Blok „Stara zajezdnia tramwajowa” z sekcji Wizualizacje potencjału: zdjęcie obecnego stanu (ceglane hale z bramami i torowisko) oraz wizualizacja AI tego samego miejsca jako wieczornego placu spotkań z girlandami świateł.",
+          "podpis": "Stara zajezdnia: stan obecny i wizualizacja AI"
         },
         {
           "obraz": "assets/galeria/iskra-atlas-glosow-2.webp",
           "alt": "Sekcja „Charakterystyka uczestników”: pięć liczb, m.in. średnia i mediana wieku, oraz wykresy płci, ról i stażu na Bydgoskim Przedmieściu.",
-          "podpis": "Kto brał udział w badaniu"
+          "podpis": "Charakterystyka uczestników badania"
         },
         {
           "obraz": "assets/galeria/iskra-atlas-glosow-3.webp",
@@ -295,29 +304,52 @@
       "nazwa": "Szczeciński Dziennik Sezonu",
       "typ": "Analizy",
       "status": "na-zyczenie",
-      "zdanie": "Ruch turystyczny czytelny dla zarządu: kto przyjeżdża i kiedy, miesiąc po miesiącu i rok do roku.",
+      "zdanie": "Analiza ruchu turystycznego dla zarządu: struktura i sezonowość przyjazdów w ujęciu miesięcznym i rocznym.",
       "obraz": "assets/kafle/szczecinski-dziennik-sezonu.webp",
-      "alt": "Fragment wykresu sezonu: dwie linie ruchu turystycznego rok do roku, rosnące ku szczytowi, bez osi i wartości.",
-      "kadr": "poziomy"
+      "alt": "Mapa Europy z liniami przyjazdów gości zagranicznych zbiegającymi się w Szczecinie; grubość linii odpowiada liczbie gości, a same liczby są rozmyte.",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-1.webp",
+          "alt": "Widok „Skąd przypływają goście zagraniczni”: mapa Europy z liniami przyjazdów do Szczecina, przełączniki grupy (turyści, jednodniowi) i okresu oraz ranking krajów z udziałem w ogóle gości, od Niemiec, Ukrainy i Wielkiej Brytanii. Liczby gości rozmyte.",
+          "podpis": "Kraje pochodzenia gości zagranicznych"
+        },
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-2.webp",
+          "alt": "Wykres „Sierpień względem lipca”: iloraz liczby odwiedzających w sierpniu i w lipcu w latach 2023–2026 dla sześciu grup, od turystów krajowych po jednodniowych gości z Niemiec, z opisem ograniczeń porównania.",
+          "podpis": "Sierpień na tle lipca w czterech kolejnych latach"
+        },
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-3.webp",
+          "alt": "Róże miesięcy dla gości z poszczególnych krajów: dla każdego kraju rozkład rocznej liczby gości na miesiące i wyróżniony miesiąc szczytowy, np. sierpień dla Niemiec i wrzesień dla Ukrainy. Łączne liczby gości rozmyte.",
+          "podpis": "Rozkład przyjazdów w ciągu roku według krajów"
+        }
+      ]
     },
     {
       "nazwa": "Ciepło Bydgoszczy 2040",
       "typ": "Analizy",
       "status": "na-zyczenie",
-      "zdanie": "Które osiedla najmocniej odczują ETS2 i gdzie podłączenie do sieci ciepłowniczej opłaca się najbardziej.",
+      "zdanie": "Analiza ekspozycji osiedli na ETS2 i scenariusz ciepłownictwa do 2040 roku, przygotowane na podstawie danych publicznych.",
       "obraz": "assets/kafle/cieplo-bydgoszczy-2040.webp",
-      "alt": "Fragment mapy osiedli Bydgoszczy w kolorach od jasnoniebieskiego do ceglastego, bez legendy i wartości.",
+      "alt": "Widok „Osiedla i ekspozycja na ETS2”: mapa osiedli Bydgoszczy w pięciu klasach liczby urządzeń na paliwo stałe na 1000 mieszkańców, obok panel z danymi dla całego miasta i legenda.",
+      "atrybucja": "Podkład mapy © autorzy OpenStreetMap",
       "kadr": "poziomy",
       "galeria": [
         {
           "obraz": "assets/galeria/cieplo-bydgoszczy-2040-1.webp",
-          "alt": "Widok „Osiedla i ekspozycja na ETS2” bez liczb: zakładki aplikacji, przełącznik osiedli i okręgów wyborczych oraz mapa osiedli Bydgoszczy w kolorach od jasnoniebieskiego do ceglastego.",
-          "podpis": "Mapa osiedli (liczby i legenda ukryte)"
+          "alt": "Widok „Osiedla i ekspozycja na ETS2”: pasek statusu danych, mapa osiedli Bydgoszczy na podkładzie OpenStreetMap w pięciu klasach liczby urządzeń na paliwo stałe na 1000 mieszkańców oraz panel miasta: 176,0 km², 18 395 urządzeń, 61,2 na 1000 mieszkańców i szacowany koszt ETS2 dla domu na węglu.",
+          "podpis": "Mapa osiedli: urządzenia na paliwo stałe i ekspozycja na ETS2"
         },
         {
           "obraz": "assets/galeria/cieplo-bydgoszczy-2040-2.webp",
-          "alt": "Te same dane w podziale na okręgi wyborcze: kilka dużych obszarów miasta w kolorach ekspozycji, bez legendy.",
-          "podpis": "Widok okręgów wyborczych"
+          "alt": "Scenariusz 2040: suwaki założeń (modernizacja budynków, pompy ciepła, źródła niskoemisyjne, odzysk ciepła, cena uprawnień ETS2) i wynik dla 2040 roku: zapotrzebowanie na ciepło, redukcja emisji, nakłady, roczny koszt systemu oraz wykresy ścieżki emisji i miksu dostaw ciepła.",
+          "podpis": "Scenariusz 2040: założenia i wynik"
+        },
+        {
+          "obraz": "assets/galeria/cieplo-bydgoszczy-2040-3.webp",
+          "alt": "Początek widoku „Scenariusz ciepła do 2040”: roczny koszt ogrzewania domu jednorodzinnego na węglu dziś i od 2028 roku oraz ocena, czy system ciepłowniczy spełnia kryterium efektywnego systemu.",
+          "podpis": "Koszt ogrzewania gospodarstwa i ocena systemu ciepłowniczego"
         }
       ]
     }
