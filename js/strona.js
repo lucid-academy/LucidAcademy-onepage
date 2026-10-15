@@ -131,8 +131,9 @@
     const start = performance.now();
     let ostatniaKlatka = 0;
 
-    // Stała szerokość, żeby losowe litery nie przestawiały wierszy nagłówka
-    el.style.minWidth = `${el.getBoundingClientRect().width}px`;
+    // Stała szerokość (nie minimalna): szersze losowe litery nie mogą przesuwać
+    // reszty wiersza, inaczej każda klatka liczy się jako przesunięcie układu (CLS)
+    el.style.width = `${el.getBoundingClientRect().width}px`;
 
     function klatka(teraz) {
       const postep = Math.min(1, (teraz - start) / czas);
@@ -151,7 +152,7 @@
         requestAnimationFrame(klatka);
       } else {
         el.textContent = docelowe;
-        el.style.minWidth = "";
+        el.style.width = "";
       }
     }
     requestAnimationFrame(klatka);
