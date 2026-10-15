@@ -484,14 +484,22 @@
   const przyciskSieci = document.querySelector(".tryb-sieci");
   // Drugie wejście na końcu aksonu w stopce: wtedy pierwszy impuls w sieci wychodzi z pnia mózgu
   const przyciskStopki = document.querySelector(".stopka__siec");
-  let modulSieci = null, otwieranie = false;
+  let modulSieci = null, obietnicaModulu = null, otwieranie = false;
+
+  // Moduł (a z nim obraz mózgu do sekwencji wejścia) wczytuje się już przy zamiarze,
+  // żeby w chwili kliknięcia był gotowy także na wolnym łączu. Nieudane wczytanie nie zostaje w pamięci.
+  function wczytajModulSieci() {
+    obietnicaModulu ||= import(adresModuluSieci).catch((blad) => { obietnicaModulu = null; throw blad; });
+    return obietnicaModulu;
+  }
+  const wczytajZawczasu = () => { wczytajModulSieci().catch(() => {}); };
 
   async function otworzSiec(wywolujacy = przyciskSieci, { zeStopki = false } = {}) {
     if (otwieranie) return;
     otwieranie = true;
     wywolujacy.setAttribute("aria-busy", "true");
     try {
-      modulSieci ||= await import(adresModuluSieci);
+      modulSieci ||= await wczytajModulSieci();
       const dane = await daneKafli;
       await modulSieci.otworz({ kafle: dane?.kafle || [], wywolujacy, galeria: galeria.otworz, zeStopki });
     } catch (blad) {
@@ -508,6 +516,19 @@
     if (przyciskStopki) {
       przyciskStopki.hidden = false;
       przyciskStopki.addEventListener("click", () => otworzSiec(przyciskStopki, { zeStopki: true }));
+    }
+    // Zamiar: wskaźnik albo fokus na przycisku, a przycisk w stopce także wtedy, gdy wejdzie w kadr
+    for (const przycisk of [przyciskSieci, przyciskStopki]) {
+      przycisk?.addEventListener("pointerenter", wczytajZawczasu, { once: true });
+      przycisk?.addEventListener("focus", wczytajZawczasu, { once: true });
+    }
+    if (przyciskStopki && "IntersectionObserver" in window) {
+      const obserwatorStopki = new IntersectionObserver((wpisy) => {
+        if (!wpisy.some((w) => w.isIntersecting)) return;
+        obserwatorStopki.disconnect();
+        wczytajZawczasu();
+      });
+      obserwatorStopki.observe(przyciskStopki);
     }
     // Bezpośredni link do trybu: ?tryb=siec
     if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec(przyciskSieci);
