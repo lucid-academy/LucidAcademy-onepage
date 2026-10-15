@@ -193,6 +193,11 @@ html.siec-otwarta { overflow: hidden; }
 }
 .siec__wezel[hidden] { display: none; }
 
+/* Wejście (mózg rozpada się na sieć): etykiety węzłów poza bieżącym dochodzą na końcu.
+   visibility zamiast samej przezroczystości, żeby Tab nie trafiał w niewidoczne przyciski. */
+.siec__wezel { transition: opacity .6s ease-out, visibility 0s; }
+.siec--wejscie .siec__wezel:not([aria-current="true"]) { opacity: 0; visibility: hidden; transition: none; }
+
 .siec__wezel-punkt {
   position: absolute;
   inset: 0;
@@ -550,4 +555,5 @@ html.siec-otwarta { overflow: hidden; }
   .siec__panel--wejscie > *,
   .siec__panel--wejscie .siec__tytul { animation: none; }
   .siec__polaczenie:hover { transform: none; }
+  .siec__wezel { transition: none; }
 }

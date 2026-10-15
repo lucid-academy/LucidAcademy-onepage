@@ -4,8 +4,11 @@
    Scena: płótno 2D z własnym rzutem perspektywicznym, bez bibliotek.
    Węzły to prawdziwe przyciski nad płótnem. Treść pochodzi z sekcji
    strony i z kafle.json, więc obie wersje mają jedno źródło treści.
-   Przy prefers-reduced-motion: bez przelotów kamery, dryfu, impulsów
-   i glitchu; scena rysuje się tylko po zmianie.
+   Wejście: linia staje się siecią. Mózg z laserowych ścieżek rozpada
+   się na neurony tła, które rozlatują się na swoje miejsca, gdy kamera
+   wlatuje do rdzenia; ze stopki akson strony wchodzi w pień mózgu.
+   Przy prefers-reduced-motion: bez sekwencji wejścia, przelotów kamery,
+   dryfu, impulsów i glitchu; scena rysuje się tylko po zmianie.
    ========================================================= */
 
 const ograniczonyRuch = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -72,6 +75,53 @@ function losowanie(ziarno) {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+}
+const ZIARNO = 20260913;
+
+const faza = (t, od, doo) => ogranicz((t - od) / (doo - od), 0, 1);
+// Oddanie kolejki przeglądarce między dwiema dużymi porcjami pracy (dzieli długie zadanie)
+const ustap = () => (globalThis.scheduler?.yield ? globalThis.scheduler.yield() : new Promise((g) => setTimeout(g, 0)));
+
+/* ---------- Mózg z linii: obraz sekwencji wejścia ---------- */
+
+// Punkty obrazu assets/brain.webp w ułamkach boku: zbieg ścieżek nad pniem (tu stoi rdzeń sieci)
+// i kółko na końcu pnia. Pień jest pionowy, więc ma ten sam x co zbieg.
+const MOZG = { zbiegX: 0.557, zbiegY: 0.735, pienY: 0.942 };
+const BOK_PROBKI = 256;
+
+// Sekwencja wejścia w ms od otwarcia. Kamera startuje w trakcie rozpadu mózgu, a impuls z pnia
+// (wejście ze stopki) dochodzi do rdzenia dokładnie wtedy, gdy rdzeń strzela do sąsiadów.
+const WEJSCIE = { kamera: 500, przelot: 2200, rozlot: 700, lot: 1250, koniec: 2750 };
+WEJSCIE.dotarcie = WEJSCIE.kamera + WEJSCIE.przelot * 0.85;
+
+// Obraz ładuje się razem z modułem i jest próbkowany raz. decode() rozpakowuje go poza głównym
+// wątkiem, więc ani próbkowanie, ani rysowanie obrysu nie dekoduje go w trakcie klatki.
+const mozgGotowy = (async () => {
+  try {
+    const obraz = new Image();
+    obraz.src = new URL("../assets/brain.webp", import.meta.url).href;
+    await obraz.decode();
+    return probkujMozg(obraz);
+  } catch {
+    return null;
+  }
+})();
+
+// Jasne piksele na małym płótnie. Cienkie linie po zmniejszeniu są półprzezroczyste,
+// więc o jasności decyduje iloczyn krycia i jasności koloru, a nie samo krycie.
+function probkujMozg(obraz) {
+  const c = document.createElement("canvas");
+  c.width = c.height = BOK_PROBKI;
+  // Płótno w pamięci procesora: jeden odczyt pikseli bez kopiowania z karty graficznej
+  const g = c.getContext("2d", { willReadFrequently: true });
+  g.imageSmoothingQuality = "high";
+  g.drawImage(obraz, 0, 0, BOK_PROBKI, BOK_PROBKI);
+  const dane = g.getImageData(0, 0, BOK_PROBKI, BOK_PROBKI).data;
+  const jasne = [];
+  for (let i = 0; i < dane.length; i += 4) {
+    if ((dane[i + 3] / 255) * (Math.max(dane[i], dane[i + 1], dane[i + 2]) / 255) > 0.45) jasne.push(i / 4);
+  }
+  return { obraz, jasne };
 }
 
 function utworz(tag, klasa, tekst) {
@@ -205,7 +255,7 @@ function trescSekcji(id) {
 /* ---------- Scena ---------- */
 
 function zbudujScene({ kafle, galeria }) {
-  const los = losowanie(20260913);
+  const los = losowanie(ZIARNO);
   const etykietyMenu = new Map([...document.querySelectorAll("#menu a[href^='#']")].map((a) => [a.getAttribute("href").slice(1), tekstWidoczny(a)]));
 
   // Węzły główne z treścią z sekcji (sekcja, której nie ma na stronie, po prostu nie trafia do sieci)
@@ -301,6 +351,25 @@ function zbudujScene({ kafle, galeria }) {
     if (j1 >= 0) synapsy.push([n, tlo[j1]]);
     if (j2 >= 0) synapsy.push([n, tlo[j2]]);
   });
+
+  // Każdy neuron tła dostaje jeden jasny piksel mózgu, bez powtórzeń, tym samym ziarnem co scena.
+  // Zwłoka startu rośnie z odległością od zbiegu: mózg rozpada się od pnia ku krawędziom.
+  function przypiszMozg(mozg) {
+    if (tlo[0]?.mozg) return true;
+    if (!mozg || mozg.jasne.length < tlo.length) return false;
+    const losMozgu = losowanie(ZIARNO);
+    const pula = mozg.jasne.slice();
+    for (const n of tlo) {
+      const i = Math.floor(losMozgu() * pula.length);
+      const piksel = pula[i];
+      pula[i] = pula[pula.length - 1];
+      pula.pop();
+      const u = ((piksel % BOK_PROBKI) + 0.5) / BOK_PROBKI, v = (Math.floor(piksel / BOK_PROBKI) + 0.5) / BOK_PROBKI;
+      n.mozg = [u, v];
+      n.zwloka = Math.hypot(u - MOZG.zbiegX, v - MOZG.zbiegY) * 700 + losMozgu() * 160;
+    }
+    return true;
+  }
 
   /* ----- DOM: okno, płótno, HUD, przyciski węzłów, panel ----- */
   const okno = utworz("dialog", "siec");
@@ -460,6 +529,7 @@ function zbudujScene({ kafle, galeria }) {
   let wystrzal = null;
   const impulsy = [];
   let nastepnyImpuls = 0;
+  let wejscie = null;
 
   function ujecie(w) {
     if (w.id === "rdzen") return [[40, 70, 600], [0, 0, 0]];
@@ -483,8 +553,10 @@ function zbudujScene({ kafle, galeria }) {
     impulsy.push({ k, odA, t: 0, predkosc, kolor, przejscie });
   }
 
-  function idzDo(w, { fokus = false, natychmiast = false, czas = null } = {}) {
+  function idzDo(w, { fokus = false, natychmiast = false, czas = null, opoznienie = 0 } = {}) {
     if (!w) return;
+    // Wybór węzła w trakcie wejścia kończy sekwencję: dalej prowadzi użytkownik
+    if (biezacy) zakonczWejscie();
     if (w === biezacy && !natychmiast) {
       if (fokus) panel.querySelector("h2")?.focus({ preventScroll: true });
       return;
@@ -501,7 +573,7 @@ function zbudujScene({ kafle, galeria }) {
       const dystans = Math.hypot(...odejmij(poz1, kamera.poz));
       kamera.przelot = {
         poz0: kamera.poz, cel0: kamera.cel, poz1, cel1,
-        start: performance.now(),
+        start: performance.now() + opoznienie,
         czas: czas || ogranicz(700 + dystans * 0.9, 900, 1600),
         bok: normuj(wektorowy(normuj(odejmij(poz1, kamera.poz)), [0, 1, 0])),
       };
@@ -527,7 +599,7 @@ function zbudujScene({ kafle, galeria }) {
     komunikat.textContent = `Węzeł ${w.indeks + 1} z ${kolejnosc.length}: ${w.projekt ? w.nazwa : w.tresc.tytul}`;
     if (fokus) tytul.focus({ preventScroll: true });
     zmierzUklad();
-    if (!bezRuchu()) wystrzal = { w, start: performance.now() + (kamera.przelot ? kamera.przelot.czas * 0.85 : 0), sasiedziGotowi: false };
+    if (!bezRuchu()) wystrzal = { w, start: kamera.przelot ? kamera.przelot.start + kamera.przelot.czas * 0.85 : performance.now(), sasiedziGotowi: false };
     rysujNaZadanie();
   }
 
@@ -640,6 +712,10 @@ function zbudujScene({ kafle, galeria }) {
 
   function klatka(teraz) {
     const { W, H, dpr } = uklad;
+    if (wejscie && teraz - wejscie.start >= WEJSCIE.koniec) zakonczWejscie();
+    const wej = wejscie ? teraz - wejscie.start : 0;
+    // Węzły i połączenia wyłaniają się, gdy neurony tła są już w drodze
+    const mSieci = wejscie ? wygladz(faza(wej, 1300, 2500)) : 1;
     // Kamera: przelot, dryf i obrót użytkownika
     let poz = kamera.poz, cel = kamera.cel, fov = kamera.fov, wPrzelocie = 0;
     if (kamera.przelot) {
@@ -685,16 +761,47 @@ function zbudujScene({ kafle, galeria }) {
     ctx.drawImage(tloSceny(), 0, 0, W, H);
     ctx.globalCompositeOperation = "lighter";
 
-    // Rzut neuronów tła raz na klatkę
-    for (const n of tlo) n.ekran = rzut(n.pos, n.ekran || {});
+    // Wejście: najpierw słaby obrys mózgu, który gaśnie, gdy jego jasne piksele stają się neuronami
+    const ramka = wejscie ? ramkaMozgu() : null;
+    if (ramka) {
+      const obrys = 0.3 * faza(wej, 0, 450) * (1 - faza(wej, 650, 1050));
+      if (obrys > 0) {
+        ctx.globalAlpha = obrys;
+        ctx.drawImage(wejscie.mozg.obraz, ramka.x, ramka.y, ramka.bok, ramka.bok);
+        ctx.globalAlpha = 1;
+      }
+    }
 
-    // Synapsy tła: cztery przedziały jasności, jedna ścieżka na przedział
+    // Rzut neuronów tła raz na klatkę. W sekwencji wejścia pozycja rysowana leci
+    // z piksela mózgu na rzut pozycji 3D, który zmienia się razem z wlatującą kamerą.
+    for (const n of tlo) {
+      const p = (n.ekran = rzut(n.pos, n.ekran || {}));
+      const d = n.rys || (n.rys = {});
+      d.x = p.x; d.y = p.y; d.widac = p.przed; d.e = 1;
+      if (ramka && n.mozg) {
+        const e = wygladz(faza(wej, WEJSCIE.rozlot + n.zwloka, WEJSCIE.rozlot + n.zwloka + WEJSCIE.lot));
+        const mx = ramka.x + n.mozg[0] * ramka.bok, my = ramka.y + n.mozg[1] * ramka.bok;
+        let tx = p.x, ty = p.y;
+        if (!p.przed) {
+          // Neuron, który kończy za kamerą, wylatuje poza kadr w stronę, w którą uciekł
+          const kat = p.kx || p.ky ? Math.atan2(-p.ky, p.kx) : n.faza;
+          tx = uklad.cx + Math.cos(kat) * Math.max(W, H);
+          ty = uklad.cy + Math.sin(kat) * Math.max(W, H);
+        }
+        d.x = mx + (tx - mx) * e; d.y = my + (ty - my) * e; d.widac = true; d.e = e;
+      }
+    }
+
+    // Synapsy tła: cztery przedziały jasności, jedna ścieżka na przedział.
+    // W sekwencji pojawiają się dopiero między neuronami, które prawie doleciały.
     const przedzialy = [[], [], [], []];
     for (const [a, b] of synapsy) {
       const pa = a.ekran, pb = b.ekran;
       if (!pa.przed || !pb.przed) continue;
-      const m = mgla((pa.z + pb.z) / 2);
-      przedzialy[Math.min(3, Math.floor(m * 4))].push(pa.x, pa.y, pb.x, pb.y);
+      const dolecialy = Math.min(a.rys.e, b.rys.e);
+      if (dolecialy < 0.5) continue;
+      const m = mgla((pa.z + pb.z) / 2) * (dolecialy - 0.5) * 2;
+      przedzialy[Math.min(3, Math.floor(m * 4))].push(a.rys.x, a.rys.y, b.rys.x, b.rys.y);
     }
     ctx.lineWidth = 0.8;
     przedzialy.forEach((linie, i) => {
@@ -707,24 +814,29 @@ function zbudujScene({ kafle, galeria }) {
 
     // Neurony tła; w przelocie zostawiają smugi
     for (const n of tlo) {
-      const p = n.ekran;
-      if (!p.przed || p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40) { n.poprzedni = null; continue; }
+      const p = n.ekran, d = n.rys;
+      if (!d.widac || d.x < -40 || d.x > W + 40 || d.y < -40 || d.y > H + 40) { n.poprzedni = null; continue; }
       const migotanie = tloZywe ? 0.62 + 0.38 * Math.sin(czasTla / 900 + n.faza) : 0.85;
-      const a = mgla(p.z) * migotanie;
-      const r = ogranicz(2.6 * p.s, 0.7, 7);
-      if (wPrzelocie > 0.05 && n.poprzedni && Math.hypot(p.x - n.poprzedni[0], p.y - n.poprzedni[1]) > 2) {
+      let a = p.przed ? mgla(p.z) * migotanie : 0;
+      let r = p.przed ? ogranicz(2.6 * p.s, 0.7, 7) : 1.4;
+      if (d.e < 1) {
+        // Piksel mózgu: mały, równy punkt; w locie przechodzi w zwykły neuron tła
+        a = 0.85 * faza(wej, 250, 700) * (1 - d.e) + a * d.e;
+        r = 1.4 + (r - 1.4) * d.e;
+      }
+      if ((wPrzelocie > 0.05 || d.e < 1) && n.poprzedni && Math.hypot(d.x - n.poprzedni[0], d.y - n.poprzedni[1]) > 2) {
         ctx.strokeStyle = rgba(n.kolor, a * 0.55);
         ctx.lineWidth = Math.max(0.8, r * 0.7);
         ctx.beginPath();
         ctx.moveTo(n.poprzedni[0], n.poprzedni[1]);
-        ctx.lineTo(p.x, p.y);
+        ctx.lineTo(d.x, d.y);
         ctx.stroke();
       }
       ctx.globalAlpha = a;
-      ctx.drawImage(duszek(n.kolor), p.x - r * 2, p.y - r * 2, r * 4, r * 4);
+      ctx.drawImage(duszek(n.kolor), d.x - r * 2, d.y - r * 2, r * 4, r * 4);
       ctx.globalAlpha = 1;
       n.poprzedni = n.poprzedni || [0, 0];
-      n.poprzedni[0] = p.x; n.poprzedni[1] = p.y;
+      n.poprzedni[0] = d.x; n.poprzedni[1] = d.y;
     }
 
     // Połączenia między węzłami (krzywe z próbek)
@@ -741,7 +853,7 @@ function zbudujScene({ kafle, galeria }) {
         sumaZ += p.z; n += 1;
       }
       if (!n) continue;
-      const m = mgla(sumaZ / n);
+      const m = mgla(sumaZ / n) * mSieci;
       ctx.strokeStyle = aktywna ? rgba(KOLOR.cyjan, 0.62 * m) : rgba(KOLOR.fiolet, 0.3 * m);
       ctx.lineWidth = aktywna ? 1.8 : 1.1;
       ctx.stroke();
@@ -771,7 +883,7 @@ function zbudujScene({ kafle, galeria }) {
         const p = rzut(punktKrzywej(im.k, im.odA ? t : 1 - t), tmp);
         if (!p.przed) continue;
         const r = ogranicz(5.5 * p.s, 2, 11) * (1 - s * 0.13);
-        ctx.globalAlpha = mgla(p.z) * (1 - s * 0.16);
+        ctx.globalAlpha = mgla(p.z) * (1 - s * 0.16) * mSieci;
         ctx.drawImage(duszek(im.kolor), p.x - r * 2, p.y - r * 2, r * 4, r * 4);
       }
       ctx.globalAlpha = 1;
@@ -788,7 +900,7 @@ function zbudujScene({ kafle, galeria }) {
     doRysowania.sort((x, y) => y.ekran.z - x.ekran.z);
     for (const w of doRysowania) {
       const p = w.ekran;
-      const m = mgla(p.z);
+      const m = mgla(p.z) * mSieci;
       const kolor = KOLOR[w.kolor];
       const r = ogranicz(w.promien * p.s, 3, 70);
       const jasny = w === biezacy || aktywne.has(w);
@@ -819,14 +931,16 @@ function zbudujScene({ kafle, galeria }) {
       ctx.stroke();
     }
 
+    if (ramka && wejscie.zeStopki) rysujPien(wej);
+
     // Celownik na bieżącym węźle
     ctx.globalCompositeOperation = "source-over";
-    if (biezacy?.ekran?.przed) {
+    if (biezacy?.ekran?.przed && mSieci > 0) {
       const p = biezacy.ekran;
       const r = ogranicz(biezacy.promien * p.s, 8, 70);
       const d = Math.max(30, r * 2.1);
       const kat = tloZywe ? czasTla / 2600 : 0.4;
-      ctx.strokeStyle = rgba(KOLOR.cyjan, 0.9);
+      ctx.strokeStyle = rgba(KOLOR.cyjan, 0.9 * mSieci);
       ctx.lineWidth = 1.6;
       for (let i = 0; i < 4; i++) {
         const a = kat + (i * Math.PI) / 2;
@@ -840,7 +954,7 @@ function zbudujScene({ kafle, galeria }) {
       }
       ctx.setLineDash([3, 6]);
       ctx.lineDashOffset = tloZywe ? -czasTla / 60 : 0;
-      ctx.strokeStyle = rgba(KOLOR.fiolet, 0.75);
+      ctx.strokeStyle = rgba(KOLOR.fiolet, 0.75 * mSieci);
       ctx.beginPath();
       ctx.arc(p.x, p.y, r * 1.55 + 6, 0, Math.PI * 2);
       ctx.stroke();
@@ -904,6 +1018,57 @@ function zbudujScene({ kafle, galeria }) {
     }
   }
 
+  // Obraz mózgu w wolnym obszarze: zbieg ścieżek dokładnie na rdzeniu, cały obraz w kadrze
+  function ramkaMozgu() {
+    const { x0, y0, x1, y1 } = uklad.wolny;
+    const { cx, cy } = uklad;
+    const bok = 0.9 * Math.min((cy - y0) / MOZG.zbiegY, (y1 - cy) / (1 - MOZG.zbiegY), (cx - x0) / MOZG.zbiegX, (x1 - cx) / (1 - MOZG.zbiegX));
+    return { bok, x: cx - MOZG.zbiegX * bok, y: cy - MOZG.zbiegY * bok };
+  }
+
+  // Wejście ze stopki: akson strony wchodzi od dołu kadru w pień mózgu, a impuls biegnie nim
+  // do rdzenia (barwy jak akson na stronie: słaba linia, przewodzony fiolet, cyjanowe czoło)
+  function rysujPien(wej) {
+    const x = uklad.cx, yRdzen = uklad.cy, yDol = uklad.wolny.y1;
+    const widac = faza(wej, 0, 400) * (1 - faza(wej, WEJSCIE.dotarcie, WEJSCIE.koniec));
+    if (widac <= 0 || yDol <= yRdzen) return;
+    const t = faza(wej, WEJSCIE.kamera, WEJSCIE.dotarcie);
+    const yCzolo = yDol + (yRdzen - yDol) * Math.pow(t, 1.4);
+    ctx.lineCap = "round";
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = rgba(KOLOR.fiolet, 0.26 * widac);
+    ctx.beginPath();
+    ctx.moveTo(x, yDol);
+    ctx.lineTo(x, yRdzen);
+    ctx.stroke();
+    if (t <= 0) return;
+    ctx.strokeStyle = rgba(KOLOR.fiolet, 0.62 * widac);
+    ctx.beginPath();
+    ctx.moveTo(x, yDol);
+    ctx.lineTo(x, yCzolo);
+    ctx.stroke();
+    if (t >= 1) return;
+    const ogon = ctx.createLinearGradient(x, yCzolo + 100, x, yCzolo);
+    ogon.addColorStop(0, rgba(KOLOR.cyjan, 0));
+    ogon.addColorStop(1, rgba(KOLOR.cyjan, 0.6 * widac));
+    ctx.strokeStyle = ogon;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, Math.min(yDol, yCzolo + 100));
+    ctx.lineTo(x, yCzolo);
+    ctx.stroke();
+    ctx.globalAlpha = widac;
+    ctx.drawImage(duszek(KOLOR.cyjan), x - 14, yCzolo - 14, 28, 28);
+    ctx.globalAlpha = 1;
+  }
+
+  function zakonczWejscie() {
+    if (!wejscie) return;
+    wejscie = null;
+    okno.classList.remove("siec--wejscie");
+    for (const n of tlo) n.poprzedni = null;
+  }
+
   function przelacz(el, klasa, stan) {
     if (el.classList.contains(klasa) !== stan) el.classList.toggle(klasa, stan);
   }
@@ -962,7 +1127,7 @@ function zbudujScene({ kafle, galeria }) {
   /* ----- Pętla ----- */
   let petla = 0, otwarte = false, zaplanowana = false;
   function trwaAnimacja() {
-    return !!(kamera.przelot || wystrzal || impulsy.length || ciagniecie
+    return !!(wejscie || kamera.przelot || wystrzal || impulsy.length || ciagniecie
       || Math.abs(uzytkownik.yaw - uzytkownik.celYaw) > 1e-4 || Math.abs(uzytkownik.pitch - uzytkownik.celPitch) > 1e-4
       || Math.abs(uklad.cx - uklad.celCx) > 0.5 || Math.abs(uklad.cy - uklad.celCy) > 0.5);
   }
@@ -986,6 +1151,8 @@ function zbudujScene({ kafle, galeria }) {
   pauza.addEventListener("click", () => {
     wstrzymany = !wstrzymany;
     pauza.setAttribute("aria-pressed", String(wstrzymany));
+    // Wstrzymanie obejmuje też sekwencję wejścia: scena od razu staje gotowa
+    if (wstrzymany) zakonczWejscie();
     rysujNaZadanie();
   });
   // Wskazany albo wybrany z klawiatury węzeł nie ucieka spod kursora
@@ -997,6 +1164,7 @@ function zbudujScene({ kafle, galeria }) {
   warstwaWezlow.addEventListener("focusout", () => { fokusNaWezle = false; });
   okno.addEventListener("close", () => {
     otwarte = false;
+    zakonczWejscie();
     cancelAnimationFrame(petla);
     petla = 0;
     document.documentElement.classList.remove("siec-otwarta");
@@ -1056,14 +1224,17 @@ function zbudujScene({ kafle, galeria }) {
   plotno.addEventListener("pointercancel", koniecCiagniecia);
 
   window.addEventListener("resize", () => { if (otwarte) { zmierzUklad(); zmierzEtykiety(); rysujNaZadanie(); } }, { passive: true });
-  ograniczonyRuch.addEventListener("change", () => { if (otwarte) { kamera.przelot = null; idzDo(biezacy, { natychmiast: true }); } });
+  ograniczonyRuch.addEventListener("change", () => { if (otwarte) { kamera.przelot = null; zakonczWejscie(); idzDo(biezacy, { natychmiast: true }); } });
 
   /* ----- Otwieranie i zamykanie ----- */
   let wywolujacy = null;
 
-  function otworz(przycisk) {
+  function otworz(przycisk, { zeStopki = false, mozg = null } = {}) {
     wywolujacy = przycisk || null;
     otwarte = true;
+    // Ruch wstrzymany na stronie (przycisk w stopce) zostaje wstrzymany także w sieci
+    wstrzymany = document.documentElement.classList.contains("animacje-wstrzymane");
+    pauza.setAttribute("aria-pressed", String(wstrzymany));
     document.documentElement.classList.add("siec-otwarta");
     okno.showModal();
     const adres = new URL(location.href);
@@ -1073,15 +1244,24 @@ function zbudujScene({ kafle, galeria }) {
     }
     zmierzUklad();
     zmierzEtykiety();
-    uklad.cx = uklad.celCx;
-    uklad.cy = uklad.celCy;
-    // Wejście: przelot z daleka do rdzenia (bez ruchu: od razu na miejscu)
+    // Wejście: mózg z linii rozpada się na neurony tła, a kamera wlatuje z daleka do rdzenia.
+    // Bez ruchu od razu gotowa scena; przy wstrzymanym ruchu albo bez obrazu sam przelot.
     kamera.poz = [0, 220, 1900];
     kamera.cel = [0, 0, 0];
     kamera.przelot = null;
     impulsy.length = 0;
     biezacy = null;
-    idzDo(kolejnosc[0], { czas: 2200 });
+    zakonczWejscie();
+    const sekwencja = !bezRuchu() && !wstrzymany && przypiszMozg(mozg);
+    if (sekwencja) {
+      wejscie = { start: performance.now(), zeStopki, mozg };
+      okno.classList.add("siec--wejscie");
+    }
+    idzDo(kolejnosc[0], sekwencja ? { czas: WEJSCIE.przelot, opoznienie: WEJSCIE.kamera } : { czas: 2200 });
+    // Środek sceny dopiero po zbudowaniu panelu (na telefonie panel wyznacza dół wolnego obszaru),
+    // inaczej rdzeń, a z nim obraz mózgu, podjeżdżałby w pierwszych klatkach
+    uklad.cx = uklad.celCx;
+    uklad.cy = uklad.celCy;
     kolejnosc[0].przycisk.focus({ preventScroll: true });
     if (bezRuchu()) rysujNaZadanie();
   }
@@ -1099,8 +1279,11 @@ function zbudujScene({ kafle, galeria }) {
 
 let scena = null;
 
-export async function otworz({ kafle = [], wywolujacy = null, galeria = null } = {}) {
-  await wczytajStyl();
+export async function otworz({ kafle = [], wywolujacy = null, galeria = null, zeStopki = false } = {}) {
+  // Obraz mózgu czeka najwyżej chwilę: bez niego wejście to sam przelot kamery, jak w pilocie
+  const [, mozg] = await Promise.all([wczytajStyl(), Promise.race([mozgGotowy, new Promise((g) => setTimeout(() => g(null), 700))])]);
+  // Budowa sceny w osobnym zadaniu, nie doklejona do dekodowania i próbkowania obrazu
+  if (!scena) await ustap();
   if (!scena) scena = zbudujScene({ kafle, galeria });
-  scena.otworz(wywolujacy);
+  scena.otworz(wywolujacy, { zeStopki, mozg });
 }
