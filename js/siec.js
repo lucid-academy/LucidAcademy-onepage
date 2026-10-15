@@ -286,10 +286,20 @@ function zbudujScene({ kafle, galeria }) {
     if (wezly.some((w) => Math.hypot(p[0] - w.pos[0], p[1] - w.pos[1], p[2] - w.pos[2]) < 70)) continue;
     tlo.push({ pos: p, kolor: los() < 0.72 ? KOLOR.fiolet : KOLOR.cyjan, faza: los() * Math.PI * 2, poprzedni: null });
   }
+  // Każdy neuron łączy się z dwoma najbliższymi dalszymi na liście (do 210 jednostek).
+  // Szukamy ich jednym przebiegiem po kwadratach odległości, bez tablicy i sortowania
+  // dla każdego neuronu: wynik ten sam, a otwarcie trybu nie stoi na budowie sceny.
   const synapsy = [];
   tlo.forEach((n, i) => {
-    const odl = tlo.map((m, j) => [j, Math.hypot(n.pos[0] - m.pos[0], n.pos[1] - m.pos[1], n.pos[2] - m.pos[2])]).filter(([j, d]) => j > i && d < 210).sort((x, y) => x[1] - y[1]);
-    for (const [j] of odl.slice(0, 2)) synapsy.push([n, tlo[j]]);
+    let j1 = -1, d1 = 210 * 210, j2 = -1, d2 = 210 * 210;
+    for (let j = i + 1; j < tlo.length; j++) {
+      const m = tlo[j].pos;
+      const dx = n.pos[0] - m[0], dy = n.pos[1] - m[1], dz = n.pos[2] - m[2];
+      const d = dx * dx + dy * dy + dz * dz;
+      if (d < d1) { j2 = j1; d2 = d1; j1 = j; d1 = d; } else if (d < d2) { j2 = j; d2 = d; }
+    }
+    if (j1 >= 0) synapsy.push([n, tlo[j1]]);
+    if (j2 >= 0) synapsy.push([n, tlo[j2]]);
   });
 
   /* ----- DOM: okno, płótno, HUD, przyciski węzłów, panel ----- */
