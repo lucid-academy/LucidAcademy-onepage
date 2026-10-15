@@ -520,7 +520,7 @@
     if (!v) zaplanujSkok();
   }
   pauza.addEventListener("click", () => { const v = pauza.getAttribute("aria-pressed") !== "true"; ustawPauze(v); zapisz(v); });
-  document.querySelector(".stopka__wnetrze .link-cichy")?.before(pauza);
+  document.querySelector(".stopka__wnetrze > a.link-cichy")?.before(pauza);
   ustawPauze(czytaj());
 
   /* ---------- Stan zależny od ustawień ruchu ---------- */

@@ -482,27 +482,35 @@
   /* ---------- Tryb sieci (pilot wersji 3): moduł wczytywany dopiero na żądanie ---------- */
 
   const przyciskSieci = document.querySelector(".tryb-sieci");
-  let modulSieci = null;
+  // Drugie wejście na końcu aksonu w stopce: wtedy pierwszy impuls w sieci wychodzi z pnia mózgu
+  const przyciskStopki = document.querySelector(".stopka__siec");
+  let modulSieci = null, otwieranie = false;
 
-  async function otworzSiec() {
-    if (przyciskSieci.getAttribute("aria-busy") === "true") return;
-    przyciskSieci.setAttribute("aria-busy", "true");
+  async function otworzSiec(wywolujacy = przyciskSieci, { zeStopki = false } = {}) {
+    if (otwieranie) return;
+    otwieranie = true;
+    wywolujacy.setAttribute("aria-busy", "true");
     try {
       modulSieci ||= await import(adresModuluSieci);
       const dane = await daneKafli;
-      await modulSieci.otworz({ kafle: dane?.kafle || [], wywolujacy: przyciskSieci, galeria: galeria.otworz });
+      await modulSieci.otworz({ kafle: dane?.kafle || [], wywolujacy, galeria: galeria.otworz, zeStopki });
     } catch (blad) {
       console.error("[tryb sieci] Nie udało się otworzyć trybu sieci:", blad);
     } finally {
-      przyciskSieci.removeAttribute("aria-busy");
+      otwieranie = false;
+      wywolujacy.removeAttribute("aria-busy");
     }
   }
 
   if (przyciskSieci && typeof HTMLDialogElement === "function") {
     przyciskSieci.hidden = false;
-    przyciskSieci.addEventListener("click", otworzSiec);
+    przyciskSieci.addEventListener("click", () => otworzSiec(przyciskSieci));
+    if (przyciskStopki) {
+      przyciskStopki.hidden = false;
+      przyciskStopki.addEventListener("click", () => otworzSiec(przyciskStopki, { zeStopki: true }));
+    }
     // Bezpośredni link do trybu: ?tryb=siec
-    if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec();
+    if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec(przyciskSieci);
   }
 
   /* ---------- Licznik odwiedzin (GoatCounter) ---------- */

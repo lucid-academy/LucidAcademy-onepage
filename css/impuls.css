@@ -170,14 +170,29 @@
 
 /* ---------- Pauza w stopce: ruch, który startuje sam ---------- */
 
-.pauza-animacji {
-  margin-left: auto; /* razem z „Wróć na górę” po prawej */
+.pauza-animacji,
+.stopka__siec {
   padding: 0;
   border: 0;
   background: none;
   font: inherit;
   font-weight: 500;
   cursor: pointer;
+}
+.pauza-animacji { margin-left: auto; /* razem z „Wróć na górę” po prawej */ }
+
+/* Tryb sieci zaraz za końcem aksonu, także gdy przycisku pauzy nie ma (ograniczony ruch).
+   Strzałka rysowana maską: podzbiory fontów nie mają → */
+.stopka__siec { margin-right: auto; }
+.stopka__siec[aria-busy="true"] { cursor: progress; opacity: .7; }
+.stopka__siec::after {
+  content: "";
+  flex: none;
+  width: .85em;
+  height: .85em;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8h10.5M9 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8h10.5M9 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 /* Ikona: dwie kreski (ruch trwa) albo trójkąt (ruch wstrzymany) */
 .pauza-animacji__ikona {
