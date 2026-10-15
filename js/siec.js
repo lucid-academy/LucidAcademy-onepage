@@ -99,6 +99,9 @@ WEJSCIE.dotarcie = WEJSCIE.kamera + WEJSCIE.przelot * 0.85;
 const mozgGotowy = (async () => {
   try {
     const obraz = new Image();
+    // Z CORS, bo bez tego obraz z innej domeny (np. podgląd gałęzi przez CDN) „skaża” płótno
+    // i getImageData rzuca wyjątek; przy tej samej domenie nic to nie zmienia
+    obraz.crossOrigin = "anonymous";
     obraz.src = new URL("../assets/brain.webp", import.meta.url).href;
     await obraz.decode();
     return probkujMozg(obraz);
