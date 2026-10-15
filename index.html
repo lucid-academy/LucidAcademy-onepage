@@ -41,12 +41,15 @@
     <link rel="preload" href="assets/fonty/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="css/strona.css" />
     <link rel="stylesheet" href="css/impuls.css" />
+    <link rel="stylesheet" href="css/ruch.css" />
 
     <!-- Klasa .js włącza animacje wejścia; bez JavaScriptu wszystko jest od razu widoczne. -->
     <script>document.documentElement.classList.add("js");</script>
     <script src="js/strona.js" defer></script>
     <!-- Akson: impuls przez sekcje (osobny plik, da się wycofać jednym ruchem) -->
     <script src="js/impuls.js" defer></script>
+    <!-- Eksperyment: ruch własny ilustracji (osobny plik, da się wycofać jednym ruchem) -->
+    <script src="js/ruch.js" defer></script>
   </head>
   <body>
     <a class="pomin" href="#tresc">Przejdź do treści</a>
@@ -110,6 +113,7 @@
             decoding="async"
             data-parallax="0.12"
             data-impuls="50% 84%"
+            data-ruch="ksiazka"
           />
         </div>
 
@@ -182,6 +186,7 @@
             <img
               src="assets/art/laser-ethics.webp"
               data-impuls="50% 45%"
+              data-ruch="waga"
               srcset="assets/art/768/laser-ethics.webp 768w, assets/art/laser-ethics.webp 1536w"
               sizes="(min-width: 1024px) 46vw, 100vw"
               alt="Laserowa ilustracja: dwie świetliste sfery połączone osią z pryzmatem pośrodku, jak szalki wagi"
@@ -245,6 +250,7 @@
               <img
                 src="assets/art/laser-dialogue.webp"
                 data-impuls="48% 72%"
+                data-ruch="pytanie"
                 srcset="assets/art/768/laser-dialogue.webp 768w, assets/art/laser-dialogue.webp 1536w"
                 sizes="(min-width: 1024px) 46vw, 100vw"
                 alt="Laserowa ilustracja: znak zapytania ułożony ze świetlnych punktów i linii"
@@ -388,6 +394,7 @@
                 <img
                   src="assets/art/laser-sensei.webp"
                   data-impuls="20% 68%"
+                  data-ruch="wiazka"
                   srcset="assets/art/768/laser-sensei.webp 768w, assets/art/laser-sensei.webp 1536w"
                   sizes="(min-width: 900px) 46vw, 100vw"
                   alt="Laserowa ilustracja: rząd szklanych pryzmatów, przez które przechodzi i rozszczepia się wiązka światła"
@@ -417,6 +424,7 @@
                 <img
                   src="assets/art/768/laser-vibe-coding.webp"
                   data-impuls="30% 32%"
+                  data-ruch="przeplyw"
                   alt="Laserowa ilustracja: fala światła wychodząca z dymka rozmowy układa się w bloki narzędzia"
                   width="768"
                   height="512"
@@ -441,6 +449,7 @@
                 <img
                   src="assets/art/768/laser-facilitation.webp"
                   data-impuls="50% 53%"
+                  data-ruch="zbieganie"
                   alt="Laserowa ilustracja: krąg miejsc wokół świetlistego centrum, do którego zbiegają się smugi światła"
                   width="768"
                   height="512"
@@ -679,6 +688,7 @@
             <img
               src="assets/art/laser-events.webp"
               data-impuls="50% 78%"
+              data-ruch="nadawanie"
               srcset="assets/art/768/laser-events.webp 768w, assets/art/laser-events.webp 1536w"
               sizes="(min-width: 1024px) 46vw, 100vw"
               alt="Laserowa ilustracja: świetlna wieża nadająca sygnał, który rozchodzi się falami nad miastem"

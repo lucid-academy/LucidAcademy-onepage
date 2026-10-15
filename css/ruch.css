@@ -1,0 +1,52 @@
+/* =========================================================
+   Lucid Academy — eksperyment: ruch własny ilustracji (js/ruch.js)
+   Białe kształty na czarnej warstwie światła (css/impuls.css):
+   kopia ilustracji w trybie multiply zostawia z nich tylko linie.
+   Czerń i biel są tu wartościami maski, nie kolorami palety.
+   Rozmiary i trasy liczone w jednostkach warstwy (cqw, cqh),
+   więc działają tak samo w każdym kadrze i przy każdej szerokości.
+   ========================================================= */
+
+.swiatlo__warstwa { container-type: size; }
+
+/* W eksperymencie światło mocniejsze: jaśniejsza kopia linii. Kontrast nadal przed jasnością,
+   więc granatowe tło zostaje zgniecione do czerni i się nie rozjaśnia. */
+.swiatlo__warstwa > img.swiatlo__kopia { filter: contrast(2.8) brightness(1.55) saturate(1.35); }
+
+/* Punkt światła: wędrujący (iskra), stały (błysk) i za kursorem. Środek w punkcie (x, y). */
+.ruch__iskra,
+.ruch__blysk,
+.ruch__kursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--rx) * 2cqw);
+  height: calc(var(--ry, var(--rx)) * 2cqw);
+  margin: calc(var(--ry, var(--rx)) * -1cqw) 0 0 calc(var(--rx) * -1cqw);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #fff, rgb(255 255 255 / .7) 50%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.ruch__blysk {
+  top: calc(var(--y) * 1cqh);
+  left: calc(var(--x) * 1cqw);
+}
+
+/* Pierścień z punktu (x, y): rośnie albo zbiega się przez scale */
+.ruch__krag {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle farthest-corner at calc(var(--x) * 1%) calc(var(--y) * 1%), transparent 74%, rgb(255 255 255 / .9) 80%, transparent 84%);
+  transform-origin: calc(var(--x) * 1%) calc(var(--y) * 1%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Światło za kursorem: większe i miękkie, pojawia się nad ilustracją */
+.ruch__kursor {
+  --rx: 11;
+  background: radial-gradient(closest-side, rgb(255 255 255 / .85), rgb(255 255 255 / .35) 50%, transparent);
+  transition: opacity .45s ease-out;
+}
+.ruch__kursor--widoczny { opacity: 1; }

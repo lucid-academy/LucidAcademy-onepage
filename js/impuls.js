@@ -409,6 +409,8 @@
       for (const s of swiatla) s.nosnik.classList.toggle("swiatlo--zywe", zywe.includes(s));
     }, { threshold: [0, 0.05, 0.2, 0.4, 0.6, 0.8, 1] });
     for (const s of swiatla) obserwator.observe(s.nosnik.parentElement);
+    // Sygnał dla dodatków (np. js/ruch.js), że warstwy światła już są w ilustracjach
+    document.dispatchEvent(new CustomEvent("swiatla:gotowe"));
   }
 
   function owin(obraz, i) {
