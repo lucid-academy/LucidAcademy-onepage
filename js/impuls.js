@@ -8,6 +8,8 @@
    linia jest narysowana w całości i stoi.
    Geometrię liczymy tylko na starcie i po zmianie rozmiaru treści;
    pętla przewijania czyta wyłącznie gotową tablicę próbek.
+   Ilustracje żyją: nad laserowymi grafikami leży warstwa światła,
+   którą wystrzał węzła przechodzi falą, a w spoczynku wolno oddycha.
    ========================================================= */
 (() => {
   "use strict";
@@ -92,19 +94,27 @@
     return prostokaty;
   }
 
-  // Punkt wejścia z data-impuls="x% y%" na obrazie w ramce .hero__ilustracja.
-  // Liczymy z ramki (bez transformu paralaksy) i z object-fit: cover; skalę paralaksy dodajemy osobno.
-  function punktPnia(obraz, m) {
-    const ramka = obraz.parentElement.getBoundingClientRect();
-    if (!ramka.width || !obraz.naturalWidth) return null;
+  // Punkt z data-impuls="x% y%" (procenty obrazu) jako ułamki pudełka przy object-fit: cover
+  function punktWPudelku(obraz, szer, wys) {
     const [px, py] = obraz.dataset.impuls.split(/\s+/).map((v) => parseFloat(v) / 100);
-    const skala = Math.max(ramka.width / obraz.naturalWidth, ramka.height / obraz.naturalHeight);
-    const szer = obraz.naturalWidth * skala, wys = obraz.naturalHeight * skala;
+    if (!obraz.naturalWidth || !szer || !wys) return [px, py];
+    const skala = Math.max(szer / obraz.naturalWidth, wys / obraz.naturalHeight);
+    const w = obraz.naturalWidth * skala, h = obraz.naturalHeight * skala;
     const [ox, oy] = getComputedStyle(obraz).objectPosition.split(/\s+/).map((v) => parseFloat(v) / 100);
-    let x = ramka.left + (ramka.width - szer) * ox + px * szer;
-    let y = ramka.top + (ramka.height - wys) * oy + py * wys;
+    return [((szer - w) * ox + px * w) / szer, ((wys - h) * oy + py * h) / wys];
+  }
+
+  // Punkt wejścia w ramce .hero__ilustracja, liczony z ramki (bez transformu paralaksy);
+  // skalę paralaksy dodajemy osobno. Paralaksa siedzi na opakowaniu .swiatlo, jeśli jest.
+  function punktPnia(obraz, m) {
+    const nosnik = obraz.closest(".swiatlo") || obraz;
+    const ramka = nosnik.parentElement.getBoundingClientRect();
+    if (!ramka.width || !obraz.naturalWidth) return null;
+    const [fx, fy] = punktWPudelku(obraz, ramka.width, ramka.height);
+    let x = ramka.left + fx * ramka.width;
+    let y = ramka.top + fy * ramka.height;
     // Paralaksa w strona.js powiększa obraz o 8% względem środka ramki
-    if (obraz.dataset.parallax && !bezRuchu()) {
+    if (nosnik.dataset.parallax && !bezRuchu()) {
       const sx = ramka.left + ramka.width / 2, sy = ramka.top + ramka.height / 2;
       x = sx + (x - sx) * 1.08;
       y = sy + (y - sy) * 1.08;
@@ -121,6 +131,7 @@
   }
 
   function zmierz() {
+    ustawZrodlaFal();
     const m = main.getBoundingClientRect();
     const kontener = main.querySelector(".kontener");
     const stopka = document.querySelector(".stopka .etykieta__znak");
@@ -310,7 +321,7 @@
   let zegarSkoku = 0, skokTrwa = false;
 
   function wstrzymane() {
-    return document.hidden || bezRuchu() || korzen.classList.contains("siec-otwarta") || korzen.classList.contains("galeria-otwarta");
+    return document.hidden || bezRuchu() || ["siec-otwarta", "galeria-otwarta"].some((k) => korzen.classList.contains(k));
   }
 
   function zaplanujSkok() {
@@ -346,6 +357,152 @@
     for (const w of wezly) w.blysk = false;
     requestAnimationFrame(krok);
   }
+
+  // Pierwszy impuls po „włączeniu się” książki: od startu do pierwszego węzła albo do czoła
+  function impulsZPnia() {
+    if (!geo || skokTrwa || wstrzymane()) return;
+    const cel = Math.min(geo.dlugosc, Math.max(biezaceL, wezly[0].L));
+    skokTrwa = true;
+    iskra.classList.add("akson__iskra--widoczna");
+    const t0 = performance.now(), czas = Math.min(1800, Math.max(900, cel * 0.9));
+    function krok(teraz) {
+      const t = Math.min(1, (teraz - t0) / czas);
+      const e = t < 0.5 ? 2 * t * t : 1 - (2 - 2 * t) ** 2 / 2;
+      const [px, py] = punktNa(cel * e);
+      iskra.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+      if (t < 1 && !wstrzymane()) { requestAnimationFrame(krok); return; }
+      iskra.classList.remove("akson__iskra--widoczna");
+      skokTrwa = false;
+      zaplanujSkok();
+    }
+    requestAnimationFrame(krok);
+  }
+
+  /* ---------- Ilustracje żyją: warstwa światła nad laserowymi grafikami ---------- */
+  // Kopia ilustracji z tym samym src/srcset/sizes (bez drugiego pobrania) leży nad oryginałem
+  // w osobnej warstwie: czarne tło, na nim białe kształty światła (plama oddechu, pierścienie
+  // fal), a na wierzchu kopia w trybie multiply. Filtr kopii najpierw kontrastem zgniata
+  // granatowe tło do czerni, potem rozjaśnia linie, więc warstwa zawiera tylko „linie × światło”,
+  // a plus-lighter dodaje ją do oryginału bez rozjaśniania tła. Kształty animujemy wyłącznie
+  // przez transform i opacity: to liczy kompozytor, bez przerysowywania obrazu w każdej klatce
+  // (maska animowana zmiennymi CSS zmuszała do pełnej rasteryzacji ilustracji co klatkę).
+  const FALA = 1400;
+  const obslugaSwiatla = !!window.CSS?.supports?.("mix-blend-mode", "multiply");
+
+  let swiatla = [];
+
+  // Warstwy powstają po wczytaniu strony, w wolnej chwili: pierwszy render ich nie czeka
+  function utworzSwiatla() {
+    if (swiatla.length || !obslugaSwiatla) return;
+    swiatla = [...main.querySelectorAll("img[data-impuls]")].map(owin);
+    if (!swiatla.length) return;
+    ustawZrodlaFal();
+    document.dispatchEvent(new CustomEvent("paralaksa:odswiez"));
+    // Oddychają najwyżej dwie ilustracje, te najbardziej widoczne; reszta stoi
+    const obserwator = new IntersectionObserver((wpisy) => {
+      for (const w of wpisy) {
+        const s = swiatla.find((x) => x.nosnik.parentElement === w.target);
+        s.widoczny = w.isIntersecting ? w.intersectionRatio : 0;
+        if (s.czeka && s.widoczny > 0.2) falaSekcji(s);
+      }
+      const zywe = swiatla.filter((s) => s.widoczny > 0.05).sort((a, b) => b.widoczny - a.widoczny).slice(0, 2);
+      for (const s of swiatla) s.nosnik.classList.toggle("swiatlo--zywe", zywe.includes(s));
+    }, { threshold: [0, 0.05, 0.2, 0.4, 0.6, 0.8, 1] });
+    for (const s of swiatla) obserwator.observe(s.nosnik.parentElement);
+  }
+
+  function owin(obraz, i) {
+    const nosnik = document.createElement("div");
+    nosnik.className = "swiatlo";
+    // Paralaksa ma przesuwać oryginał i warstwę światła razem, więc przenosimy ją na opakowanie,
+    // razem z bieżącym przesunięciem, żeby obraz nie drgnął przed następną klatką paralaksy
+    if (obraz.dataset.parallax) {
+      nosnik.dataset.parallax = obraz.dataset.parallax;
+      nosnik.style.transform = obraz.style.transform;
+      delete obraz.dataset.parallax;
+      obraz.style.transform = "";
+    }
+    obraz.replaceWith(nosnik);
+    const warstwa = document.createElement("div");
+    warstwa.className = "swiatlo__warstwa";
+    warstwa.setAttribute("aria-hidden", "true");
+    const plama = document.createElement("span");
+    plama.className = "swiatlo__plama";
+    const kopia = obraz.cloneNode(false);
+    kopia.className = "swiatlo__kopia";
+    kopia.alt = "";
+    kopia.setAttribute("aria-hidden", "true");
+    // Kopia jest ozdobna: nigdy nie konkuruje z oryginałem o pierwsze wczytanie
+    kopia.removeAttribute("fetchpriority");
+    kopia.loading = "lazy";
+    kopia.removeAttribute("data-impuls");
+    warstwa.append(plama, kopia);
+    nosnik.append(obraz, warstwa);
+    // Leniwie wczytany obraz zna proporcje dopiero po load; od nich zależy kadr object-fit
+    if (!obraz.complete) obraz.addEventListener("load", ustawZrodlaFal, { once: true });
+    // Oddech 16–22 s na cykl, każda ilustracja w innej fazie, żeby nie pulsowały razem
+    nosnik.style.setProperty("--oddech-czas", `${(16 + (i * 2.7) % 6).toFixed(1)}s`);
+    nosnik.style.setProperty("--oddech-start", `${(-(i * 5.3) % 16).toFixed(1)}s`);
+    return { nosnik, obraz, warstwa, kopia, sekcja: nosnik.closest("section")?.id, widoczny: 0, czeka: false };
+  }
+
+  const poWczytaniu = () => (window.requestIdleCallback ? requestIdleCallback(utworzSwiatla, { timeout: 1500 }) : setTimeout(utworzSwiatla, 200));
+  if (document.readyState === "complete") poWczytaniu();
+  else window.addEventListener("load", poWczytaniu, { once: true });
+
+  // Środek fal w punkcie wejścia; zasięg pierścienia to 1,24 × odległość do najdalszego rogu,
+  // więc grzbiet fali (96% promienia) kończy przy ok. 120% tej odległości
+  function ustawZrodlaFal() {
+    for (const s of swiatla) {
+      const w = s.nosnik.offsetWidth, h = s.nosnik.offsetHeight;
+      const [fx, fy] = punktWPudelku(s.obraz, w, h);
+      const zasieg = 1.24 * Math.hypot(Math.max(fx, 1 - fx) * w, Math.max(fy, 1 - fy) * h);
+      s.warstwa.style.setProperty("--zrodlo-x", `${(fx * 100).toFixed(2)}%`);
+      s.warstwa.style.setProperty("--zrodlo-y", `${(fy * 100).toFixed(2)}%`);
+      s.warstwa.style.setProperty("--zasieg", `${Math.ceil(zasieg)}px`);
+    }
+  }
+
+  // Pierścień (nie koło) od punktu wejścia do ok. 120%, z wygaszeniem; jeden przebieg i znika
+  function fala(s, opoznienie = 0) {
+    if (bezRuchu()) return;
+    const pierscien = document.createElement("span");
+    pierscien.className = "swiatlo__fala";
+    s.warstwa.insertBefore(pierscien, s.kopia);
+    const animacja = pierscien.animate(
+      [
+        { transform: "scale(.02)", opacity: 0 },
+        { transform: "scale(.12)", opacity: 1, offset: 0.12 },
+        { transform: "scale(.74)", opacity: 0.7, offset: 0.72 },
+        { transform: "scale(1)", opacity: 0 },
+      ],
+      { duration: FALA, delay: opoznienie, easing: "cubic-bezier(.3, .55, .45, 1)", fill: "backwards" },
+    );
+    animacja.onfinish = animacja.oncancel = () => pierscien.remove();
+  }
+
+  function falaSekcji(s, opoznienie = 0) {
+    s.czeka = false;
+    // Wieża w kontakcie nadaje: trzy koncentryczne fale, jak sygnał nad miastem
+    if (s.sekcja === "kontakt") [0, 420, 840].forEach((o) => fala(s, o));
+    else fala(s, opoznienie);
+  }
+
+  // Wystrzał węzła: fala w ilustracjach tej sekcji; niewidoczna ilustracja dostaje ją przy wejściu w kadr
+  document.addEventListener("impuls:wezel", (z) => {
+    swiatla.filter((s) => s.sekcja === z.detail.sekcja).forEach((s, i) => {
+      if (s.widoczny > 0.2) falaSekcji(s, i * 180);
+      else s.czeka = true;
+    });
+  });
+
+  // Hero na starcie: po scramble książka „się włącza”, a zaraz potem z pnia wychodzi impuls
+  document.addEventListener("scramble:koniec", () => {
+    utworzSwiatla();
+    const hero = swiatla.find((s) => s.sekcja === "hero");
+    if (hero) fala(hero);
+    setTimeout(impulsZPnia, hero ? 900 : 0);
+  });
 
   /* ---------- Stan zależny od ustawień ruchu ---------- */
 

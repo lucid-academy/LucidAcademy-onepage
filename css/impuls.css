@@ -1,5 +1,5 @@
 /* =========================================================
-   Lucid Academy — akson (js/impuls.js)
+   Lucid Academy — akson i warstwa światła ilustracji (js/impuls.js)
    Osobny plik, żeby całość dało się wycofać jednym ruchem.
    Światło punktowo: cyjan tylko na czole impulsu i przy wystrzale.
    ========================================================= */
@@ -75,11 +75,107 @@
 .akson-bez-ruchu .akson__ogon,
 .akson-bez-ruchu .akson__iskra { display: none; }
 
+/* =========================================================
+   Ilustracje żyją: warstwa światła nad laserowymi grafikami
+   Warstwa (js/impuls.js) to czarne tło, białe kształty światła
+   i kopia obrazu w trybie multiply: zostaje tylko „linie × światło”.
+   Czerń i biel są tu wartościami maski (0 i 1), nie kolorami palety.
+   Filtr kopii najpierw kontrastem zgniata granatowe tło do czerni,
+   potem rozjaśnia linie; plus-lighter dodaje warstwę do oryginału,
+   więc tło się nie rozjaśnia. Kształty ruszają się wyłącznie przez
+   transform i opacity, czyli w kompozytorze, bez przerysowywania.
+   ========================================================= */
+
+/* Opakowanie oryginału i warstwy: paralaksa (strona.js) przesuwa je razem */
+.swiatlo {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+
+.swiatlo__warstwa {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: #000;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  mix-blend-mode: plus-lighter;
+  /* Warstwa dochodzi po wczytaniu strony: wchodzi łagodnie, bez skoku jasności */
+  animation: swiatlo-wejscie 1.2s ease-out both;
+}
+@keyframes swiatlo-wejscie { from { opacity: 0; } }
+
+.swiatlo__warstwa > img.swiatlo__kopia {
+  position: absolute;
+  inset: 0;
+  filter: contrast(2.8) brightness(1.2) saturate(1.3);
+  mix-blend-mode: multiply;
+}
+
+/* Oddech: miękka plama (krycie .25) wolno wędruje po ilustracji; tylko transform */
+.swiatlo__plama {
+  position: absolute;
+  top: 6%;
+  left: 16%;
+  width: 68%;
+  height: 88%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / .25), transparent);
+  animation: swiatlo-oddech var(--oddech-czas, 19s) ease-in-out var(--oddech-start, 0s) infinite paused;
+}
+
+/* Oddychają tylko ilustracje oznaczone przez IntersectionObserver (najwyżej dwie naraz) */
+.swiatlo--zywe .swiatlo__plama { animation-play-state: running; }
+:is(.siec-otwarta, .galeria-otwarta) .swiatlo__plama { animation-play-state: paused; }
+
+/* Trasa środka plamy w procentach ilustracji: 26/34 → 68/28 → 74/66 → 32/70,
+   przeliczona na przesunięcie względem własnego rozmiaru plamy (68% × 88%) */
+@keyframes swiatlo-oddech {
+  0%, 100% { transform: translate(-35.3%, -18.2%); }
+  25% { transform: translate(26.5%, -25%); }
+  50% { transform: translate(35.3%, 18.2%); }
+  75% { transform: translate(-26.5%, 22.7%); }
+}
+
+/* Fala: pierścień z przezroczystym środkiem, miękką krawędzią wewnętrzną i ostrym czołem;
+   rośnie przez scale od punktu wejścia (zmienne ustawia js/impuls.js) */
+.swiatlo__fala {
+  position: absolute;
+  top: var(--zrodlo-y, 50%);
+  left: var(--zrodlo-x, 50%);
+  width: calc(var(--zasieg, 600px) * 2);
+  height: calc(var(--zasieg, 600px) * 2);
+  margin: calc(var(--zasieg, 600px) * -1) 0 0 calc(var(--zasieg, 600px) * -1);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, transparent 86%, #fff 96%, transparent);
+  opacity: 0;
+}
+
+/* Oferta: wygaszenie obrazu w kartę przechodzi z <img> na opakowanie, żeby objęło też światło */
+.obszar__obraz .swiatlo {
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+          mask-image: linear-gradient(180deg, #000 55%, transparent);
+}
+.obszar__obraz .swiatlo img {
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+@media (min-width: 900px) {
+  .obszar--wiodacy .obszar__obraz .swiatlo {
+    -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent);
+            mask-image: linear-gradient(90deg, #000 55%, transparent);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .etykieta,
   .etykieta .etykieta__znak { transition: none; }
+  /* Bez warstwy światła i bez fal */
+  .swiatlo__warstwa { display: none; }
 }
 
 @media print {
-  .akson { display: none; }
+  .akson,
+  .swiatlo__warstwa { display: none; }
 }
