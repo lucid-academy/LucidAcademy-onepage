@@ -40,10 +40,13 @@
     <link rel="preload" href="assets/fonty/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonty/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="css/strona.css" />
+    <link rel="stylesheet" href="css/impuls.css" />
 
     <!-- Klasa .js włącza animacje wejścia; bez JavaScriptu wszystko jest od razu widoczne. -->
     <script>document.documentElement.classList.add("js");</script>
     <script src="js/strona.js" defer></script>
+    <!-- Akson: impuls przez sekcje (osobny plik, da się wycofać jednym ruchem) -->
+    <script src="js/impuls.js" defer></script>
   </head>
   <body>
     <a class="pomin" href="#tresc">Przejdź do treści</a>
@@ -106,6 +109,7 @@
             fetchpriority="high"
             decoding="async"
             data-parallax="0.12"
+            data-impuls="50% 84%"
           />
         </div>
 
