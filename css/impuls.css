@@ -127,7 +127,7 @@
 
 /* Oddychają tylko ilustracje oznaczone przez IntersectionObserver (najwyżej dwie naraz) */
 .swiatlo--zywe .swiatlo__plama { animation-play-state: running; }
-:is(.siec-otwarta, .galeria-otwarta) .swiatlo__plama { animation-play-state: paused; }
+:is(.siec-otwarta, .galeria-otwarta, .animacje-wstrzymane) .swiatlo__plama { animation-play-state: paused; }
 
 /* Trasa środka plamy w procentach ilustracji: 26/34 → 68/28 → 74/66 → 32/70,
    przeliczona na przesunięcie względem własnego rozmiaru plamy (68% × 88%) */
@@ -168,14 +168,47 @@
   }
 }
 
+/* ---------- Pauza w stopce: ruch, który startuje sam ---------- */
+
+.pauza-animacji {
+  margin-left: auto; /* razem z „Wróć na górę” po prawej */
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+/* Ikona: dwie kreski (ruch trwa) albo trójkąt (ruch wstrzymany) */
+.pauza-animacji__ikona {
+  flex: none;
+  width: 9px;
+  height: 11px;
+  border-inline: 3px solid currentColor;
+}
+.pauza-animacji[aria-pressed="true"] { color: var(--ink); }
+.pauza-animacji[aria-pressed="true"] .pauza-animacji__ikona {
+  width: 0;
+  height: 0;
+  border-block: 6px solid transparent;
+  border-right: 0;
+  border-left: 10px solid currentColor;
+}
+
+/* Pauza obejmuje też ruch, który był wcześniej: miganie kursora i puls ikony trybu sieci */
+.animacje-wstrzymane .etykieta.aktywna .kursor,
+.animacje-wstrzymane .tryb-sieci__ikona circle { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .etykieta,
   .etykieta .etykieta__znak { transition: none; }
-  /* Bez warstwy światła i bez fal */
-  .swiatlo__warstwa { display: none; }
+  /* Bez warstwy światła i bez fal; przycisk pauzy nie ma czego wstrzymywać */
+  .swiatlo__warstwa,
+  .pauza-animacji { display: none; }
 }
 
 @media print {
   .akson,
-  .swiatlo__warstwa { display: none; }
+  .swiatlo__warstwa,
+  .pauza-animacji { display: none; }
 }

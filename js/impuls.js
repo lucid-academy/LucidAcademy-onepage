@@ -321,7 +321,7 @@
   let zegarSkoku = 0, skokTrwa = false;
 
   function wstrzymane() {
-    return document.hidden || bezRuchu() || ["siec-otwarta", "galeria-otwarta"].some((k) => korzen.classList.contains(k));
+    return document.hidden || bezRuchu() || ["siec-otwarta", "galeria-otwarta", "animacje-wstrzymane"].some((k) => korzen.classList.contains(k));
   }
 
   function zaplanujSkok() {
@@ -465,7 +465,7 @@
 
   // Pierścień (nie koło) od punktu wejścia do ok. 120%, z wygaszeniem; jeden przebieg i znika
   function fala(s, opoznienie = 0) {
-    if (bezRuchu()) return;
+    if (bezRuchu() || korzen.classList.contains("animacje-wstrzymane")) return;
     const pierscien = document.createElement("span");
     pierscien.className = "swiatlo__fala";
     s.warstwa.insertBefore(pierscien, s.kopia);
@@ -503,6 +503,25 @@
     if (hero) fala(hero);
     setTimeout(impulsZPnia, hero ? 900 : 0);
   });
+
+  /* ---------- Pauza: ruch, który startuje sam (oddech, impuls skokowy), da się zatrzymać ---------- */
+
+  const KLUCZ_PAUZY = "lucid:animacje-wstrzymane";
+  const czytaj = () => { try { return localStorage.getItem(KLUCZ_PAUZY) === "1"; } catch { return false; } };
+  const zapisz = (v) => { try { if (v) localStorage.setItem(KLUCZ_PAUZY, "1"); else localStorage.removeItem(KLUCZ_PAUZY); } catch { /* bez pamięci też działa */ } };
+  const pauza = document.createElement("button");
+  pauza.type = "button";
+  pauza.className = "link-cichy pauza-animacji";
+  pauza.append(Object.assign(document.createElement("span"), { className: "pauza-animacji__ikona" }), "Wstrzymaj animacje");
+  pauza.firstChild.setAttribute("aria-hidden", "true");
+  function ustawPauze(v) {
+    korzen.classList.toggle("animacje-wstrzymane", v);
+    pauza.setAttribute("aria-pressed", String(v));
+    if (!v) zaplanujSkok();
+  }
+  pauza.addEventListener("click", () => { const v = pauza.getAttribute("aria-pressed") !== "true"; ustawPauze(v); zapisz(v); });
+  document.querySelector(".stopka__wnetrze .link-cichy")?.before(pauza);
+  ustawPauze(czytaj());
 
   /* ---------- Stan zależny od ustawień ruchu ---------- */
 
