@@ -153,6 +153,8 @@
       } else {
         el.textContent = docelowe;
         el.style.width = "";
+        // Sygnał dla js/impuls.js: po scramble książka w hero „się włącza”
+        document.dispatchEvent(new CustomEvent("scramble:koniec"));
       }
     }
     requestAnimationFrame(klatka);
@@ -169,7 +171,7 @@
 
   /* ---------- Parallax ilustracji ---------- */
 
-  const paralaksy = [...document.querySelectorAll("[data-parallax]")];
+  let paralaksy = [...document.querySelectorAll("[data-parallax]")];
   let paralaksaZaplanowana = false;
 
   function przesunIlustracje() {
@@ -193,6 +195,11 @@
     };
     window.addEventListener("scroll", zaplanuj, { passive: true });
     window.addEventListener("resize", zaplanuj, { passive: true });
+    // js/impuls.js owija ilustracje w warstwę światła i przenosi data-parallax na opakowanie
+    document.addEventListener("paralaksa:odswiez", () => {
+      paralaksy = [...document.querySelectorAll("[data-parallax]")];
+      zaplanuj();
+    });
     ograniczonyRuch.addEventListener("change", () => {
       if (bezRuchu()) paralaksy.forEach((el) => { el.style.transform = ""; });
       else zaplanuj();
