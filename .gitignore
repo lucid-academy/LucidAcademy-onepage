@@ -3,3 +3,6 @@ narzedzia/zrodla-prywatne.json
 # Surowe PNG ze skryptu zrzutów (--podglad)
 narzedzia/podglad/
 node_modules/
+# Dane i wynik generatora mapy (narzedzia/mapa.py)
+narzedzia/mapa-dane
+narzedzia/mapa-wynik/
