@@ -1,7 +1,7 @@
 /* =========================================================
    Lucid Academy — nowa strona
    Kolory, typografia i tło według wykładu „Alignment” (IX 2026),
-   ilustracje i logo z obecnej strony.
+   ilustracje z obecnej strony, logo z plików fundacji (sygnet 3D i neonowy napis).
    ========================================================= */
 
 /* ---------- Fonty: lokalnie, woff2, podzbiory latin + latin-ext ---------- */
@@ -321,14 +321,14 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   gap: 24px;
 }
 
-/* Logo: logo-nav.webp to widoczny znak z logo-lockup.png (574 × 191 px, bez
-   przezroczystego marginesu) zmniejszony do 3× rozmiaru w pasku. Kształt i kolor bez zmian. */
+/* Logo: logo-nav.webp to poziomy układ logo fundacji, sygnet 3D obok neonowego napisu
+   (oba z plików fundacji, kształt i kolor bez zmian), 478 × 156 px, czyli 3× rozmiaru w pasku. */
 .logo {
-  --skala: .2;
+  --skala: .282;
   flex: none;
   display: block;
-  width: calc(574px * var(--skala));
-  height: calc(191px * var(--skala));
+  width: calc(478px * var(--skala));
+  height: calc(156px * var(--skala));
   border-radius: 2px;
 }
 .logo img {
@@ -336,7 +336,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   height: 100%;
 }
 @media (min-width: 900px) {
-  .logo { --skala: .225; }
+  .logo { --skala: .333; }
 }
 
 .menu {
