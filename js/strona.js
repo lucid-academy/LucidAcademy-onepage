@@ -480,6 +480,10 @@
 
   /* ---------- Tryb sieci (pilot wersji 3): moduł wczytywany dopiero na żądanie ---------- */
 
+  // Na razie schowany: przyciski zostają ukryte, a tryb otwiera tylko bezpośredni link ?tryb=siec.
+  // Przestawienie na true odsłania oba wejścia (nawigacja i stopka) razem z wczytywaniem zawczasu.
+  const POKAZ_TRYB_SIECI = false;
+
   const przyciskSieci = document.querySelector(".tryb-sieci");
   // Drugie wejście na końcu aksonu w stopce: wtedy pierwszy impuls w sieci wychodzi z pnia mózgu
   const przyciskStopki = document.querySelector(".stopka__siec");
@@ -510,26 +514,26 @@
   }
 
   if (przyciskSieci && typeof HTMLDialogElement === "function") {
-    przyciskSieci.hidden = false;
     przyciskSieci.addEventListener("click", () => otworzSiec(przyciskSieci));
-    if (przyciskStopki) {
-      przyciskStopki.hidden = false;
-      przyciskStopki.addEventListener("click", () => otworzSiec(przyciskStopki, { zeStopki: true }));
+    przyciskStopki?.addEventListener("click", () => otworzSiec(przyciskStopki, { zeStopki: true }));
+    if (POKAZ_TRYB_SIECI) {
+      przyciskSieci.hidden = false;
+      if (przyciskStopki) przyciskStopki.hidden = false;
+      // Zamiar: wskaźnik albo fokus na przycisku, a przycisk w stopce także wtedy, gdy wejdzie w kadr
+      for (const przycisk of [przyciskSieci, przyciskStopki]) {
+        przycisk?.addEventListener("pointerenter", wczytajZawczasu, { once: true });
+        przycisk?.addEventListener("focus", wczytajZawczasu, { once: true });
+      }
+      if (przyciskStopki && "IntersectionObserver" in window) {
+        const obserwatorStopki = new IntersectionObserver((wpisy) => {
+          if (!wpisy.some((w) => w.isIntersecting)) return;
+          obserwatorStopki.disconnect();
+          wczytajZawczasu();
+        });
+        obserwatorStopki.observe(przyciskStopki);
+      }
     }
-    // Zamiar: wskaźnik albo fokus na przycisku, a przycisk w stopce także wtedy, gdy wejdzie w kadr
-    for (const przycisk of [przyciskSieci, przyciskStopki]) {
-      przycisk?.addEventListener("pointerenter", wczytajZawczasu, { once: true });
-      przycisk?.addEventListener("focus", wczytajZawczasu, { once: true });
-    }
-    if (przyciskStopki && "IntersectionObserver" in window) {
-      const obserwatorStopki = new IntersectionObserver((wpisy) => {
-        if (!wpisy.some((w) => w.isIntersecting)) return;
-        obserwatorStopki.disconnect();
-        wczytajZawczasu();
-      });
-      obserwatorStopki.observe(przyciskStopki);
-    }
-    // Bezpośredni link do trybu: ?tryb=siec
+    // Bezpośredni link do trybu: ?tryb=siec (działa także wtedy, gdy przyciski są schowane)
     if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec(przyciskSieci);
   }
 
