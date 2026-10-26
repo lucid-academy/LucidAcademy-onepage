@@ -68,6 +68,9 @@
   /* Pochodne. --dim ma na tle tylko 4,3:1, więc nie służy do tekstu poniżej 24 px. */
   --violet-glebia: #7C3AED;  /* kolor bazowy --surface; jasny tekst na nim ma 5,1:1 */
   --linia-mocna: rgba(168, 85, 247, .55);
+  /* Jasne odcienie akcentów na tekst znaczników (co najmniej 5,5:1 także na najjaśniejszej poświacie tła) */
+  --violet-jasny: #C9A6FF;   /* ten sam co w gradiencie słowa-klucza */
+  --magenta-jasna: #F791CA;  /* magenta rozjaśniona bielą */
   --margines: clamp(16px, 4.5vw, 48px);
   --szerokosc: 1240px;
   --nav-h: 64px;
@@ -208,7 +211,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 .slowo-klucz__tekst {
   display: inline-block;
   padding-right: .04em;
-  background: linear-gradient(100deg, #FFFFFF 0%, #C9A6FF 48%, #6FE9F3 100%);
+  background: linear-gradient(100deg, #FFFFFF 0%, var(--violet-jasny) 48%, #6FE9F3 100%);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
@@ -791,7 +794,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   background: var(--cyan);
   box-shadow: 0 0 10px rgba(61, 227, 240, .6);
 }
-/* Magenta tylko tutaj: trzeci akcent, drobny */
+/* Magenta tylko jako trzeci akcent, drobny: tutaj i w trzecim znaczniku zestawu */
 .kafel__status--na-zyczenie::before {
   background: var(--magenta);
   box-shadow: 0 0 10px rgba(240, 54, 159, .55);
@@ -815,10 +818,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 /* ---------- Wspólne: etykiety mono, podtytuły, karty ---------- */
 
-.filar__numer,
 .zajecia__naglowek,
-.obszar__numer,
-.wyklad__rodzaj,
 .instytucje__nazwa,
 .osoba__rola,
 .kontakt__etykieta,
@@ -826,6 +826,36 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   color: var(--muted);
   font: 400 1rem/1.4 var(--mono);
   letter-spacing: 0;
+}
+
+/* Znacznik: nieklikalna pigułka jak na planszach z zajęć (filar, wątek, obszar, rodzaj nagrania).
+   Kolor rozróżnia pozycje w zestawie: fiolet, cyjan, magenta jako trzeci. Bez hovera i bez
+   kursora rączki, mniejszy od przycisków filtra, żeby nie udawał przycisku. */
+.znacznik {
+  --znacznik-kolor: var(--violet-jasny);
+  --znacznik-tlo: rgba(168, 85, 247, .12);
+  --znacznik-linia: rgba(168, 85, 247, .36);
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: .28em .85em;
+  border: 1px solid var(--znacznik-linia);
+  border-radius: 999px;
+  background: var(--znacznik-tlo);
+  color: var(--znacznik-kolor);
+  font: 500 1rem/1.3 var(--mono);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.znacznik--cyjan {
+  --znacznik-kolor: var(--cyan);
+  --znacznik-tlo: rgba(61, 227, 240, .08);
+  --znacznik-linia: rgba(61, 227, 240, .32);
+}
+.znacznik--magenta {
+  --znacznik-kolor: var(--magenta-jasna);
+  --znacznik-tlo: rgba(240, 54, 159, .10);
+  --znacznik-linia: rgba(240, 54, 159, .38);
 }
 
 .podtytul {
@@ -933,16 +963,15 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 .zajecia__lista li {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 2px 24px;
+  gap: 8px 24px;
   padding-block: 14px;
   border-top: 1px solid var(--line);
 }
 @media (min-width: 600px) {
-  .zajecia__lista li { grid-template-columns: minmax(0, 8rem) minmax(0, 1fr); }
-}
-.zajecia__nazwa {
-  color: var(--ink);
-  font-weight: 600;
+  .zajecia__lista li {
+    grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+    align-items: baseline;
+  }
 }
 
 /* ---------- 02 · Uniwersytet: pasek trzech liczb ---------- */
