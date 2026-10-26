@@ -64,7 +64,7 @@
   .akson__ogon { stroke-width: 2; }
 }
 
-/* Wystrzał węzła: etykieta sekcji na chwilę jaśnieje (klasa .aktywna z kursorem zostaje nietknięta) */
+/* Wystrzał węzła: etykieta sekcji na chwilę jaśnieje */
 .etykieta { transition: color .5s ease-out; }
 .etykieta .etykieta__znak { transition: color .5s ease-out, text-shadow .5s ease-out; }
 .etykieta--impuls { color: var(--ink); }
@@ -210,8 +210,7 @@
   border-left: 10px solid currentColor;
 }
 
-/* Pauza obejmuje też ruch, który był wcześniej: miganie kursora i puls ikony trybu sieci */
-.animacje-wstrzymane .etykieta.aktywna .kursor,
+/* Pauza obejmuje też ruch, który był wcześniej: puls ikony trybu sieci */
 .animacje-wstrzymane .tryb-sieci__ikona circle { animation: none; }
 
 @media (prefers-reduced-motion: reduce) {

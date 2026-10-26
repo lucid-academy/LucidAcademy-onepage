@@ -140,7 +140,7 @@ function znakZachety() {
   return znak;
 }
 
-// Tekst elementu bez części ukrytych dla czytników (np. kursor, „>”); twarde spacje zostają
+// Tekst elementu bez części ukrytych dla czytników (np. „>”); twarde spacje zostają
 function tekstWidoczny(el) {
   if (!el) return "";
   const kopia = el.cloneNode(true);
@@ -383,11 +383,9 @@ function zbudujScene({ kafle, galeria }) {
 
   const hud = utworz("div", "siec__hud");
   const znak = utworz("p", "siec__znak");
-  const kursor = utworz("span", "kursor");
-  kursor.setAttribute("aria-hidden", "true");
   const marka = utworz("span", "siec__marka");
   marka.append(" lucid academy ", utworz("span", "siec__ukosnik", "//"));
-  znak.append(znakZachety(), marka, " sieć", kursor, " ", utworz("span", "siec__pilot", "pilot v3"));
+  znak.append(znakZachety(), marka, " sieć ", utworz("span", "siec__pilot", "pilot v3"));
   const licznik = utworz("p", "siec__licznik");
   licznik.setAttribute("aria-hidden", "true");
   // Ruch, który startuje sam (dryf kamery, impulsy), da się wstrzymać; przeloty po kliknięciu zostają

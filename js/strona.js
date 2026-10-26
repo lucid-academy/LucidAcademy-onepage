@@ -1,8 +1,8 @@
 /* =========================================================
    Lucid Academy — nowa strona: zachowania
    Bez bibliotek i bez zewnętrznych skryptów.
-   Przy prefers-reduced-motion: bez scramble, bez parallaxu,
-   bez animacji wejścia i bez migania kursora.
+   Przy prefers-reduced-motion: bez scramble, bez parallaxu
+   i bez animacji wejścia.
    ========================================================= */
 (() => {
   "use strict";
@@ -93,7 +93,7 @@
     window.addEventListener("scroll", sprawdzNaglowek, { passive: true });
   }
 
-  /* ---------- Sekcja w widoku: aktywny link i migający kursor ---------- */
+  /* ---------- Sekcja w widoku: aktywny link w menu ---------- */
 
   const linkiMenu = new Map();
   menu?.querySelectorAll('a[href^="#"]').forEach((a) => {
@@ -104,7 +104,6 @@
     // Pas na środku ekranu: sekcja, która go przecina, jest „w widoku”.
     const obserwatorSekcji = new IntersectionObserver((wpisy) => {
       for (const wpis of wpisy) {
-        wpis.target.querySelector(".etykieta")?.classList.toggle("aktywna", wpis.isIntersecting);
         if (!wpis.isIntersecting) continue;
         linkiMenu.forEach((link) => {
           link.classList.remove("aktywny");
