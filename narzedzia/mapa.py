@@ -11,9 +11,10 @@ Użycie:
      ne_10m_admin_0_boundary_lines_land, ne_10m_rivers_lake_centerlines, np.
      https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_coastline.geojson
   3. python3 narzedzia/mapa.py
-  4. narzedzia/mapa-wynik/mapa.svg wkleić w miejsce <svg class="mapa__tlo">…</svg>,
-     a --x i --y miast przepisać z narzedzia/mapa-wynik/miasta.json. Stronę podpisu
-     (miasto--w-prawo, --w-lewo, --nad-w-prawo, --pod-w-lewo) dobiera się ręcznie.
+  4. narzedzia/mapa-wynik/mapa.svg wkleić w miejsce <svg class="mapa__tlo">…</svg> (w oknie
+     <div class="mapa__odslona">, które odsłania mapę przy przewijaniu),
+     a --x, --y i --opoznienie miast przepisać z narzedzia/mapa-wynik/miasta.json. Stronę
+     podpisu (miasto--w-prawo, --w-lewo, --nad-w-prawo, --pod-w-lewo) dobiera się ręcznie.
 
 Nowe miasto: dopisać do MIASTA (współrzędne z OpenStreetMap, Nominatim). Jeśli leży poza
 obecną ramką, poszerzyć ją w RAMKA i zmienić proporcje .mapa w css/strona.css.
@@ -43,6 +44,10 @@ MIASTA = {
     "Ciechocinek": (52.88255, 18.79069),
 }
 SZEROKOSC_SVG = 1000.0
+# Odsłanianie mapy z zachodu na wschód: czas i krzywa przejścia okna z reguły
+# .efekty-przewijania .mapa--odslonieta .mapa__odslona w css/strona.css. Zmiana tam = zmiana tu.
+ODSLANIANIE_MS = 1600
+ODSLANIANIE_KRZYWA = (.5, 0, .3, 1)
 ODSTEPY_KROPEK = {"gesto": 12, "rzadko": 20}  # te same wartości co stroke-dasharray w wyniku
 
 T = Transformer.from_crs("EPSG:4326", "EPSG:2180", always_xy=True)
@@ -84,6 +89,18 @@ def liczba(v):
     s = s.replace("-0.", "-.") if s.startswith("-0.") else s
     s = s[1:] if s.startswith("0.") else s
     return "0" if s in ("", "-0", "-") else s
+
+
+def opoznienie_ms(x_procent):
+    """Chwila, w której krawędź odsłaniania dochodzi do x (cubic-bezier odwrócony bisekcją),
+    zaokrąglona do 10 ms: miasto pojawia się razem z mapą pod nim."""
+    p1x, p1y, p2x, p2y = ODSLANIANIE_KRZYWA
+    krzywa = lambda t, a, b: 3 * a * t * (1 - t) ** 2 + 3 * b * t * t * (1 - t) + t ** 3
+    lo, hi = 0.0, 1.0
+    for _ in range(60):
+        t = (lo + hi) / 2
+        lo, hi = (t, hi) if krzywa(t, p1y, p2y) < x_procent / 100 else (lo, t)
+    return int(krzywa(lo, p1x, p2x) * ODSLANIANIE_MS / 10 + 0.5) * 10
 
 
 def do_svg(x, y):
@@ -175,7 +192,7 @@ for nazwa, odstep in ODSTEPY_KROPEK.items():
                   <path class="mapa__polska" d="{pl}" />
                 </g>''')
 
-svg = f'''<svg class="mapa__tlo" viewBox="0 0 {liczba(SZEROKOSC_SVG)} {liczba(WYSOKOSC_SVG)}" aria-hidden="true" focusable="false" data-wejscie>
+svg = f'''<svg class="mapa__tlo" viewBox="0 0 {liczba(SZEROKOSC_SVG)} {liczba(WYSOKOSC_SVG)}" aria-hidden="true" focusable="false">
 {chr(10).join(grupy)}
                 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path class="mapa__rzeka" d="{sciezka(rzeki, 300)}" vector-effect="non-scaling-stroke" />
@@ -188,8 +205,10 @@ WYNIK.mkdir(exist_ok=True)
 (WYNIK / "mapa.svg").write_text(svg, encoding="utf-8")
 miasta = {n: {"x": round((x - x0) / W_M * 100, 2), "y": round((y1 - y) / H_M * 100, 2), "lat": MIASTA[n][0], "lon": MIASTA[n][1]}
           for n, (x, y) in xy.items()}
+for m in miasta.values():
+    m["opoznienie_ms"] = opoznienie_ms(m["x"])
 (WYNIK / "miasta.json").write_text(json.dumps({"viewBox": [SZEROKOSC_SVG, WYSOKOSC_SVG], "km": [round(W_M / 1000), round(H_M / 1000)], "miasta": miasta},
                                               ensure_ascii=False, indent=1), encoding="utf-8")
 print(f"ramka {W_M / 1000:.0f} × {H_M / 1000:.0f} km, viewBox 0 0 {liczba(SZEROKOSC_SVG)} {liczba(WYSOKOSC_SVG)}, SVG {len(svg)} znaków")
 for n, m in miasta.items():
-    print(f"  {n:12} --x: {m['x']:.2f}%; --y: {m['y']:.2f}%")
+    print(f"  {n:12} --x: {m['x']:.2f}%; --y: {m['y']:.2f}%; --opoznienie: {m['opoznienie_ms']}ms")

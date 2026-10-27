@@ -102,8 +102,10 @@
 
   if (maObserwatora) {
     // Pas na środku ekranu: sekcja, która go przecina, jest „w widoku”.
+    // Jej etykieta dostaje świecący znak >, także sekcja spoza menu (Gdzie już byliśmy).
     const obserwatorSekcji = new IntersectionObserver((wpisy) => {
       for (const wpis of wpisy) {
+        wpis.target.querySelector(".etykieta")?.classList.toggle("etykieta--aktywna", wpis.isIntersecting);
         if (!wpis.isIntersecting) continue;
         linkiMenu.forEach((link) => {
           link.classList.remove("aktywny");
