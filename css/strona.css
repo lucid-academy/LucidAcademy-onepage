@@ -1115,26 +1115,78 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   border-block: 1px solid var(--line);
 }
 
-/* Na telefonie liczba i opis w jednym wierszu („128 ankiet”), wyżej — w kolumnach */
+/* Na telefonie wykres po lewej w kolumnie stałej szerokości (liczby stoją w jednej linii),
+   liczba i opis obok; wyżej wykres nad liczbą, w kolumnach. Bez JavaScriptu kropek i siatki
+   nie ma, więc wykresy znikają i zostaje jedna kolumna z liczbami. */
 .liczba {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 14px;
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  grid-template-areas: "wykres wartosc" "wykres opis";
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 4px;
   padding-block: clamp(18px, 2.4vw, 32px);
 }
 .liczba + .liczba { border-top: 1px solid var(--line); }
+.liczba__wykres { grid-area: wykres; justify-self: center; }
+html:not(.js) .liczba { grid-template-columns: minmax(0, 1fr); grid-template-areas: "wartosc" "opis"; }
+html:not(.js) .liczba__wykres { display: none; }
+.liczba__wartosc { grid-area: wartosc; align-self: end; }
+.liczba__opis { grid-area: opis; align-self: start; }
 
 @media (min-width: 720px) {
   .liczby__lista { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .liczba {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+    /* Wiersz wykresu tej samej wysokości w trzech kolumnach: liczby i opisy w jednej linii */
+    grid-template-rows: 80px auto auto;
+    grid-template-areas: "wykres" "wartosc" "opis";
+    align-content: start;
+    justify-items: start;
+    row-gap: 10px;
     padding-inline: clamp(20px, 3vw, 44px);
   }
+  .liczba__wykres { justify-self: start; margin-bottom: 10px; }
   .liczba:first-child { padding-left: 0; }
   .liczba + .liczba { border-top: 0; border-left: 1px solid var(--line); }
+}
+
+/* Wykresy przy liczbach, w kolorach trójki akcentów; zgaszone pole to ten sam kolor
+   w małym kryciu. Wysokość ta sama w trzech kolumnach. */
+.wykres-kropki,
+.wykres-siatka { display: grid; }
+.wykres-kropki { grid-template-columns: repeat(16, 4px); gap: 3px; }
+.wykres-siatka { grid-template-columns: repeat(10, 5px); gap: 2px; }
+.wykres-kropki > i,
+.wykres-siatka > i {
+  aspect-ratio: 1;
+  transition: background-color .3s ease, box-shadow .3s ease;
+}
+.wykres-kropki > i { border-radius: 50%; background: rgba(168, 85, 247, .18); }
+.wykres-kropki > i.zapalone { background: var(--violet-jasny); box-shadow: 0 0 6px rgba(168, 85, 247, .7); }
+.wykres-siatka > i { border-radius: 1px; background: rgba(240, 54, 159, .16); }
+.wykres-siatka > i.zapalone { background: var(--magenta); box-shadow: 0 0 6px rgba(240, 54, 159, .55); }
+
+/* Pierścień: łuk to --udzial ze 100 (pathLength), start u góry */
+.wykres-pierscien {
+  width: 56px;
+  height: 56px;
+  overflow: visible;
+  rotate: -90deg;
+}
+.wykres-pierscien circle { fill: none; stroke-width: 9; }
+.wykres-pierscien__tor { stroke: rgba(61, 227, 240, .16); }
+.wykres-pierscien__luk {
+  stroke: var(--cyan);
+  stroke-linecap: round;
+  stroke-dasharray: var(--udzial) 100;
+  filter: drop-shadow(0 0 4px rgba(61, 227, 240, .5));
+}
+
+@media (min-width: 720px) {
+  .wykres-kropki { grid-template-columns: repeat(16, 6px); gap: 4px; }
+  .wykres-siatka { grid-template-columns: repeat(10, 6px); gap: 2px; }
+  .wykres-pierscien { width: 76px; height: 76px; }
 }
 
 .liczba__wartosc {

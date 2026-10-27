@@ -263,18 +263,27 @@
             </figure>
           </div>
 
-          <!-- Pasek trzech liczb: ankiety z kursów na UMK (nie ze szkoleń dla instytucji) -->
+          <!-- Pasek trzech liczb: ankiety z kursów na UMK (nie ze szkoleń dla instytucji).
+               Każda liczba ma mały wykres w tej samej skali co dane: 128 kropek = 128 ankiet,
+               pierścień 5,16 z 6 (86%), siatka 10×10 z 79 polami. Kropki i siatkę dorysowuje
+               js/przewijanie.js; bez JavaScriptu zostają same liczby. -->
           <figure class="liczby" data-wejscie>
             <ul class="liczby__lista" role="list">
               <li class="liczba">
+                <div class="liczba__wykres wykres-kropki" data-wykres="kropki" data-ile="128" aria-hidden="true"></div>
                 <span class="liczba__wartosc">128</span>
                 <span class="liczba__opis">ankiet</span>
               </li>
               <li class="liczba">
+                <svg class="liczba__wykres wykres-pierscien" data-wykres="pierscien" style="--udzial: 86" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                  <circle class="wykres-pierscien__tor" cx="50" cy="50" r="42" pathLength="100" />
+                  <circle class="wykres-pierscien__luk" cx="50" cy="50" r="42" pathLength="100" />
+                </svg>
                 <span class="liczba__wartosc">5,16 <span class="liczba__skala">/ 6</span></span>
                 <span class="liczba__opis">średnia ocen</span>
               </li>
               <li class="liczba">
+                <div class="liczba__wykres wykres-siatka" data-wykres="siatka" data-ile="100" data-zapalone="79" aria-hidden="true"></div>
                 <span class="liczba__wartosc">79%</span>
                 <span class="liczba__opis">ocen to 5 lub 6</span>
               </li>
