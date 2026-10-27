@@ -1413,7 +1413,7 @@ html:not(.js) .liczba__wykres { display: none; }
    (odstęp 20 zamiast 12), żeby gęstość na ekranie była podobna. */
 .mapa {
   position: relative;
-  aspect-ratio: 1000 / 598.9;
+  aspect-ratio: 1000 / 681.4;
   margin: clamp(28px, 4vw, 48px) 0 3.5rem;
   container: mapa / inline-size;
 }
@@ -1862,7 +1862,7 @@ html.galeria-otwarta { overflow: hidden; }
    stronę, więc stoi w miejscu, a krawędź okna sunie po niej na wschód. Obie transformacje
    liczy kompozytor: kropek SVG nie trzeba malować w każdej klatce, jak przy clip-path.
    Miasta wchodzą w tej samej kolejności: --opoznienie w index.html to chwila, w której ta krzywa
-   dochodzi do --x miasta (Szczecin 340 ms … Olsztyn 1110 ms); dla nowego miasta poda je narzedzia/mapa.py. */
+   dochodzi do --x miasta (Szczecin 330 ms … Warszawa 1120 ms); dla nowego miasta poda je narzedzia/mapa.py. */
 .efekty-przewijania .mapa:not(.mapa--odslonieta) .mapa__odslona { transform: translateX(-100%); }
 .efekty-przewijania .mapa:not(.mapa--odslonieta) .mapa__tlo { transform: translateX(100%); }
 .efekty-przewijania .mapa--odslonieta .mapa__odslona,

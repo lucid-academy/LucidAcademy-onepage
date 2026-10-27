@@ -42,6 +42,7 @@ MIASTA = {
     "Sopot": (54.44479, 18.56849),
     "Lipno": (52.84739, 19.17927),
     "Ciechocinek": (52.88255, 18.79069),
+    "Warszawa": (52.23196, 21.00672),
 }
 SZEROKOSC_SVG = 1000.0
 # Odsłanianie mapy z zachodu na wschód: czas i krzywa przejścia okna z reguły
@@ -54,11 +55,11 @@ T = Transformer.from_crs("EPSG:4326", "EPSG:2180", always_xy=True)
 xy = {n: T.transform(lon, lat) for n, (lat, lon) in MIASTA.items()}
 rozewie = T.transform(18.333, 54.830)  # najdalej na północ wysunięty brzeg w kadrze
 
-# Ramka w metrach PUWG: miasta z marginesami na podpisy i trochę morza nad wybrzeżem
+# Ramka w metrach PUWG: wszystkie miasta z marginesami na podpisy i trochę morza nad wybrzeżem
 RAMKA = {
-    "x0": xy["Szczecin"][0] - 42_000,
-    "x1": xy["Olsztyn"][0] + 44_000,
-    "y0": min(xy["Lipno"][1], xy["Ciechocinek"][1]) - 50_000,
+    "x0": min(x for x, _ in xy.values()) - 42_000,
+    "x1": max(x for x, _ in xy.values()) + 44_000,
+    "y0": min(y for _, y in xy.values()) - 50_000,
     "y1": rozewie[1] + 16_000,
 }
 x0, x1, y0, y1 = RAMKA["x0"], RAMKA["x1"], RAMKA["y0"], RAMKA["y1"]
@@ -68,7 +69,7 @@ WYSOKOSC_SVG = round(SZEROKOSC_SVG * H_M / W_M, 1)
 ramka = box(x0, y0, x1, y1)
 ramka_zapas = ramka.buffer(20_000)
 # Wstępne cięcie w stopniach: rzut PUWG daleko od Polski daje nieskończoności
-GEO = box(12.0, 51.6, 23.0, 56.0)
+GEO = box(12.0, 51.2, 23.0, 56.0)
 
 
 def rzut(g):
