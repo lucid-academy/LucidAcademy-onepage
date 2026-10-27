@@ -473,6 +473,10 @@
 
   /* ---------- Tryb sieci (pilot wersji 3): moduł wczytywany dopiero na żądanie ---------- */
 
+  // Na razie schowany: przycisk zostaje ukryty, a tryb otwiera tylko bezpośredni link ?tryb=siec.
+  // Przestawienie na true odsłania przycisk w nawigacji.
+  const POKAZ_TRYB_SIECI = false;
+
   const przyciskSieci = document.querySelector(".tryb-sieci");
   let modulSieci = null;
 
@@ -491,9 +495,9 @@
   }
 
   if (przyciskSieci && typeof HTMLDialogElement === "function") {
-    przyciskSieci.hidden = false;
+    if (POKAZ_TRYB_SIECI) przyciskSieci.hidden = false;
     przyciskSieci.addEventListener("click", otworzSiec);
-    // Bezpośredni link do trybu: ?tryb=siec
+    // Bezpośredni link do trybu: ?tryb=siec (działa także wtedy, gdy przycisk jest schowany)
     if (new URLSearchParams(location.search).get("tryb") === "siec") otworzSiec();
   }
 
