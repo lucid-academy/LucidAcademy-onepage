@@ -1,14 +1,49 @@
 # Podmiana: nowa strona na lucidacademy.pl
 
-**Co podmieniamy.** Strona na lucidacademy.pl to Netlify, który publikuje gałąź `main`
-z repozytorium HuminPiotr/lucidacademy-onepage. Jej pliki są identyczne z `main` tutaj
-(commit 89c5bc6). Nowa strona to gałąź `produkcja` w lucid-academy/LucidAcademy-onepage,
-już bez `noindex`. Zawiera całą historię `main`, więc podmiana jest przewinięciem gałęzi
-(fast-forward): bez konfliktów, a stare pliki, np. `projekty/`, zostają na miejscu.
+**Stan.** lucidacademy.pl serwuje Netlify z konta Piotra Humina. Projekt publikuje gałąź
+`main` z repozytorium HuminPiotr/lucidacademy-onepage (pliki identyczne z `main` tutaj,
+commit 89c5bc6), a domena działa na Netlify DNS w tym samym koncie (serwery nazw
+dns1–dns4.p07.nsone.net). Nowa strona to gałąź `produkcja` w
+lucid-academy/LucidAcademy-onepage, już bez `noindex`. Zawiera całą historię `main`, więc
+podmiana jest przewinięciem gałęzi bez konfliktów, a stare pliki, np. `projekty/`, zostają.
 
 Podgląd przed podmianą: https://raw.githack.com/lucid-academy/LucidAcademy-onepage/produkcja/index.html
 
-## Sposób A: jednorazowo, przez właściciela repozytorium HuminPiotr
+## Krok 1: Netlify publikuje z repozytorium fundacji
+
+Po tym kroku każda zmiana na gałęzi `produkcja` sama trafia na lucidacademy.pl.
+
+Najpierw po stronie fundacji, w organizacji lucid-academy na GitHubie:
+
+1. Zainstalować aplikację Netlify na organizacji: https://github.com/apps/netlify/installations/new
+   → lucid-academy → Only select repositories → LucidAcademy-onepage.
+2. Dodać konto HuminPiotr jako współpracownika repozytorium (Settings → Collaborators →
+   Add people, wystarczy Read). Bez tego Netlify nie pokaże mu repozytorium organizacji.
+
+Potem w Netlify, w projekcie lucidacademy.pl: Project configuration → Developer settings →
+Continuous deployment → Repository → Manage repository → Link to a different repository →
+GitHub → lucid-academy/LucidAcademy-onepage.
+
+- Branch to deploy: `produkcja`
+- Build command: puste
+- Publish directory: puste (katalog główny)
+
+## Krok 2: projekt i domena na koncie fundacji
+
+Netlify przenosi projekt między zespołami tylko wtedy, gdy ta sama osoba jest Ownerem albo
+Developerem w obu (Project configuration → General → Project information → Transfer project).
+Na darmowym planie zwykle nie da się dodać drugiej osoby do zespołu, więc przeniesienie robi
+wsparcie Netlify na prośbę obecnego właściciela: https://www.netlify.com/support/ z nazwą
+projektu, domeną lucidacademy.pl razem ze strefą Netlify DNS i adresem e-mail konta fundacji
+w Netlify (to konto trzeba wcześniej założyć). Po przeniesieniu fundacja sama zmienia
+ustawienia, gałąź i rekordy DNS.
+
+## Krok 3: domena u rejestratora
+
+Ustalić, u którego rejestratora jest lucidacademy.pl i na kogo jest zarejestrowana. Dostęp do
+tego konta jest potrzebny przy odnowieniu domeny i przy ewentualnej zmianie serwerów nazw.
+
+## Szybciej, ale jednorazowo: przewinięcie `main` w repozytorium HuminPiotr
 
 ```
 git fetch https://github.com/lucid-academy/LucidAcademy-onepage produkcja
@@ -16,29 +51,15 @@ git merge --ff-only FETCH_HEAD
 git push origin main
 ```
 
-Netlify sam opublikuje nową wersję po około minucie. Ustawienia Netlify i DNS się nie
-zmieniają. Każda kolejna zmiana wymaga jednak powtórzenia tych trzech poleceń.
+Netlify opublikuje nową wersję po około minucie, bez zmian w ustawieniach. Każdą kolejną
+zmianę trzeba jednak przenosić tak samo.
 
-## Sposób B: na stałe, Netlify publikuje prosto z tego repozytorium
+## Odradzane: GitHub Pages i zmiana DNS
 
-W Netlify, w witrynie lucidacademy.pl: Site configuration → Build & deploy → Continuous
-deployment → Manage repository → Link to a different repository → GitHub →
-lucid-academy/LucidAcademy-onepage.
-
-- Branch to deploy: `produkcja`
-- Build command: puste
-- Publish directory: puste (katalog główny)
-
-Potrzebne: dostęp do konta Netlify z tą witryną i zgoda aplikacji Netlify na organizację
-lucid-academy w GitHubie. Później każdy push na `produkcja` od razu trafia na lucidacademy.pl.
-
-## Sposób C (odradzany): GitHub Pages i zmiana DNS
-
-Wymaga zmiany rekordów DNS u rejestratora i pliku `CNAME`, który można dodać dopiero
-razem ze zmianą DNS, bo inaczej podgląd na github.io zacznie przekierowywać na obecną
-stronę. GitHub Pages rozróżnia też wielkość liter w adresach: link
-`/projekty/swietochp/` (folder nazywa się `swietoCHP`) dałby 404, a Netlify obsługuje
-obie wersje.
+Wymaga zmiany rekordów DNS i pliku `CNAME`, który można dodać dopiero razem ze zmianą DNS,
+bo inaczej podgląd na github.io zacznie przekierowywać na obecną stronę. GitHub Pages
+rozróżnia też wielkość liter w adresach: link `/projekty/swietochp/` (folder nazywa się
+`swietoCHP`) dałby 404, a Netlify obsługuje obie wersje.
 
 ## Po podmianie sprawdzić
 
@@ -53,11 +74,14 @@ obie wersje.
 
 ## Wycofanie
 
-Netlify → Deploys → poprzednie wdrożenie produkcyjne → Publish deploy. Działa od razu
-i przy sposobie A, i przy B.
+Netlify → Deploys → poprzednie wdrożenie produkcyjne → Publish deploy. Działa od razu.
 
 ## Do wiedzy
 
-- Tryb sieci jest schowany: otwiera go tylko link `?tryb=siec`, a oba przyciski wracają
-  po przestawieniu `POKAZ_TRYB_SIECI` na `true` w `js/strona.js`.
+- Podstawa to wersja 2 z podglądu GitHub Pages (gałąź `nowa-strona`), bez aksonu, warstwy
+  światła i ruchu ilustracji z wersji 3 (gałęzie `impuls`, `eksperymenty`).
+- Sieć neuronowa w hero to `js/neurony.js`; wycofuje się ją, usuwając ten plik, jego
+  `<script>` i `<canvas class="neurony">` w `index.html`.
+- Tryb sieci jest schowany: otwiera go tylko link `?tryb=siec`, a przycisk wraca po
+  przestawieniu `POKAZ_TRYB_SIECI` na `true` w `js/strona.js`.
 - Mapę w sekcji „Gdzie już byliśmy” i pozycje miast liczy `narzedzia/mapa.py`.
