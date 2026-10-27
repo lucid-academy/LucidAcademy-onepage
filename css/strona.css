@@ -537,13 +537,39 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 /* Małe fragmenty sieci w wolnych miejscach: obok nagłówków sekcji (z prawej, w wysokości
    etykiety) i przy głosach uczestników. Tylko na szerokim ekranie, bo na telefonie nie ma
    wolnego miejsca. Brzegi wygaszone, żeby wyglądały jak kawałek większej sieci. */
+/* Fragmenty leżą pod treścią (z-index: -1, nad warstwami tła .tlo), więc linie nigdy nie
+   wchodzą na tekst ani karty; brzegi wygasają w maskę */
 .neurony--fragment {
   display: none;
-  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
-          mask-image: radial-gradient(closest-side, #000 62%, transparent);
+  z-index: -1;
+  -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent);
+          mask-image: radial-gradient(closest-side, #000 70%, transparent);
 }
 @media (min-width: 1100px) {
   .neurony--fragment { display: block; }
+  /* Nad wykładami: w odstępie nad nagłówkiem, po prawej, bez wchodzenia na karty */
+  .wyklady,
+  .gdzie { position: relative; }
+  .neurony--wyklady {
+    top: -110px;
+    right: 0;
+    width: 50%;
+    height: 190px;
+  }
+  /* Pod mapą: lewa kolumna kończy się wcześniej niż lista instytucji */
+  .neurony--gdzie {
+    bottom: -150px;
+    left: 0;
+    width: 52%;
+    height: 300px;
+  }
+  /* Kontakt: prawa kolumna pod ilustracją, nad stopką */
+  .neurony--kontakt {
+    bottom: 24px;
+    right: max(var(--margines), calc((100% - var(--szerokosc)) / 2));
+    width: min(36vw, 500px);
+    height: 280px;
+  }
   .neurony--naglowek {
     top: clamp(88px, 12vw, 168px);
     right: max(var(--margines), calc((100% - var(--szerokosc)) / 2));
@@ -616,8 +642,10 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   .hero__ilustracja {
     position: absolute;
     top: 50%;
-    right: -7vw;
-    width: min(68vw, 1240px);
+    /* Wystaje za prawą krawędź tylko trochę: szklana kulka na prawo od książki
+       (85% szerokości obrazu) mieści się w kadrze także po powiększeniu paralaksy */
+    right: -3vw;
+    width: min(64vw, 1180px);
     max-height: none;
     transform: translateY(-47%);
     -webkit-mask-image: radial-gradient(ellipse 50% 50% at 56% 50%, #000 42%, transparent 100%);
@@ -626,6 +654,35 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   .hero__tresc { margin-top: 0; }
   .hero__tytul { max-width: 8.8em; }
   .hero__lead { max-width: 30em; }
+}
+
+/* Zatrzymanie ruchu sieci w hero (WCAG 2.2.2): cichy przycisk w lewym dolnym rogu,
+   w linii z treścią. Ikona pauzy z dwóch pasków, po zatrzymaniu trójkąt odtwarzania. */
+.ruch-przelacznik {
+  position: absolute;
+  bottom: clamp(12px, 2.4vw, 28px);
+  left: max(var(--margines), calc((100% - var(--szerokosc)) / 2));
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  min-height: 44px;
+  padding: 0 .25em;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 400 1rem/1 var(--mono);
+  cursor: pointer;
+}
+.ruch-przelacznik[hidden] { display: none; }
+.ruch-przelacznik:hover { color: var(--ink); }
+.ruch-przelacznik__ikona {
+  width: 10px;
+  height: 12px;
+  background: linear-gradient(90deg, currentColor 0 35%, transparent 35% 65%, currentColor 65%);
+}
+.ruch-przelacznik--stop .ruch-przelacznik__ikona {
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
 /* ---------- Sekcje ---------- */

@@ -2,13 +2,16 @@
    Lucid Academy — sieć neuronowa w hero i jej małe fragmenty w wolnych
    miejscach strony (w stylu oferty dla szkół). Każde płótno
    z data-neurony: punkty, gdy płótno wjedzie w kadr, w kilka sekund
-   łagodnie układają się w sieć i zostają w spoczynku. Mysz: połączenia do kursora, lekkie przyciąganie
+   łagodnie układają się w sieć. Mysz: połączenia do kursora, lekkie przyciąganie
    węzłów i impulsy biegnące po krawędziach; dotknięcie wysyła impuls.
-   Pętla rysowania działa tylko wtedy, gdy coś się rusza, więc
-   w spoczynku strona nic nie liczy, a ruch, który startuje sam,
-   trwa krócej niż 5 s (WCAG 2.2.2). Przy prefers-reduced-motion sieć
-   jest od razu ułożona i nie reaguje. Bez bibliotek; kolory z tokenów.
-   Osobny plik: da się wycofać jednym ruchem.
+   Sieć z data-neurony-dryf (hero) potem dalej delikatnie płynie: węzły krążą
+   wokół swoich miejsc, a te, które się zbliżą, łączą się na chwilę. Ten ruch
+   trwa bez końca, więc obok jest przycisk .ruch-przelacznik, który go zatrzymuje
+   (WCAG 2.2.2); wybór zostaje w localStorage. Fragmenty bez dryfu po ułożeniu
+   stoją, a pętla rysowania działa tylko wtedy, gdy coś się rusza, i nigdy poza
+   kadrem. Przy prefers-reduced-motion sieć jest od razu ułożona, stoi i nie
+   reaguje. Bez bibliotek; kolory z tokenów. Osobny plik: da się wycofać
+   jednym ruchem.
    ========================================================= */
 (() => {
   "use strict";
@@ -39,6 +42,14 @@
   const PRZERWA_ZAPLONU = 1400;
   const PREDKOSC_IMPULSU = 0.32; // px/ms
   const MAKS_IMPULSOW = 28;
+  const OKRES_DRYFU = [7000, 15000]; // ms: jeden obieg węzła wokół jego miejsca
+  const KLATKA_DRYFU = 32;           // ms: sam dryf rysowany ~30 razy na sekundę
+
+  // Wspólny wyłącznik ruchu tła (przycisk w hero); zapamiętany między wizytami
+  const KLUCZ_RUCHU = "lucidacademy:ruch-tla";
+  let zatrzymane = false;
+  try { zatrzymane = localStorage.getItem(KLUCZ_RUCHU) === "stop"; } catch { /* prywatne okno: bez pamięci */ }
+  const planisci = [];
 
   // Stałe ziarno: ten sam układ przy każdym wczytaniu (powtarzalne zrzuty i testy)
   function losowanie(ziarno) {
@@ -54,6 +65,27 @@
   const lagodnie = (k) => 1 - Math.pow(1 - k, 3);
 
   plotna.forEach(uruchom);
+  przygotujPrzelacznik();
+
+  function przygotujPrzelacznik() {
+    const przycisk = document.querySelector(".ruch-przelacznik");
+    if (!przycisk) return;
+    const tekst = przycisk.querySelector(".ruch-przelacznik__tekst");
+    const odswiez = () => {
+      // Przy ograniczonym ruchu sieć i tak stoi, więc przycisk nie jest potrzebny
+      przycisk.hidden = bezRuchu();
+      przycisk.classList.toggle("ruch-przelacznik--stop", zatrzymane);
+      tekst.textContent = zatrzymane ? "wznów ruch tła" : "zatrzymaj ruch tła";
+    };
+    przycisk.addEventListener("click", () => {
+      zatrzymane = !zatrzymane;
+      try { localStorage.setItem(KLUCZ_RUCHU, zatrzymane ? "stop" : "ruch"); } catch { /* bez pamięci */ }
+      odswiez();
+      planisci.forEach((f) => f());
+    });
+    ograniczonyRuch.addEventListener("change", odswiez);
+    odswiez();
+  }
 
   function uruchom(plotno, numer) {
     const ctx = plotno.getContext("2d");
@@ -64,11 +96,20 @@
     // Mała sieć (fragment w wolnym miejscu strony): mniej węzłów i krótsze układanie
     const [ILE_MIN, ILE_MAX] = (plotno.dataset.neuronyIle || "28,90").split(",").map(Number);
     const CZAS = Number(plotno.dataset.neuronyCzas) || UKLADANIE;
+    // Jasność linii i węzłów (fragmenty: 1,5, żeby było je widać na ciemnym tle)
+    const JASNOSC = Number(plotno.dataset.neuronyJasnosc) || 1;
+    // Dryf: największe odchylenie węzła od jego miejsca w px (0 = sieć po ułożeniu stoi)
+    const DRYF = Number(plotno.dataset.neuronyDryf) || 0;
+    const dryfuje = () => DRYF > 0 && !zatrzymane && !bezRuchu();
+    let czasDryfu = 0, ostatniaKlatka = 0, ostatniRysunek = 0;
+    let pary = new Set();       // pary połączone na stałe; reszta łączy się tylko po zbliżeniu
+    let blisko = 0;             // px: od tej odległości zbliżone węzły łączą się na chwilę
 
     let W = 0, H = 0, dpr = 1;
     let wezly = [], krawedzie = [], sasiedzi = [];
     let impulsy = [];
     let kursor = null;
+    let ruchKursora = 0;      // ostatni ruch myszy: impulsy wysyła tylko ruch, nie stojący kursor
     let start = 0;            // chwila startu układania (0 = jeszcze nie wystartowało)
     let ulozona = bezRuchu();
     // Układanie startuje dopiero, gdy płótno jest co najmniej w 30% w kadrze
@@ -124,6 +165,11 @@
           x: p.x, y: p.y,                                     // miejsce w sieci
           sx: p.x + Math.cos(kat) * d, sy: p.y + Math.sin(kat) * d, // skąd przypływa
           opoznienie: los() * OPOZNIENIE * (CZAS / UKLADANIE),
+          // Dryf: dwa powolne drgania o różnych okresach dają płynną, niepowtarzalną pętlę
+          ax: DRYF * (0.45 + los() * 0.55), ay: DRYF * (0.45 + los() * 0.55),
+          wx: (Math.PI * 2) / (OKRES_DRYFU[0] + los() * (OKRES_DRYFU[1] - OKRES_DRYFU[0])),
+          wy: (Math.PI * 2) / (OKRES_DRYFU[0] + los() * (OKRES_DRYFU[1] - OKRES_DRYFU[0])),
+          fx: los() * Math.PI * 2, fy: los() * Math.PI * 2,
           r: 0.8 + los() * 1.4,
           cyjan: los() < 0.32,
           ox: 0, oy: 0, vx: 0, vy: 0,                          // przesunięcie od kursora
@@ -134,6 +180,8 @@
       // Krawędzie: każdy węzeł z trzema najbliższymi sąsiadami w zasięgu, jak dendryty
       const klucze = new Set();
       krawedzie = [];
+      pary = new Set();
+      blisko = odstep * 1.1;
       sasiedzi = wezly.map(() => []);
       const maks = (odstep * 2.3) ** 2;
       wezly.forEach((a, i) => {
@@ -147,6 +195,7 @@
             if (klucze.has(k)) return;
             klucze.add(k);
             krawedzie.push({ a: i, b: j, dl: Math.sqrt(d) });
+            pary.add(i * 4096 + j).add(j * 4096 + i);
             sasiedzi[i].push(j);
             sasiedzi[j].push(i);
           });
@@ -161,10 +210,17 @@
       return lagodnie(Math.min(1, Math.max(0, (teraz - start - w.opoznienie) / CZAS)));
     }
 
+    // Miejsce węzła w sieci przesunięte o dryf (bez dryfu: stałe miejsce)
+    function miejsce(w) {
+      if (!DRYF || !czasDryfu) return { x: w.x, y: w.y };
+      return { x: w.x + w.ax * Math.sin(w.wx * czasDryfu + w.fx), y: w.y + w.ay * Math.sin(w.wy * czasDryfu + w.fy) };
+    }
+
     function polozenie(w, k) {
+      const m = miejsce(w);
       return {
-        x: w.sx + (w.x - w.sx) * k + w.ox,
-        y: w.sy + (w.y - w.sy) * k + w.oy,
+        x: w.sx + (m.x - w.sx) * k + w.ox,
+        y: w.sy + (m.y - w.sy) * k + w.oy,
       };
     }
 
@@ -187,18 +243,25 @@
       }
       if (!ulozona && wezly.every((w) => postep(w, teraz) >= 1)) ulozona = true;
 
+      // Zegar dryfu idzie tylko wtedy, gdy sieć płynie: po pauzie i powrocie do kadru rusza
+      // z tego samego miejsca, bez skoku. Sam dryf rysuje się ~30 razy na sekundę.
+      const dt = ostatniaKlatka ? Math.min(50, teraz - ostatniaKlatka) : 0;
+      ostatniaKlatka = teraz;
+      if (dryfuje()) czasDryfu += dt;
+
       // Przyciąganie do kursora: sprężyna z tłumieniem
       let ruch = false;
       const pozycje = wezly.map((w, i) => {
         const k = postep(w, teraz);
         let cx = 0, cy = 0;
         if (kursor && k >= 1) {
-          const dx = kursor.x - w.x, dy = kursor.y - w.y, d = Math.hypot(dx, dy);
+          const m = miejsce(w);
+          const dx = kursor.x - m.x, dy = kursor.y - m.y, d = Math.hypot(dx, dy);
           if (d < ZASIEG && d > 0.1) {
             const sila = (1 - d / ZASIEG) ** 2 * PRZYCIAGANIE;
             cx = (dx / d) * sila; cy = (dy / d) * sila;
           }
-          if (d < ZAPLON && teraz - w.zaplon > PRZERWA_ZAPLONU) {
+          if (d < ZAPLON && teraz - ruchKursora < 120 && teraz - w.zaplon > PRZERWA_ZAPLONU) {
             w.zaplon = teraz;
             wyslijImpuls(i, teraz);
           }
@@ -219,11 +282,16 @@
         return false;
       });
 
-      rysuj(pozycje, teraz);
-
       // Nieruchomy kursor nie trzyma pętli: następny ruch myszy ją wznowi
       const blyski = wezly.some((w) => teraz - w.blysk < 700);
-      if (widoczna && (!ulozona || ruch || impulsy.length || blyski)) zaplanuj();
+      const tylkoDryf = ulozona && !ruch && !impulsy.length && !blyski;
+      if (!(tylkoDryf && dryfuje() && teraz - ostatniRysunek < KLATKA_DRYFU)) {
+        rysuj(pozycje, teraz);
+        ostatniRysunek = teraz;
+      }
+
+      if (widoczna && !document.hidden && (!tylkoDryf || dryfuje())) zaplanuj();
+      else ostatniaKlatka = 0;
     }
 
     function rysuj(poz, teraz) {
@@ -233,9 +301,26 @@
         const p = poz[e.a], q = poz[e.b];
         const k = Math.min(p.k, q.k);
         if (k <= 0) continue;
-        const a = (k * k) * (0.16 + 0.14 * Math.max(0, 1 - e.dl / 220));
-        ctx.strokeStyle = rgba(KOLOR.fiolet, a.toFixed(3));
+        let a = (k * k) * (0.16 + 0.14 * Math.max(0, 1 - e.dl / 220));
+        // Przy dryfie rozciągnięta krawędź przygasa, ściśnięta jaśnieje
+        if (DRYF) a *= Math.min(1.25, Math.max(0.35, 1 - (Math.hypot(p.x - q.x, p.y - q.y) - e.dl) / (e.dl * 0.9)));
+        ctx.strokeStyle = rgba(KOLOR.fiolet, Math.min(1, a * JASNOSC).toFixed(3));
         ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+      }
+      // Jak w ofercie dla szkół: węzły, które dryf zbliży, łączą się na chwilę cieniutką linią
+      if (DRYF && czasDryfu) {
+        for (let i = 0; i < poz.length; i++) {
+          const p = poz[i];
+          if (p.k < 1) continue;
+          for (let j = i + 1; j < poz.length; j++) {
+            const q = poz[j];
+            if (q.k < 1 || pary.has(i * 4096 + j)) continue;
+            const d = Math.hypot(p.x - q.x, p.y - q.y);
+            if (d >= blisko) continue;
+            ctx.strokeStyle = rgba(KOLOR.fiolet, (0.2 * (1 - d / blisko) ** 2).toFixed(3));
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
       }
       // Kursor łączy się z pobliskimi węzłami cyjanowymi liniami
       if (kursor) {
@@ -271,10 +356,10 @@
         const blisko = kursor ? Math.max(0, 1 - Math.hypot(p.x - kursor.x, p.y - kursor.y) / (ZASIEG * 0.6)) : 0;
         const swiatlo = Math.max(blysk, blisko);
         if (w.cyjan || swiatlo > 0) {
-          ctx.fillStyle = rgba(KOLOR.cyjan, ((w.cyjan ? 0.12 : 0) + swiatlo * 0.3) * p.k);
+          ctx.fillStyle = rgba(KOLOR.cyjan, Math.min(1, ((w.cyjan ? 0.12 : 0) + swiatlo * 0.3) * p.k * JASNOSC));
           ctx.beginPath(); ctx.arc(p.x, p.y, w.r * (4 + swiatlo * 2), 0, Math.PI * 2); ctx.fill();
         }
-        ctx.fillStyle = w.cyjan || swiatlo > 0.4 ? rgba(KOLOR.cyjan, 0.9 * p.k) : rgba(KOLOR.jasny, 0.8 * p.k);
+        ctx.fillStyle = w.cyjan || swiatlo > 0.4 ? rgba(KOLOR.cyjan, Math.min(1, 0.9 * JASNOSC) * p.k) : rgba(KOLOR.jasny, Math.min(1, 0.8 * JASNOSC) * p.k);
         ctx.beginPath(); ctx.arc(p.x, p.y, w.r + swiatlo * 0.8, 0, Math.PI * 2); ctx.fill();
       }
     }
@@ -282,6 +367,7 @@
     function zaplanuj() {
       if (!ramka) ramka = requestAnimationFrame(krok);
     }
+    planisci.push(zaplanuj);
 
     function wspolrzedne(e) {
       const r = plotno.getBoundingClientRect();
@@ -291,6 +377,7 @@
     obszar.addEventListener("pointermove", (e) => {
       if (bezRuchu() || e.pointerType === "touch") return;
       kursor = wspolrzedne(e);
+      ruchKursora = performance.now();
       zaplanuj();
     }, { passive: true });
     obszar.addEventListener("pointerleave", () => {
@@ -322,7 +409,7 @@
       }, { threshold: [0, 0.3] }).observe(plotno);
     }
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) { cancelAnimationFrame(ramka); ramka = 0; } else zaplanuj();
+      if (document.hidden) { cancelAnimationFrame(ramka); ramka = 0; ostatniaKlatka = 0; } else zaplanuj();
     });
 
     // Zmiana rozmiaru: nowy układ od razu na miejscu, bez ponownego układania.

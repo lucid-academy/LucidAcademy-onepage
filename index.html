@@ -98,8 +98,9 @@
       ========================================================== -->
       <section class="hero" id="hero" aria-labelledby="hero-tytul">
         <!-- Miejsce na rozbudowę w v1.5 -->
-        <!-- Sieć neuronowa (js/neurony.js) po stronie tekstu, pod nim; książka zostaje osobno -->
-        <canvas class="neurony neurony--hero" data-neurony aria-hidden="true"></canvas>
+        <!-- Sieć neuronowa (js/neurony.js) po stronie tekstu, pod nim; książka zostaje osobno.
+             data-neurony-dryf: po ułożeniu sieć delikatnie płynie (do 16 px od miejsca węzła) -->
+        <canvas class="neurony neurony--hero" data-neurony data-neurony-dryf="16" aria-hidden="true"></canvas>
         <div class="hero__ilustracja" aria-hidden="true">
           <img
             src="assets/art/laser-education.webp"
@@ -135,6 +136,12 @@
             <a class="link-cichy" href="#co-robimy">Zobacz, co budujemy <span aria-hidden="true">↓</span></a>
           </div>
         </div>
+
+        <!-- Zatrzymanie ruchu sieci w tle (WCAG 2.2.2); pokazuje go js/neurony.js -->
+        <button class="ruch-przelacznik" type="button" hidden>
+          <span class="ruch-przelacznik__ikona" aria-hidden="true"></span>
+          <span class="ruch-przelacznik__tekst">zatrzymaj ruch tła</span>
+        </button>
       </section>
 
       <!-- =========================================================
@@ -279,6 +286,8 @@
 
           <!-- Wykłady i rozmowy: linki do YouTube / Spotify, bez osadzania odtwarzaczy -->
           <div class="wyklady">
+            <!-- Fragment sieci nad wykładami, po prawej (js/neurony.js), tylko na szerokim ekranie -->
+            <canvas class="neurony neurony--fragment neurony--wyklady" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
             <h3 class="podtytul" data-wejscie>Wykłady i&nbsp;rozmowy</h3>
             <ul class="wyklady__lista" role="list">
               <li class="wyklad" data-wejscie>
@@ -349,7 +358,7 @@
           <!-- Głosy z warsztatów: cytaty dosłownie, bez liczb z ankiet warsztatowych -->
           <div class="glosy">
             <!-- Fragment sieci przy głosach (js/neurony.js), tylko na szerokim ekranie -->
-            <canvas class="neurony neurony--fragment neurony--glosy" data-neurony data-neurony-ile="12,18" data-neurony-czas="2600" aria-hidden="true"></canvas>
+            <canvas class="neurony neurony--fragment neurony--glosy" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
             <h3 class="podtytul" data-wejscie>Najczęstsza prośba uczestników: <mark class="podswietlenie">więcej</mark></h3>
             <ul class="glosy__lista" role="list">
               <li data-wejscie>
@@ -372,7 +381,7 @@
       <section class="sekcja" id="oferta" aria-labelledby="oferta-tytul">
         <!-- Miejsce na rozbudowę w v1.5 -->
         <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
-        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="12,18" data-neurony-czas="2600" aria-hidden="true"></canvas>
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener">
           <header class="sekcja__naglowek">
             <p class="etykieta" data-wejscie>
@@ -482,6 +491,8 @@
             <span class="etykieta__znak" aria-hidden="true">&gt;</span> 04 · gdzie już byliśmy
           </p>
           <div class="gdzie">
+            <!-- Fragment sieci pod mapą, obok listy instytucji (js/neurony.js), tylko na szerokim ekranie -->
+            <canvas class="neurony neurony--fragment neurony--gdzie" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
             <div class="gdzie__miasta">
               <h2 class="sekcja__tytul" id="gdzie-tytul" data-wejscie>Gdzie już byliśmy</h2>
               <div class="mapa">
@@ -570,7 +581,7 @@
       <section class="sekcja" id="co-robimy" aria-labelledby="co-robimy-tytul">
         <!-- Miejsce na rozbudowę w v1.5: kolejne projekty dopisuje się w kafle.json -->
         <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
-        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="12,18" data-neurony-czas="2600" aria-hidden="true"></canvas>
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener">
           <header class="sekcja__naglowek">
             <p class="etykieta" data-wejscie>
@@ -604,7 +615,7 @@
       <section class="sekcja" id="zespol" aria-labelledby="zespol-tytul">
         <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba"> przed zdjęciem grupowym -->
         <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
-        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="12,18" data-neurony-czas="2600" aria-hidden="true"></canvas>
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener">
           <header class="sekcja__naglowek">
             <p class="etykieta" data-wejscie>
@@ -778,6 +789,8 @@
       ========================================================== -->
       <section class="sekcja" id="kontakt" aria-labelledby="kontakt-tytul">
         <!-- Miejsce na formularz kontaktowy w v1.5 -->
+        <!-- Fragment sieci pod ilustracją, nad stopką (js/neurony.js), tylko na szerokim ekranie -->
+        <canvas class="neurony neurony--fragment neurony--kontakt" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener uklad-dwa">
           <div class="uklad-dwa__tekst">
             <p class="etykieta" data-wejscie>
