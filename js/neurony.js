@@ -1,7 +1,8 @@
 /* =========================================================
-   Lucid Academy — sieć neuronowa w tle hero (w stylu oferty dla szkół)
-   Punkty w kilka sekund łagodnie układają się w sieć i zostają
-   w spoczynku. Mysz: połączenia do kursora, lekkie przyciąganie
+   Lucid Academy — sieć neuronowa w hero i jej małe fragmenty w wolnych
+   miejscach strony (w stylu oferty dla szkół). Każde płótno
+   z data-neurony: punkty, gdy płótno wjedzie w kadr, w kilka sekund
+   łagodnie układają się w sieć i zostają w spoczynku. Mysz: połączenia do kursora, lekkie przyciąganie
    węzłów i impulsy biegnące po krawędziach; dotknięcie wysyła impuls.
    Pętla rysowania działa tylko wtedy, gdy coś się rusza, więc
    w spoczynku strona nic nie liczy, a ruch, który startuje sam,
@@ -54,14 +55,15 @@
 
   plotna.forEach(uruchom);
 
-  function uruchom(plotno) {
+  function uruchom(plotno, numer) {
     const ctx = plotno.getContext("2d");
     if (!ctx) return;
     const obszar = plotno.parentElement;
-    // Tekst i środek ilustracji, przy których sieć ma być rzadsza (selektory w data-neurony-tekst
-    // i data-neurony-obraz)
+    // Tekst, przy którym sieć ma być rzadsza (selektor w data-neurony-tekst)
     const tekst = plotno.dataset.neuronyTekst ? obszar.querySelectorAll(plotno.dataset.neuronyTekst) : [];
-    const obrazy = plotno.dataset.neuronyObraz ? obszar.querySelectorAll(plotno.dataset.neuronyObraz) : [];
+    // Mała sieć (fragment w wolnym miejscu strony): mniej węzłów i krótsze układanie
+    const [ILE_MIN, ILE_MAX] = (plotno.dataset.neuronyIle || "28,90").split(",").map(Number);
+    const CZAS = Number(plotno.dataset.neuronyCzas) || UKLADANIE;
 
     let W = 0, H = 0, dpr = 1;
     let wezly = [], krawedzie = [], sasiedzi = [];
@@ -69,7 +71,9 @@
     let kursor = null;
     let start = 0;            // chwila startu układania (0 = jeszcze nie wystartowało)
     let ulozona = bezRuchu();
-    let widoczna = true, ramka = 0;
+    // Układanie startuje dopiero, gdy płótno jest co najmniej w 30% w kadrze
+    const zObserwatorem = "IntersectionObserver" in window;
+    let widoczna = !zObserwatorem, doStartu = !zObserwatorem, ramka = 0;
 
     function rozmiesc() {
       const r = plotno.getBoundingClientRect();
@@ -83,15 +87,12 @@
       const strefy = [...tekst].map((e) => {
         const b = e.getBoundingClientRect();
         return { x0: b.left - r.left - 24, x1: b.right - r.left + 24, y0: b.top - r.top - 24, y1: b.bottom - r.top + 24 };
-      }).concat([...obrazy].map((e) => {
-        // Środek ilustracji: 60% jej pudełka, bo brzegi i tak wygasają maską
-        const b = e.getBoundingClientRect(), dx = b.width * 0.2, dy = b.height * 0.2;
-        return { x0: b.left - r.left + dx, x1: b.right - r.left - dx, y0: b.top - r.top + dy, y1: b.bottom - r.top - dy };
-      }));
+      });
       const wTekscie = (x, y) => strefy.some((s) => x > s.x0 && x < s.x1 && y > s.y0 && y < s.y1);
 
-      const los = losowanie(20261027);
-      const n = Math.round(Math.min(90, Math.max(28, (W * H) / 14000)));
+      // Każde płótno ma własne ziarno, żeby fragmenty o tym samym rozmiarze się nie powtarzały
+      const los = losowanie(20261027 + numer * 7919);
+      const n = Math.round(Math.min(ILE_MAX, Math.max(ILE_MIN, (W * H) / 14000)));
       const odstep = Math.sqrt((W * H) / n) * 0.7;
       // Losowanie z minimalnym odstępem; siatka komórek (bok odstęp/√2, w każdej najwyżej
       // jeden punkt) sprawdza tylko sąsiednie komórki zamiast wszystkich punktów
@@ -109,8 +110,8 @@
       };
       for (let proba = 0; punkty.length < n && proba < n * 60; proba++) {
         const x = 8 + los() * (W - 16), y = 8 + los() * (H - 16);
-        // Przy tekście i na ilustracji sieć rzadsza, żeby nagłówek, akapit i obraz zostały czytelne
-        if (wTekscie(x, y) && los() > 0.35) continue;
+        // Przy tekście sieć rzadsza, żeby nagłówek i akapit zostały czytelne
+        if (wTekscie(x, y) && los() > 0.5) continue;
         const gx = Math.floor(x / bok), gy = Math.floor(y / bok);
         if (!wolne(x, y, gx, gy)) continue;
         siatka[gy * kol + gx] = punkty.length;
@@ -122,7 +123,7 @@
         return {
           x: p.x, y: p.y,                                     // miejsce w sieci
           sx: p.x + Math.cos(kat) * d, sy: p.y + Math.sin(kat) * d, // skąd przypływa
-          opoznienie: los() * OPOZNIENIE,
+          opoznienie: los() * OPOZNIENIE * (CZAS / UKLADANIE),
           r: 0.8 + los() * 1.4,
           cyjan: los() < 0.32,
           ox: 0, oy: 0, vx: 0, vy: 0,                          // przesunięcie od kursora
@@ -157,7 +158,7 @@
     function postep(w, teraz) {
       if (ulozona) return 1;
       if (!start) return 0;
-      return lagodnie(Math.min(1, Math.max(0, (teraz - start - w.opoznienie) / UKLADANIE)));
+      return lagodnie(Math.min(1, Math.max(0, (teraz - start - w.opoznienie) / CZAS)));
     }
 
     function polozenie(w, k) {
@@ -180,7 +181,10 @@
     function krok(teraz) {
       ramka = 0;
       if (!wezly.length) return;
-      if (!start && !ulozona) start = teraz;
+      if (!start && !ulozona) {
+        if (!doStartu) return; // czeka, aż płótno wjedzie w kadr
+        start = teraz;
+      }
       if (!ulozona && wezly.every((w) => postep(w, teraz) >= 1)) ulozona = true;
 
       // Przyciąganie do kursora: sprężyna z tłumieniem
@@ -309,11 +313,13 @@
     });
 
     // Poza kadrem i w ukrytej karcie nic się nie liczy; układanie czeka na powrót
-    if ("IntersectionObserver" in window) {
+    if (zObserwatorem) {
       new IntersectionObserver((wpisy) => {
-        widoczna = wpisy.some((w) => w.isIntersecting);
+        const w = wpisy[wpisy.length - 1];
+        widoczna = w.isIntersecting;
+        if (w.intersectionRatio >= 0.3) doStartu = true;
         if (widoczna) zaplanuj();
-      }).observe(plotno);
+      }, { threshold: [0, 0.3] }).observe(plotno);
     }
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) { cancelAnimationFrame(ramka); ramka = 0; } else zaplanuj();
@@ -337,7 +343,7 @@
         poprzedni = wymiar;
         if (!pierwszy) ulozona = true;
         pierwszy = false;
-        zaplanuj();
+        if (widoczna) zaplanuj();
       });
     }).observe(plotno);
 

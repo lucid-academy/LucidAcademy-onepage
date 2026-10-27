@@ -219,12 +219,16 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   filter: drop-shadow(0 0 .3em rgba(168, 85, 247, .4));
 }
 
-/* Fioletowy pasek pod słowem — najwyżej jeden na sekcję.
-   Półprzezroczysty, bo jasny tekst na pełnym --violet miałby tylko 3,5:1. */
+/* Fioletowe podświetlenie całego słowa — najwyżej jedno na sekcję.
+   Półprzezroczyste, bo jasny tekst na pełnym --violet miałby tylko 3,5:1;
+   na tym tle ma 9,8:1. */
 .podswietlenie {
-  padding: 0 .08em;
+  /* Ujemny margines oddaje wypełnienie, żeby sąsiednie znaki (np. dwukropek) nie odskakiwały */
+  margin-inline: -.12em;
+  padding: .02em .16em;
+  border-radius: .2em;
   color: inherit;
-  background: linear-gradient(transparent 56%, rgba(168, 85, 247, .45) 56%, rgba(168, 85, 247, .45) 94%, transparent 94%);
+  background: rgba(168, 85, 247, .42);
   -webkit-box-decoration-break: clone;
           box-decoration-break: clone;
 }
@@ -494,16 +498,56 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   padding: calc(var(--nav-h) + 4px) 0 clamp(64px, 10vw, 128px);
 }
 
-/* Sieć neuronowa (js/neurony.js) na całej powierzchni hero: nad ilustracją, pod tekstem
-   (tekst stoi dalej w kolejności dokumentu). Tryb screen tylko dodaje światło, więc linie
-   nad książką jej nie przyciemniają, a reakcję na kursor widać także nad obrazem. */
+/* Sieć neuronowa (js/neurony.js). W hero po stronie tekstu, pod nim; książka zostaje
+   osobno. Na telefonie zaczyna się pod książką (jej wysokość: 2/3 szerokości, najwyżej
+   64vh), na szerokim ekranie zajmuje lewą część i gaśnie przed ilustracją. */
 .neurony {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
-  mix-blend-mode: screen;
+}
+/* Płótno to element zastępowany: samo top i bottom nie rozciągnie go na wysokość,
+   wysokość wzięłaby się z proporcji bitmapy. Stąd jawne width i height. */
+.neurony--hero {
+  --siec-gora: calc(var(--nav-h) + 4px + min(66.667vw, 64vh) - 48px);
+  top: var(--siec-gora);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--siec-gora));
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 96px);
+          mask-image: linear-gradient(180deg, transparent, #000 96px);
+}
+@media (min-width: 1024px) {
+  .neurony--hero {
+    --siec-gora: 0px;
+    width: 54%;
+    -webkit-mask-image: linear-gradient(90deg, #000 62%, transparent);
+            mask-image: linear-gradient(90deg, #000 62%, transparent);
+  }
+}
+
+/* Małe fragmenty sieci w wolnych miejscach: obok nagłówków sekcji (z prawej, w wysokości
+   etykiety) i przy głosach uczestników. Tylko na szerokim ekranie, bo na telefonie nie ma
+   wolnego miejsca. Brzegi wygaszone, żeby wyglądały jak kawałek większej sieci. */
+.neurony--fragment {
+  display: none;
+  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
+          mask-image: radial-gradient(closest-side, #000 62%, transparent);
+}
+@media (min-width: 1100px) {
+  .neurony--fragment { display: block; }
+  .neurony--naglowek {
+    top: clamp(88px, 12vw, 168px);
+    right: max(var(--margines), calc((100% - var(--szerokosc)) / 2));
+    width: min(32vw, 440px);
+    height: 240px;
+  }
+  .glosy { position: relative; }
+  .neurony--glosy {
+    right: 0;
+    bottom: -24px;
+    width: 44%;
+    height: 46%;
+  }
 }
 
 .hero__ilustracja {
@@ -979,9 +1023,14 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   padding-block: 14px;
   border-top: 1px solid var(--line);
 }
+/* Nazwy wątków w znacznikach równej szerokości, żeby stały jak kolumna */
+.zajecia__nazwa.znacznik {
+  justify-content: center;
+  width: 8.5rem;
+}
 @media (min-width: 600px) {
   .zajecia__lista li {
-    grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+    grid-template-columns: 8.5rem minmax(0, 1fr);
     align-items: baseline;
   }
 }
