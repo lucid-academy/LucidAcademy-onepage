@@ -1363,6 +1363,17 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 .osoba__imie { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); }
 .osoba__rola { margin-top: -6px; }
 
+/* Obszary osoby: te same znaczniki co przy filarach, w jednym kolorze, bo to cechy osoby,
+   a nie kolejne pozycje zestawu */
+.osoba__obszary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -2px 0 2px;
+  padding: 0;
+  list-style: none;
+}
+
 .zdjecie-grupowe { margin: 0; }
 .zdjecie-grupowe img {
   width: 100%;
