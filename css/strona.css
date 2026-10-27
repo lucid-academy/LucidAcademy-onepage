@@ -1037,10 +1037,11 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   justify-content: center;
   width: 8.5rem;
 }
+/* Znacznik na środku wysokości opisu: przy dwuwierszowych opisach nie wisi przy pierwszym wierszu */
 @media (min-width: 600px) {
   .zajecia__lista li {
     grid-template-columns: 8.5rem minmax(0, 1fr);
-    align-items: baseline;
+    align-items: center;
   }
 }
 

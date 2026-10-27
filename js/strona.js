@@ -461,7 +461,9 @@
       for (const przycisk of przyciski) {
         przycisk.setAttribute("aria-pressed", String(przycisk.dataset.kategoria === kategoria));
       }
-      licznik.replaceChildren(znakZachety(), ` pokazano ${ile} z ${elementy.length}`);
+      // „z 8 przykładów”: kafle to wybór, nie pełna lista projektów
+      const wszystkie = elementy.length;
+      licznik.replaceChildren(znakZachety(), ` pokazano ${ile} z ${wszystkie} ${wszystkie === 1 ? "przykładu" : "przykładów"}`);
     }
 
     pokaz("");
