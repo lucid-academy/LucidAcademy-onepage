@@ -420,7 +420,7 @@
   // ciasteczek i nie przechowuje adresów IP, więc nie ma tu czego
   // pokrywać zgodą.
   //
-  // Ten sam mechanizm siedzi w projekty/swietoBP/index.html. Powielony
+  // Ten sam mechanizm siedzi w projekty/swietobp/index.html. Powielony
   // świadomie: tamta strona jest samowystarczalna i ma działać otwarta
   // z dysku, więc wspólny plik zerwałby jej główną własność.
   // Rozbicie na podstrony robi sam GoatCounter — kluczuje odsłony po

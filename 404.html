@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Nie ma takiej strony | Lucid Academy</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="/css/strona.css" />
+    <script>
+      // GitHub Pages rozróżnia wielkość liter w adresach, a foldery projektów mają nazwy
+      // małymi literami. Stare linki w rodzaju /projekty/swietoBP/ trafiają tu
+      // i od razu przechodzą na ten sam adres małymi literami.
+      (function () {
+        var sciezka = location.pathname, male = sciezka.toLowerCase();
+        if (male !== sciezka && male.indexOf("/projekty/") === 0) {
+          location.replace(male + location.search + location.hash);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="sekcja" id="tresc">
+      <div class="kontener">
+        <p class="etykieta"><span class="etykieta__znak" aria-hidden="true">&gt;</span> 404</p>
+        <h1 class="sekcja__tytul">Nie ma takiej strony</h1>
+        <p class="sekcja__lead">
+          Adres mógł się zmienić. <a href="/">Wróć na stronę główną Lucid Academy</a>.
+        </p>
+      </div>
+    </main>
+  </body>
+</html>
