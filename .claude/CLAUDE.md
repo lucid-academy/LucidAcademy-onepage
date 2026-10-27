@@ -30,3 +30,8 @@ Oto Twoje Nienaruszalne Wytyczne Techniczne (Ściśle przestrzegaj wszystkich!):
 4. JAK BĘDZIEMY PRACOWAĆ (PROCES):
    Nie generuj całego landing page'a w jednej odpowiedzi. Tworzysz kod sekcja po sekcji.
    Wypuszczaj kod w postaci wyraźnie wydzielonych sekcji HTML / CSS / JS, abym mógł je wkleić w moje środowisko.
+
+5. JĘZYK TREŚCI:
+   - Pisz prosto i rzeczowo. Unikaj zwrotów, które brzmią jak tekst z AI, zwłaszcza dopowiedzeń
+     z zaprzeczeniem w rodzaju „…, nie wszystko, co zbudowaliśmy”, „nie X, tylko Y”, „to nie tylko…, to…”.
+     Wystarczy samo stwierdzenie („Poniżej wybrane przykłady.”).
