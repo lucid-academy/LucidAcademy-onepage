@@ -71,6 +71,7 @@
   /* Jasne odcienie akcentów na tekst znaczników (co najmniej 5,5:1 także na najjaśniejszej poświacie tła) */
   --violet-jasny: #C9A6FF;   /* ten sam co w gradiencie słowa-klucza */
   --magenta-jasna: #F791CA;  /* magenta rozjaśniona bielą */
+  --blekit: #7AA2FF;         /* czwarty kolor znaczników: między fioletem a cyjanem, 7,4:1 na tle */
   --margines: clamp(16px, 4.5vw, 48px);
   --szerokosc: 1240px;
   --nav-h: 64px;
@@ -979,6 +980,12 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   --znacznik-tlo: rgba(240, 54, 159, .10);
   --znacznik-linia: rgba(240, 54, 159, .38);
 }
+/* Czwarty kolor, gdy zestaw ma cztery pozycje (kategorie instytucji) */
+.znacznik--blekit {
+  --znacznik-kolor: var(--blekit);
+  --znacznik-tlo: rgba(122, 162, 255, .10);
+  --znacznik-linia: rgba(122, 162, 255, .38);
+}
 
 .podtytul {
   margin-bottom: clamp(24px, 3vw, 36px);
@@ -1502,7 +1509,14 @@ html:not(.js) .liczba__wykres { display: none; }
   padding-top: 14px;
   border-top: 1px solid var(--line);
 }
-.instytucje__nazwa { margin-bottom: 10px; }
+/* Kategorie instytucji w znacznikach czterech kolorów. Krój tekstu, nie monospace: węższy,
+   więc „Samorząd i administracja” mieści się w jednym wierszu także w wąskiej kolumnie. */
+.instytucje__nazwa.znacznik {
+  margin-bottom: 12px;
+  padding-inline: .75em;
+  font-family: var(--body);
+  font-weight: 600;
+}
 .instytucje__grupa ul {
   display: grid;
   gap: 8px;
