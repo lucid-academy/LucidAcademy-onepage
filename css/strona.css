@@ -494,6 +494,18 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   padding: calc(var(--nav-h) + 4px) 0 clamp(64px, 10vw, 128px);
 }
 
+/* Sieć neuronowa (js/neurony.js) na całej powierzchni hero: nad ilustracją, pod tekstem
+   (tekst stoi dalej w kolejności dokumentu). Tryb screen tylko dodaje światło, więc linie
+   nad książką jej nie przyciemniają, a reakcję na kursor widać także nad obrazem. */
+.neurony {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
 .hero__ilustracja {
   position: relative;
   z-index: -1;

@@ -44,6 +44,8 @@
     <!-- Klasa .js włącza animacje wejścia; bez JavaScriptu wszystko jest od razu widoczne. -->
     <script>document.documentElement.classList.add("js");</script>
     <script src="js/strona.js" defer></script>
+    <!-- Sieć neuronowa w hero (osobny plik, da się wycofać jednym ruchem) -->
+    <script src="js/neurony.js" defer></script>
   </head>
   <body>
     <a class="pomin" href="#tresc">Przejdź do treści</a>
@@ -96,6 +98,8 @@
       ========================================================== -->
       <section class="hero" id="hero" aria-labelledby="hero-tytul">
         <!-- Miejsce na rozbudowę w v1.5 -->
+        <!-- Sieć neuronowa (js/neurony.js): nad ilustracją, pod tekstem; przy tekście i na książce rzadsza -->
+        <canvas class="neurony" data-neurony data-neurony-tekst=".etykieta, .hero__tytul, .hero__lead, .hero__akcje" data-neurony-obraz=".hero__ilustracja" aria-hidden="true"></canvas>
         <div class="hero__ilustracja" aria-hidden="true">
           <img
             src="assets/art/laser-education.webp"
