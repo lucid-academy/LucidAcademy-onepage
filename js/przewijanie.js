@@ -55,14 +55,15 @@
 
   /* ---------- Liczby z ankiet: odliczanie od zera ---------- */
 
-  // „128”, „5,16 ” przed „/ 6”, „79%”: liczba na początku tekstu, reszta zostaje
+  // „128”, „5,16 ” przed „/ 6”, „79%”: liczba na początku tekstu, reszta zostaje.
+  // Separator dziesiętny jak w tekście: przecinek na stronie polskiej, kropka na angielskiej.
   function przygotujLiczbe(wartosc) {
     const tekst = wartosc.firstChild;
-    const czesci = tekst?.nodeType === Node.TEXT_NODE && tekst.nodeValue.match(/^(\s*)(\d+)(?:,(\d+))?([\s\S]*)$/);
+    const czesci = tekst?.nodeType === Node.TEXT_NODE && tekst.nodeValue.match(/^(\s*)(\d+)(?:([,.])(\d+))?([\s\S]*)$/);
     if (!czesci) return null;
-    const [, przed, calosc, ulamek = "", po] = czesci;
+    const [, przed, calosc, separator = ",", ulamek = "", po] = czesci;
     const cel = Number(`${calosc}.${ulamek || 0}`);
-    const zapis = (v) => v.toFixed(ulamek.length).replace(".", ",");
+    const zapis = (v) => v.toFixed(ulamek.length).replace(".", separator);
     // Czytnik ekranu dostaje od razu wynik; cyfry w ruchu są tylko dla oka
     const licznik = utworz("span", "liczba__licznik", zapis(cel));
     licznik.setAttribute("aria-hidden", "true");

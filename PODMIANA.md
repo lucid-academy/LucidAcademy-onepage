@@ -145,5 +145,12 @@ HuminPiotr/lucidacademy-onepage zarchiwizować.
   przestawieniu `POKAZ_TRYB_SIECI` na `true` w `js/strona.js`.
 - Mapę w sekcji „Gdzie już byliśmy”, pozycje miast i ich opóźnienia przy odsłanianiu liczy
   `narzedzia/mapa.py`.
+- Wersja angielska leży pod `/en/` (`en/index.html`) i korzysta z tych samych `css/`, `js/`
+  i `assets/`. Kafle „What we build” są w `kafle.en.json` (ta sama kolejność i pola co
+  w `kafle.json`, przetłumaczone tylko teksty). Komunikaty tworzone w skryptach (galeria,
+  filtr, menu) są w słowniku `T` w `js/strona.js` i zależą od `<html lang>`. Obraz podglądu
+  linku: `narzedzia/og-en.html` → `assets/og/lucid-academy-en.jpg`. Zmiana treści na stronie
+  polskiej nie przenosi się sama: trzeba ją powtórzyć w `en/index.html`, a nowy kafel dopisać
+  w obu plikach JSON. Tryb sieci (`?tryb=siec`) nie ma wersji angielskiej.
 - GitHub Pages rozróżnia wielkość liter w adresach. Nowe foldery i pliki najlepiej nazywać
   małymi literami.

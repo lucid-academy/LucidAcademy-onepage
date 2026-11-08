@@ -486,6 +486,38 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
   html:not(.js) .menu a { width: auto; min-height: 44px; border: 0; font: 500 1rem/1 var(--body); }
 }
 
+/* Przełącznik wersji językowej (PL / EN): na szerokim ekranie za menu,
+   na telefonie w pasku obok przycisku menu, żeby nie chował się w rozwijanej liście */
+.jezyk {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--promien);
+  color: var(--muted);
+  font: 500 .875rem/1 var(--mono);
+  letter-spacing: .08em;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.jezyk:hover,
+.jezyk:focus-visible { color: var(--ink); border-color: var(--violet); }
+
+@media (min-width: 900px) {
+  .menu { margin-left: auto; }
+  .tryb-sieci:not([hidden]) ~ .menu { margin-left: 0; }
+}
+@media (max-width: 899.98px) {
+  .tryb-sieci { order: 1; }
+  .jezyk { order: 2; margin-left: auto; }
+  .tryb-sieci:not([hidden]) ~ .jezyk { margin-left: 0; }
+  .menu-przycisk { order: 3; }
+}
+
 /* ---------- Ruch: wejścia przy scrollu ---------- */
 
 .js [data-wejscie] {
@@ -850,6 +882,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 /* Gdy obrazu brak, zostaje spokojna plansza zamiast ikony zepsutego pliku */
 .kafel__podglad--brak img { visibility: hidden; }
+:lang(en) .kafel__podglad--brak::before { content: "> preview coming soon"; }
 .kafel__podglad--brak::before {
   content: "> podgląd w przygotowaniu";
   position: absolute;
@@ -1268,6 +1301,13 @@ html:not(.js) .liczba__wykres { display: none; }
 }
 
 .wyklad__meta { font-size: 1rem; }
+
+/* Strona angielska: uwaga pod nagłówkiem, że nagrania są po polsku */
+.wyklady__jezyk {
+  max-width: 44em;
+  margin: calc(-1 * clamp(8px, 1.4vw, 16px)) 0 clamp(24px, 3vw, 36px);
+  color: var(--muted);
+}
 
 .wyklad__linki {
   display: flex;

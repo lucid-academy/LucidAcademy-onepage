@@ -75,7 +75,11 @@
       // Przy ograniczonym ruchu sieć i tak stoi, więc przycisk nie jest potrzebny
       przycisk.hidden = bezRuchu();
       przycisk.classList.toggle("ruch-przelacznik--stop", zatrzymane);
-      tekst.textContent = zatrzymane ? "wznów ruch tła" : "zatrzymaj ruch tła";
+      // Strona angielska (/en/) ma <html lang="en">
+      const poAngielsku = /^en\b/i.test(document.documentElement.lang);
+      tekst.textContent = poAngielsku
+        ? (zatrzymane ? "resume background motion" : "pause background motion")
+        : (zatrzymane ? "wznów ruch tła" : "zatrzymaj ruch tła");
     };
     przycisk.addEventListener("click", () => {
       zatrzymane = !zatrzymane;

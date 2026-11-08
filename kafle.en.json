@@ -1,0 +1,370 @@
+{
+  "_instrukcja": [
+    "Angielska wersja kafle.json dla strony /en/. Struktura i pola techniczne (obraz, status, kadr, fokus, adresy) są takie same jak w kafle.json; tłumaczy się tylko teksty: nazwa, typ, zdanie, dopisek, alt, atrybucja, etykiety przycisków, alt i podpis w galerii.",
+    "Nowy kafel dopisuje się w obu plikach, w tej samej kolejności. Typ musi być jedną z angielskich nazw z listy kategorie (w tej samej kolejności co w kafle.json).",
+    "Pełna instrukcja pól: kafle.json, pole _instrukcja."
+  ],
+  "kategorie": [
+    "Culture and tourism",
+    "City games",
+    "Data analysis",
+    "Civic participation"
+  ],
+  "kafle": [
+    {
+      "nazwa": "9th Chełmińskie Przedmieście Festival",
+      "typ": "Culture and tourism",
+      "status": "otwarte",
+      "zdanie": "Interactive festival plan: 48 events numbered on a map of the park by the Toruń Waterworks, with the programme and an archive of previous editions.",
+      "obraz": "assets/kafle/swieto-chelminskie.webp",
+      "alt": "Frame from the site’s intro: a magnet reading “2026 · 9th Chełmińskie Przedmieście Festival” with a drawing of a half-timbered townhouse and the caption “13 September 2026 · park by the Toruń Waterworks”.",
+      "atrybucja": "Site plan based on data © OpenStreetMap contributors",
+      "kadr": "poziomy",
+      "przyciski": [
+        {
+          "etykieta": "Open",
+          "adres": "https://lucidacademy.pl/projekty/swietochp/"
+        }
+      ],
+      "galeria": [
+        {
+          "obraz": "assets/galeria/swieto-chelminskie-1.webp",
+          "alt": "Last frame of the intro: the magnet of the 9th Chełmińskie Przedmieście Festival on a dark background, with the date and venue below.",
+          "podpis": "Intro: magnets from successive editions of the festival"
+        },
+        {
+          "obraz": "assets/galeria/swieto-chelminskie-2.webp",
+          "alt": "Park plan with numbered pins in category colours and a bottom bar with the tabs Programme, Filters, Memory, Friends and About us.",
+          "podpis": "Park plan with numbered programme points"
+        },
+        {
+          "obraz": "assets/galeria/swieto-chelminskie-3.webp",
+          "alt": "Open “Programme — 48 events” panel: a list of items numbered as on the plan, including activities with scouts, bouncy castles, art workshops and a library stand.",
+          "podpis": "Programme numbered to match the park plan"
+        },
+        {
+          "obraz": "assets/galeria/swieto-chelminskie-4.webp",
+          "alt": "“Chełmionka Memory” panel: a grid of magnets from the 2018–2026 editions and a list of the buildings featured on them.",
+          "podpis": "Archive of magnets from the 2018–2026 editions"
+        }
+      ]
+    },
+    {
+      "nazwa": "17th Bydgoskie Przedmieście Festival",
+      "typ": "Culture and tourism",
+      "status": "otwarte",
+      "zdanie": "A two-day programme: 55 events in 17 locations. The planner arranges selected events into a schedule and allows for walking time between them.",
+      "obraz": "assets/kafle/swieto-bydgoskie.webp",
+      "alt": "Frame from the film that opens the site: a cobbled street lined with villas in golden light, with an old book on a lectern in the middle.",
+      "atrybucja": "Map based on data © OpenStreetMap contributors",
+      "kadr": "poziomy",
+      "przyciski": [
+        {
+          "etykieta": "Open",
+          "adres": "https://lucidacademy.pl/projekty/swietobp/"
+        }
+      ],
+      "galeria": [
+        {
+          "obraz": "assets/galeria/swieto-bydgoskie-1.webp",
+          "alt": "Frame from the film that opens the site: a cobbled street with villas in morning light, falling leaves and a book on a lectern in the middle of the road.",
+          "podpis": "Frame from the opening film"
+        },
+        {
+          "obraz": "assets/galeria/swieto-bydgoskie-2.webp",
+          "alt": "Map of the district with coloured pins at event venues, a day switch (Saturday 29.08, Sunday 30.08, both days) and a bottom bar with the tabs Programme, My plan, Filters, Friends and About us.",
+          "podpis": "District map with a day switch"
+        },
+        {
+          "obraz": "assets/galeria/swieto-bydgoskie-3.webp",
+          "alt": "Open “Programme — 55 events” panel with times and venues, including board games at the Student Activity Centre and an open day at the library.",
+          "podpis": "Two-day programme with times and venues"
+        },
+        {
+          "obraz": "assets/galeria/swieto-bydgoskie-4.webp",
+          "alt": "“Friends of the Festival” panel listing local venues and institutions, including Trafo Cafe and District Council No. 13, with hearts marking their locations on the map.",
+          "podpis": "Friends of the Festival: local venues and institutions"
+        }
+      ]
+    },
+    {
+      "nazwa": "Toruń Participatory Budget 2027",
+      "typ": "Civic participation",
+      "status": "otwarte",
+      "zdanie": "A demonstration site built on official data: projects broken down by district, project costs compared with the funds available, and the rules for counting votes.",
+      "obraz": "assets/kafle/bo-torun-2027.webp",
+      "alt": "The Toruń Participatory Budget 2027 site in its dark theme: the heading “Voting closed — awaiting results”, four figures (130 ideas, 35 city-wide, 95 in 13 districts, 6 votes per resident) and a district selector.",
+      "kadr": "poziomy",
+      "przyciski": [
+        {
+          "etykieta": "Open",
+          "adres": "https://lucid-academy.github.io/ai-lab/bo-torun-2027.html"
+        }
+      ],
+      "galeria": [
+        {
+          "obraz": "assets/galeria/bo-torun-2027-1.webp",
+          "alt": "Top of the page in the dark theme: a “Prototype” bar, the heading “Voting closed — awaiting results”, four figures (130 ideas, 35 city-wide, 95 in 13 districts, 6 votes per resident) and a district selector.",
+          "podpis": "Voting status and district selection"
+        },
+        {
+          "obraz": "assets/galeria/bo-torun-2027-2.webp",
+          "alt": "“More demand than money” section: a chart of the value of submitted projects against the budget and a chart of the number of projects in each district.",
+          "podpis": "Value of submitted projects against the budget"
+        },
+        {
+          "obraz": "assets/galeria/bo-torun-2027-3.webp",
+          "alt": "Project map: a dark outline of Toruń with the Vistula and orange location points, with a note that this is a sample of 30 of the 130 projects.",
+          "podpis": "Project map (sample of 30 out of 130)"
+        },
+        {
+          "obraz": "assets/galeria/bo-torun-2027-4.webp",
+          "alt": "“All 130 ideas” list: a search box, category filters (sport, playground, greenery, education and others) and project cards with amounts.",
+          "podpis": "Catalogue of 130 projects with search and filters"
+        }
+      ]
+    },
+    {
+      "nazwa": "Journeys through Purda Municipality",
+      "typ": "City games",
+      "status": "otwarte",
+      "zdanie": "A game designed by schoolgirls from the school in Klebark Wielki, moved from a paper version to an interactive map with a quiz and a bestiary.",
+      "obraz": "assets/kafle/wedrowki-purda.webp",
+      "alt": "The game Journeys through Purda Municipality: an illustrated map of the municipality with numbered route points, a start and a finish, and a character card beside it.",
+      "kadr": "poziomy",
+      "przyciski": [
+        {
+          "etykieta": "Open",
+          "adres": "https://lucid-academy.github.io/olsztyn/"
+        }
+      ],
+      "galeria": [
+        {
+          "obraz": "assets/galeria/wedrowki-purda-1.webp",
+          "alt": "Start screen: a dark illustration of a swamp with a werewolf and wraiths, the caption “Whispers of the Swamp · Purda Municipality · Warmia”, the title “Olsztyn Glossary” and a “Begin the journey” button.",
+          "podpis": "Start screen"
+        },
+        {
+          "obraz": "assets/galeria/wedrowki-purda-2.webp",
+          "alt": "Illustrated map of the municipality with a numbered route from start to finish, round thumbnails of places and the player’s character card with skill bars.",
+          "podpis": "Route map and character card"
+        },
+        {
+          "obraz": "assets/galeria/wedrowki-purda-3.webp",
+          "alt": "Bestiary card: an illustration of the Południca (Noon Witch), a figure in a white veil holding a sickle in a field of grain under the full sun, next to a description of the spirit, her place in Slavic beliefs, her stats, weaknesses and resistances.",
+          "podpis": "Bestiary: the Południca of Smutna Góra"
+        }
+      ]
+    },
+    {
+      "nazwa": "Żagle 2026 sailing festival, Szczecin",
+      "typ": "Culture and tourism",
+      "status": "otwarte",
+      "zdanie": "Festival guide: 31 vessels and 14 event venues. Based on the answers to four questions, the site prepares a personal sightseeing plan.",
+      "obraz": "assets/kafle/zagle-2026.webp",
+      "alt": "The “Żagle 2026 · Szczecin on the Oder” site: a header with the dates 14–16 August 2026, a menu (Map, Build a plan, Fleet, Cruises, What’s missing), a day switch and a hand-drawn map of the Oder waterfront with numbered event venues.",
+      "kadr": "poziomy",
+      "przyciski": [
+        {
+          "etykieta": "Open",
+          "adres": "https://lucid-academy.github.io/ai-lab/zagle-2026-karta-morska.html"
+        }
+      ],
+      "galeria": [
+        {
+          "obraz": "assets/galeria/zagle-2026-1.webp",
+          "alt": "Header “Żagle 2026 · Szczecin on the Oder” (14–16 August 2026, 31 vessels, 14 venues), a day switch and a hand-drawn map of the Oder waterfront with numbered event venues.",
+          "podpis": "Waterfront map with event venues"
+        },
+        {
+          "obraz": "assets/galeria/zagle-2026-2.webp",
+          "alt": "“Your plan” section: three stops on Saturday afternoon with times, places and walking time between them, plus a tip in case of rain.",
+          "podpis": "Personal day plan based on four answers"
+        },
+        {
+          "obraz": "assets/galeria/zagle-2026-3.webp",
+          "alt": "“Żagle 2026 Fleet”: a search box, class and type filters and cards of sailing ships with photos, including Kapitan Borchardt, Albert Johannes, Minerva and Loth Loriën.",
+          "podpis": "Fleet catalogue: 31 vessels with class and type filters"
+        }
+      ]
+    },
+    {
+      "nazwa": "Interactive City Expeditions · Toruń",
+      "typ": "City games",
+      "status": "na-zyczenie",
+      "zdanie": "A city game platform available throughout the season. Participants have accounts and an achievement system, and the organiser gets statistics.",
+      "obraz": "assets/kafle/wyprawy-torun.webp",
+      "alt": "Part of a participant’s profile in the game on a phone, in fantasy style: a dark green character card with a level and an experience bar, and a grid of eight achievements, five of them earned.",
+      "kadr": "pionowy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/wyprawy-torun-1.webp",
+          "alt": "Player portal in fantasy style: a style switch (historical, cyberpunk, fantasy), a dark green character card with a level and an experience bar, and a grid of achievements.",
+          "podpis": "Participant profile in fantasy style"
+        },
+        {
+          "obraz": "assets/galeria/wyprawy-torun-2.webp",
+          "alt": "Illustration from the film that opens the first expedition: five characters on a rain-soaked street at night — a man in glasses, a woman in a gown holding a book, a figure in a plague doctor’s mask with a flask of green liquid, a man in a cloak with a cross and a staff, and a young man in a waistcoat. In the foreground, a table with a candle in a lantern, scrolls and an open book.",
+          "podpis": "Characters from the first chapter of the game"
+        },
+        {
+          "obraz": "assets/galeria/wyprawy-torun-3.webp",
+          "alt": "The same portal in historical style: a light sandy background, a character card with a brick frame and a grid of achievements.",
+          "podpis": "Historical style"
+        },
+        {
+          "obraz": "assets/galeria/wyprawy-torun-4.webp",
+          "alt": "The same portal in cyberpunk style: a navy background with violet and turquoise accents.",
+          "podpis": "Cyberpunk style: one platform, different narratives"
+        }
+      ]
+    },
+    {
+      "nazwa": "Toruń Green Map",
+      "typ": "Culture and tourism",
+      "status": "na-zyczenie",
+      "zdanie": "A seasonal map of the city’s green spaces: it shows what is in bloom in a given week and how long the season will last in each place. The planner turns selected points into a walking route.",
+      "obraz": "assets/kafle/mapa-zieleni.webp",
+      "alt": "Toruń Green Map: a “Right now” bar with places where the season is under way, season and district filters, a city map with pins and a list of places.",
+      "atrybucja": "Base map © OpenStreetMap contributors",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/mapa-zieleni-1.webp",
+          "alt": "Map view: a “Right now” bar with four places where the season is under way, season and district filters, a map of Toruń with pins and sample routes.",
+          "podpis": "Map of places where the season is under way"
+        },
+        {
+          "obraz": "assets/galeria/mapa-zieleni-2.webp",
+          "alt": "Atlas tab, “Wild bank of the Vistula” card: a photo of an overgrown riverbank with a sandbar, a short description of the place and two season bars (ice floes on the Vistula, green riverbank) with the number of days until they begin.",
+          "podpis": "Atlas: the “Wild bank of the Vistula” card"
+        },
+        {
+          "obraz": "assets/galeria/mapa-zieleni-3.webp",
+          "alt": "“Lilacs in Bydgoskie Przedmieście” card: a close-up of lilac in bloom, a description of a walk through the district’s side streets and a flowering season bar (25 April – 25 May).",
+          "podpis": "Atlas: the “Lilacs in Bydgoskie Przedmieście” card"
+        },
+        {
+          "obraz": "assets/galeria/mapa-zieleni-4.webp",
+          "alt": "Planner tab: a walk builder with pace, time and distance, and a preview of a conversation with the map in which a sentence turns into a route.",
+          "podpis": "Walk planner: pace, time and distance"
+        },
+        {
+          "obraz": "assets/galeria/mapa-zieleni-5.webp",
+          "alt": "Passport tab: a green passport with a grid of stamps for places to visit and a task for right now.",
+          "podpis": "Passport with stamps for visited places"
+        }
+      ]
+    },
+    {
+      "nazwa": "Consultation: night-time alcohol sales in Krosno",
+      "typ": "Civic participation",
+      "status": "na-zyczenie",
+      "zdanie": "Consultation results presented from three perspectives: residents, district councils and advisory bodies, with a discussion of the limitations of the data.",
+      "obraz": "assets/kafle/krosno-konsultacje.webp",
+      "alt": "Header of the report “Night-time alcohol sales in Krosno” against a neon map of the city, with a result of 55.1% in favour of restrictions and five summary figures.",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/krosno-konsultacje-1.webp",
+          "alt": "Header of the report “Night-time alcohol sales in Krosno”, a result of 55.1% in favour of restrictions and five summary figures against a neon map of the city.",
+          "podpis": "Overall consultation results"
+        },
+        {
+          "obraz": "assets/galeria/krosno-konsultacje-2.webp",
+          "alt": "“The same issue looks different in every part of the city” section: a table of districts with support bars and a panel with the full reading for one district.",
+          "podpis": "Results by district"
+        },
+        {
+          "obraz": "assets/galeria/krosno-konsultacje-3.webp",
+          "alt": "“Age and gender strongly affect the answers” section: charts for and against restrictions by age group and the profile of the people who completed the survey.",
+          "podpis": "Answers by age and gender"
+        },
+        {
+          "obraz": "assets/galeria/krosno-konsultacje-4.webp",
+          "alt": "“Hard numbers don’t answer every question” section: data on night-time public order disturbances, drinking in prohibited places and interventions.",
+          "podpis": "Administrative data alongside the survey results"
+        }
+      ]
+    },
+    {
+      "nazwa": "ISKRA: Atlas of Voices, Sienkiewicza Street",
+      "typ": "Civic participation",
+      "status": "na-zyczenie",
+      "zdanie": "Residents’ opinions gathered during 26 research walks, compiled as input for planning a creative district. The fieldwork was carried out by psychology students.",
+      "obraz": "assets/kafle/iskra-atlas-glosow.webp",
+      "alt": "Two photos of an old tram depot side by side: on the left its current state (brick halls with gates and tracks), on the right an AI visualisation of the same place as an evening square with string lights and people at tables.",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/iskra-atlas-glosow-1.webp",
+          "alt": "“Old tram depot” block from the Visualising the potential section: a photo of the current state (brick halls with gates and tracks) and an AI visualisation of the same place as an evening meeting square with string lights.",
+          "podpis": "Old tram depot: current state and AI visualisation"
+        },
+        {
+          "obraz": "assets/galeria/iskra-atlas-glosow-2.webp",
+          "alt": "“Participant profile” section: five figures, including mean and median age, and charts of gender, roles and length of connection with Bydgoskie Przedmieście.",
+          "podpis": "Profile of study participants"
+        },
+        {
+          "obraz": "assets/galeria/iskra-atlas-glosow-3.webp",
+          "alt": "“Places named by respondents” chart: from Bydgoski Park, named in 24 of 26 reports, downwards, coloured by rating.",
+          "podpis": "Most frequently named places"
+        }
+      ]
+    },
+    {
+      "nazwa": "Szczecin Season Journal",
+      "typ": "Data analysis",
+      "status": "na-zyczenie",
+      "zdanie": "Tourism analysis for a management board: the structure and seasonality of arrivals, month by month and year by year.",
+      "obraz": "assets/kafle/szczecinski-dziennik-sezonu.webp",
+      "alt": "Map of Europe with lines of foreign visitor arrivals converging on Szczecin; line thickness reflects the number of visitors, and the figures themselves are blurred.",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-1.webp",
+          "alt": "“Where foreign visitors sail in from” view: a map of Europe with arrival lines to Szczecin, group (tourists, day visitors) and period switches, and a ranking of countries by share of all visitors, led by Germany, Ukraine and the United Kingdom. Visitor numbers blurred.",
+          "podpis": "Countries of origin of foreign visitors"
+        },
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-2.webp",
+          "alt": "“August compared with July” chart: the ratio of August to July visitor numbers in 2023–2026 for six groups, from domestic tourists to day visitors from Germany, with a note on the limitations of the comparison.",
+          "podpis": "August against July in four consecutive years"
+        },
+        {
+          "obraz": "assets/galeria/szczecinski-dziennik-sezonu-3.webp",
+          "alt": "Month roses for visitors from individual countries: for each country, the year’s visitors broken down by month, with the peak month highlighted, e.g. August for Germany and September for Ukraine. Total visitor numbers blurred.",
+          "podpis": "Arrivals over the year by country"
+        }
+      ]
+    },
+    {
+      "nazwa": "Bydgoszcz Heat 2040",
+      "typ": "Data analysis",
+      "status": "na-zyczenie",
+      "zdanie": "An analysis of how exposed the city’s neighbourhoods are to ETS2, the EU carbon price on heating and transport fuels, and a district heating scenario up to 2040, based on public data.",
+      "obraz": "assets/kafle/cieplo-bydgoszczy-2040.webp",
+      "alt": "“Neighbourhoods and ETS2 exposure” view: a map of Bydgoszcz neighbourhoods in five classes of solid-fuel heating devices per 1,000 residents, next to a panel with city-wide data and a legend.",
+      "atrybucja": "Base map © OpenStreetMap contributors",
+      "kadr": "poziomy",
+      "galeria": [
+        {
+          "obraz": "assets/galeria/cieplo-bydgoszczy-2040-1.webp",
+          "alt": "“Neighbourhoods and ETS2 exposure” view: a data status bar, a map of Bydgoszcz neighbourhoods on an OpenStreetMap base in five classes of solid-fuel devices per 1,000 residents, and a city panel: 176.0 km², 18,395 devices, 61.2 per 1,000 residents and the estimated ETS2 cost for a coal-heated house.",
+          "podpis": "Neighbourhood map: solid-fuel devices and ETS2 exposure"
+        },
+        {
+          "obraz": "assets/galeria/cieplo-bydgoszczy-2040-2.webp",
+          "alt": "2040 scenario: assumption sliders (building retrofits, heat pumps, low-emission sources, heat recovery, ETS2 allowance price) and the result for 2040: heat demand, emission reduction, investment, annual system cost, and charts of the emissions pathway and the heat supply mix.",
+          "podpis": "2040 scenario: assumptions and result"
+        },
+        {
+          "obraz": "assets/galeria/cieplo-bydgoszczy-2040-3.webp",
+          "alt": "Top of the “Heat scenario to 2040” view: the annual cost of heating a coal-heated detached house today and from 2028, and an assessment of whether the district heating system meets the efficient-system criterion.",
+          "podpis": "Household heating cost and district heating system assessment"
+        }
+      ]
+    }
+  ]
+}

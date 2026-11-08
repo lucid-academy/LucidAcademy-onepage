@@ -14,6 +14,62 @@
   const bezRuchu = () => ograniczonyRuch.matches;
   const maObserwatora = "IntersectionObserver" in window;
 
+  /* ---------- Wersja językowa: komunikaty tworzone w skrypcie ---------- */
+  // Strona angielska (/en/) ma <html lang="en">; każda inna wartość oznacza polską.
+
+  // 1 zrzut, 2–4 zrzuty, 5–21 zrzutów, 22–24 zrzuty…
+  function odmiana(n, [jeden, kilka, wiele]) {
+    if (n === 1) return jeden;
+    const j = n % 10, d = n % 100;
+    return j >= 2 && j <= 4 && (d < 12 || d > 14) ? kilka : wiele;
+  }
+
+  const PO_ANGIELSKU = /^en\b/i.test(korzen.lang);
+  const T = PO_ANGIELSKU
+    ? {
+        menu: "Menu",
+        zamknijMenu: "Close menu",
+        znakiScramble: "abcdefghijklmnopqrstuvwxyz#%&+=<>/*",
+        zamknijGalerie: "Close gallery",
+        poprzedniZrzut: "Previous screenshot",
+        nastepnyZrzut: "Next screenshot",
+        zrzutZ: (nr, ile) => `Screenshot ${nr} of ${ile}`,
+        zrzuty: (n) => `${n} ${n === 1 ? "screenshot" : "screenshots"}`,
+        zobaczZrzuty: (nazwa, opis) => `View screenshots: ${nazwa} (${opis})`,
+        otwarteDemo: "Live demo",
+        demoNaZyczenie: "Demo on request",
+        napiszDoNas: "Get in touch",
+        wSprawie: (nazwa) => ` about: ${nazwa}`,
+        otworz: "Open",
+        nowaKarta: (nazwa) => ` — ${nazwa} (opens in a new tab)`,
+        bladWczytania: "The project list could not be loaded. ",
+        bladDopisek: " — we are happy to show our projects.",
+        wszystko: "All",
+        pokazano: (ile, wszystkie) => ` showing ${ile} of ${wszystkie} ${wszystkie === 1 ? "example" : "examples"}`,
+      }
+    : {
+        menu: "Menu",
+        zamknijMenu: "Zamknij menu",
+        znakiScramble: "aąbcćdeęfghijklłmnńoóprsśtuwyzźż#%&+=<>/*",
+        zamknijGalerie: "Zamknij galerię",
+        poprzedniZrzut: "Poprzedni zrzut",
+        nastepnyZrzut: "Następny zrzut",
+        zrzutZ: (nr, ile) => `Zrzut ${nr} z ${ile}`,
+        zrzuty: (n) => `${n} ${odmiana(n, ["zrzut", "zrzuty", "zrzutów"])}`,
+        zobaczZrzuty: (nazwa, opis) => `Zobacz zrzuty ekranu: ${nazwa} (${opis})`,
+        otwarteDemo: "Otwarte demo",
+        demoNaZyczenie: "Demo na życzenie",
+        napiszDoNas: "Napisz do nas",
+        wSprawie: (nazwa) => ` w sprawie: ${nazwa}`,
+        otworz: "Otwórz",
+        nowaKarta: (nazwa) => ` — ${nazwa} (otwiera się w nowej karcie)`,
+        bladWczytania: "Nie udało się wczytać listy projektów. ",
+        bladDopisek: " — chętnie je pokażemy.",
+        wszystko: "Wszystko",
+        // „z 8 przykładów”: kafle to wybór, nie pełna lista projektów
+        pokazano: (ile, wszystkie) => ` pokazano ${ile} z ${wszystkie} ${wszystkie === 1 ? "przykładu" : "przykładów"}`,
+      };
+
   function utworz(tag, klasa, tekst) {
     const el = document.createElement(tag);
     if (klasa) el.className = klasa;
@@ -57,7 +113,7 @@
 
   function ustawMenu(otwarte) {
     przyciskMenu.setAttribute("aria-expanded", String(otwarte));
-    przyciskMenu.querySelector(".sr-only").textContent = otwarte ? "Zamknij menu" : "Menu";
+    przyciskMenu.querySelector(".sr-only").textContent = otwarte ? T.zamknijMenu : T.menu;
     korzen.classList.toggle("menu-otwarte", otwarte);
   }
 
@@ -125,7 +181,7 @@
 
   function scramble(el) {
     const docelowe = el.textContent;
-    const znaki = "aąbcćdeęfghijklłmnńoóprsśtuwyzźż#%&+=<>/*";
+    const znaki = T.znakiScramble;
     const ZNAKI = znaki.toUpperCase();
     const czas = 1150;
     const krok = 48;
@@ -203,13 +259,6 @@
 
   /* ---------- 05 · Co budujemy: galeria zrzutów (jedno okno dla wszystkich kafli) ---------- */
 
-  // 1 zrzut, 2–4 zrzuty, 5–21 zrzutów, 22–24 zrzuty…
-  function odmiana(n, [jeden, kilka, wiele]) {
-    if (n === 1) return jeden;
-    const j = n % 10, d = n % 100;
-    return j >= 2 && j <= 4 && (d < 12 || d > 14) ? kilka : wiele;
-  }
-
   const galeria = (() => {
     let okno = null, el = null, zrzuty = [], biezacy = 0, wywolujacy = null;
 
@@ -229,7 +278,7 @@
       const licznik = utworz("p", "galeria__licznik");
       const tytul = utworz("h2", "galeria__tytul");
       tytul.id = "galeria-tytul";
-      const zamknij = przycisk("galeria__zamknij", "Zamknij galerię");
+      const zamknij = przycisk("galeria__zamknij", T.zamknijGalerie);
       naglowek.append(licznik, tytul, zamknij);
 
       const kadr = utworz("figure", "galeria__kadr");
@@ -238,8 +287,8 @@
       const podpis = utworz("figcaption", "galeria__podpis");
       kadr.append(obraz, podpis);
 
-      const poprzedni = przycisk("galeria__poprzedni", "Poprzedni zrzut");
-      const nastepny = przycisk("galeria__nastepny", "Następny zrzut");
+      const poprzedni = przycisk("galeria__poprzedni", T.poprzedniZrzut);
+      const nastepny = przycisk("galeria__nastepny", T.nastepnyZrzut);
       const komunikat = utworz("p", "sr-only");
       komunikat.setAttribute("aria-live", "polite");
 
@@ -285,7 +334,7 @@
       el.podpis.textContent = zrzut.podpis || "";
       el.podpis.hidden = !zrzut.podpis;
       el.licznik.replaceChildren(znakZachety(), ` ${biezacy + 1} / ${ile}`);
-      el.komunikat.textContent = `Zrzut ${biezacy + 1} z ${ile}`;
+      el.komunikat.textContent = T.zrzutZ(biezacy + 1, ile);
       el.poprzedni.hidden = el.nastepny.hidden = ile < 2;
       // Sąsiednie zrzuty wczytują się zawczasu, żeby przewijanie nie czekało na sieć
       if (ile > 1) for (const d of [1, -1]) new Image().src = zrzuty[(biezacy + d + ile) % ile].obraz;
@@ -308,8 +357,8 @@
   /* ---------- 05 · Co budujemy: kafle z kafle.json i filtr ---------- */
 
   const STATUSY = {
-    "otwarte": { klasa: "kafel--otwarte", etykieta: "Otwarte demo" },
-    "na-zyczenie": { klasa: "kafel--na-zyczenie", etykieta: "Demo na życzenie" },
+    "otwarte": { klasa: "kafel--otwarte", etykieta: T.otwarteDemo },
+    "na-zyczenie": { klasa: "kafel--na-zyczenie", etykieta: T.demoNaZyczenie },
   };
 
   function sprawdzKafel(kafel, nr, kategorie) {
@@ -360,11 +409,11 @@
 
     if (kafel.galeria) {
       const ile = kafel.galeria.length;
-      const opisZrzutow = `${ile} ${odmiana(ile, ["zrzut", "zrzuty", "zrzutów"])}`;
+      const opisZrzutow = T.zrzuty(ile);
       const przycisk = utworz("button", "kafel__galeria");
       przycisk.type = "button";
       przycisk.setAttribute("aria-haspopup", "dialog");
-      przycisk.setAttribute("aria-label", `Zobacz zrzuty ekranu: ${kafel.nazwa} (${opisZrzutow})`);
+      przycisk.setAttribute("aria-label", T.zobaczZrzuty(kafel.nazwa, opisZrzutow));
       const znacznik = utworz("span", "kafel__zrzuty");
       znacznik.setAttribute("aria-hidden", "true");
       znacznik.append(znakZachety(), ` ${opisZrzutow}`);
@@ -390,17 +439,17 @@
     const akcje = utworz("div", "kafel__akcje");
     if (naZyczenie) {
       // Bez adresu strony — tylko rozmowa
-      const link = utworz("a", "przycisk przycisk--obrys", "Napisz do nas");
+      const link = utworz("a", "przycisk przycisk--obrys", T.napiszDoNas);
       link.href = "#kontakt";
-      link.append(utworz("span", "sr-only", ` w sprawie: ${kafel.nazwa}`));
+      link.append(utworz("span", "sr-only", T.wSprawie(kafel.nazwa)));
       akcje.append(link);
     } else {
       for (const przycisk of kafel.przyciski) {
-        const link = utworz("a", "przycisk przycisk--obrys przycisk--zewn", przycisk.etykieta || "Otwórz");
+        const link = utworz("a", "przycisk przycisk--obrys przycisk--zewn", przycisk.etykieta || T.otworz);
         link.href = przycisk.adres;
         link.target = "_blank";
         link.rel = "noopener";
-        link.append(utworz("span", "sr-only", ` — ${kafel.nazwa} (otwiera się w nowej karcie)`));
+        link.append(utworz("span", "sr-only", T.nowaKarta(kafel.nazwa)));
         akcje.append(link);
       }
     }
@@ -419,28 +468,38 @@
     const filtr = sekcja.querySelector(".filtr");
     const licznik = sekcja.querySelector(".filtr__licznik");
 
+    // Plik z kaflami: kafle.json, a na stronie angielskiej kafle.en.json (atrybut data-zrodlo).
+    // Ścieżki obrazów i przycisków w pliku liczą się od niego, więc działają z /en/ tak samo jak z /.
+    const adresDanych = new URL(lista.dataset.zrodlo || "kafle.json", document.baseURI);
+    const odDanych = (adres) => (adres ? new URL(adres, adresDanych).href : adres);
+
     let dane;
     try {
-      const odpowiedz = await fetch("kafle.json", { cache: "no-cache" });
+      const odpowiedz = await fetch(adresDanych, { cache: "no-cache" });
       if (!odpowiedz.ok) throw new Error(`HTTP ${odpowiedz.status}`);
       dane = await odpowiedz.json();
     } catch (blad) {
       console.error("[kafle.json] Nie udało się wczytać listy projektów:", blad);
-      const komunikat = utworz("p", "kafle__komunikat", "Nie udało się wczytać listy projektów. ");
-      const link = utworz("a", null, "Napisz do nas");
+      const komunikat = utworz("p", "kafle__komunikat", T.bladWczytania);
+      const link = utworz("a", null, T.napiszDoNas);
       link.href = "#kontakt";
-      komunikat.append(link, " — chętnie je pokażemy.");
+      komunikat.append(link, T.bladDopisek);
       lista.replaceWith(komunikat);
       return null;
     }
 
     const kategorie = Array.isArray(dane.kategorie) ? dane.kategorie : [];
     const wpisy = (Array.isArray(dane.kafle) ? dane.kafle : []).filter((k, nr) => sprawdzKafel(k, nr, kategorie));
+    for (const k of wpisy) {
+      k.obraz = odDanych(k.obraz);
+      k.galeria?.forEach((z) => { z.obraz = odDanych(z.obraz); });
+      k.przyciski?.forEach((p) => { p.adres = odDanych(p.adres); });
+    }
     const elementy = wpisy.map(zbudujKafel);
     lista.append(...elementy);
     elementy.forEach(obserwujWejscie);
 
-    const przyciski = [["Wszystko", ""], ...kategorie.map((k) => [k, k])].map(([etykieta, wartosc]) => {
+    const przyciski = [[T.wszystko, ""], ...kategorie.map((k) => [k, k])].map(([etykieta, wartosc]) => {
       const przycisk = utworz("button", "filtr__przycisk", etykieta);
       przycisk.type = "button";
       przycisk.dataset.kategoria = wartosc;
@@ -461,9 +520,7 @@
       for (const przycisk of przyciski) {
         przycisk.setAttribute("aria-pressed", String(przycisk.dataset.kategoria === kategoria));
       }
-      // „z 8 przykładów”: kafle to wybór, nie pełna lista projektów
-      const wszystkie = elementy.length;
-      licznik.replaceChildren(znakZachety(), ` pokazano ${ile} z ${wszystkie} ${wszystkie === 1 ? "przykładu" : "przykładów"}`);
+      licznik.replaceChildren(znakZachety(), T.pokazano(ile, elementy.length));
     }
 
     pokaz("");

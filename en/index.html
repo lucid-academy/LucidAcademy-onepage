@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lucid Academy | AI training for public institutions</title>
+    <meta
+      name="description"
+      content="Lucid Academy is a foundation based in Toruń, Poland. We help schools, NGOs, local governments and cultural institutions get to grips with artificial intelligence: AI education, community projects, facilitation and culture."
+    />
+    <meta name="theme-color" content="#0C0720" />
+    <link rel="canonical" href="https://lucidacademy.pl/en/" />
+    <!-- Wersje językowe: polska pod /, angielska pod /en/ -->
+    <link rel="alternate" hreflang="pl" href="https://lucidacademy.pl/" />
+    <link rel="alternate" hreflang="en" href="https://lucidacademy.pl/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://lucidacademy.pl/" />
+
+    <!-- Ikony: sygnet z logo (kształt i kolor bez zmian) -->
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+
+    <!-- Podgląd linku (Open Graph, X/Twitter). Źródło grafiki: narzedzia/og-en.html -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale:alternate" content="pl_PL" />
+    <meta property="og:site_name" content="Lucid Academy" />
+    <meta property="og:title" content="Lucid Academy | AI training for public institutions" />
+    <meta property="og:description" content="Lucid Academy is a foundation based in Toruń, Poland. We help schools, NGOs, local governments and cultural institutions get to grips with artificial intelligence: AI education, community projects, facilitation and culture." />
+    <meta property="og:url" content="https://lucidacademy.pl/en/" />
+    <meta property="og:image" content="https://lucidacademy.pl/assets/og/lucid-academy-en.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lucid Academy logo and the line “AI training for public institutions, local governments, schools and NGOs.” next to a laser illustration of an open book" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lucid Academy | AI training for public institutions" />
+    <meta name="twitter:description" content="Lucid Academy is a foundation based in Toruń, Poland. We help schools, NGOs, local governments and cultural institutions get to grips with artificial intelligence: AI education, community projects, facilitation and culture." />
+    <meta name="twitter:image" content="https://lucidacademy.pl/assets/og/lucid-academy-en.jpg" />
+    <meta name="twitter:image:alt" content="Lucid Academy logo and the line “AI training for public institutions, local governments, schools and NGOs.” next to a laser illustration of an open book" />
+
+    <link rel="preload" href="../assets/fonty/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonty/bricolage-grotesque-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonty/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonty/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../css/strona.css" />
+
+    <!-- Klasa .js włącza animacje wejścia; bez JavaScriptu wszystko jest od razu widoczne. -->
+    <script>document.documentElement.classList.add("js");</script>
+    <script src="../js/strona.js" defer></script>
+    <!-- Sieć neuronowa w hero i jej fragmenty (osobny plik, da się wycofać jednym ruchem) -->
+    <script src="../js/neurony.js" defer></script>
+    <!-- Efekty przy przewijaniu: liczby, rozjaśniane zdania, mapa (też osobno) -->
+    <script src="../js/przewijanie.js" defer></script>
+  </head>
+  <body>
+    <a class="pomin" href="#tresc">Skip to content</a>
+
+    <!-- Tło z wykładu „Alignment”: niebo, siatka, linie skanu -->
+    <div class="tlo" aria-hidden="true">
+      <div class="tlo__niebo"></div>
+      <div class="tlo__siatka"></div>
+      <div class="tlo__skan"></div>
+    </div>
+
+    <header class="naglowek" id="naglowek">
+      <nav class="nawigacja kontener" aria-label="Main navigation">
+        <a class="logo" href="#" aria-label="Lucid Academy — back to top">
+          <img src="../assets/logo-nav.webp" alt="" width="478" height="156" decoding="async" />
+        </a>
+
+        <!-- Wersja 3 (pilot): tryb sieci. Moduł js/siec.js wczytuje się dopiero po kliknięciu;
+             bez JavaScriptu przycisk zostaje ukryty. Na razie schowany także z JavaScriptem
+             (POKAZ_TRYB_SIECI w js/strona.js); otwiera go tylko link ?tryb=siec. -->
+        <button class="tryb-sieci" type="button" aria-haspopup="dialog" hidden>
+          <svg class="tryb-sieci__ikona" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+            <path d="M6 17 12 6l6 11M6 17h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="6" r="2.6" />
+            <circle cx="6" cy="17" r="2.6" />
+            <circle cx="18" cy="17" r="2.6" />
+          </svg>
+          <span class="tryb-sieci__tekst">Network view</span>
+        </button>
+
+        <button class="menu-przycisk" type="button" aria-expanded="false" aria-controls="menu">
+          <span class="sr-only">Menu</span>
+          <span class="menu-przycisk__ikona" aria-hidden="true"></span>
+        </button>
+
+        <ul class="menu" id="menu" role="list">
+          <li><a href="#misja">Mission</a></li>
+          <li><a href="#uniwersytet">University</a></li>
+          <li><a href="#oferta">Services</a></li>
+          <li><a href="#co-robimy">What we build</a></li>
+          <li><a href="#zespol">Team</a></li>
+          <li><a href="#kontakt">Contact</a></li>
+        </ul>
+
+        <!-- Przełącznik wersji językowej -->
+        <a class="jezyk" href="../" hreflang="pl" lang="pl"><span aria-hidden="true">PL</span><span class="sr-only">Wersja polska</span></a>
+      </nav>
+    </header>
+
+    <main id="tresc">
+      <!-- =========================================================
+           HERO
+      ========================================================== -->
+      <section class="hero" id="hero" aria-labelledby="hero-tytul">
+        <!-- Miejsce na rozbudowę w v1.5 -->
+        <!-- Sieć neuronowa (js/neurony.js) po stronie tekstu, pod nim; książka zostaje osobno.
+             data-neurony-dryf: po ułożeniu sieć delikatnie płynie (do 16 px od miejsca węzła) -->
+        <canvas class="neurony neurony--hero" data-neurony data-neurony-dryf="16" aria-hidden="true"></canvas>
+        <div class="hero__ilustracja" aria-hidden="true">
+          <img
+            src="../assets/art/laser-education.webp"
+            srcset="../assets/art/768/laser-education.webp 768w, ../assets/art/laser-education.webp 1536w"
+            sizes="(min-width: 1024px) 66vw, 100vw"
+            alt=""
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+            data-parallax="0.12"
+          />
+        </div>
+
+        <div class="hero__tresc kontener">
+          <p class="etykieta" data-wejscie>
+            <span class="etykieta__znak" aria-hidden="true">&gt;</span> 00 · lucid academy
+          </p>
+
+          <h1 class="hero__tytul" id="hero-tytul" data-wejscie>
+            <span class="slowo-klucz"><span class="slowo-klucz__tekst" aria-hidden="true">AI&nbsp;training</span><span class="sr-only">AI training</span></span>
+            for public institutions, local governments, schools and&nbsp;NGOs.
+          </h1>
+
+          <p class="hero__lead" data-wejscie>
+            We tailor each programme to the group, from people who are just starting to work with AI
+            to teams that use it every day. We teach how to use the tools, how they work
+            and where their capabilities end.
+          </p>
+
+          <div class="hero__akcje" data-wejscie>
+            <a class="przycisk przycisk--glowny" href="#kontakt">Let’s talk about working together</a>
+            <a class="link-cichy" href="#co-robimy">See what we build <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+
+        <!-- Zatrzymanie ruchu sieci w tle (WCAG 2.2.2); pokazuje go js/neurony.js -->
+        <button class="ruch-przelacznik" type="button" hidden>
+          <span class="ruch-przelacznik__ikona" aria-hidden="true"></span>
+          <span class="ruch-przelacznik__tekst">pause background motion</span>
+        </button>
+      </section>
+
+      <!-- =========================================================
+           01 · MISJA
+      ========================================================== -->
+      <section class="sekcja" id="misja" aria-labelledby="misja-tytul">
+        <!-- Miejsce na rozbudowę w v1.5 -->
+        <div class="kontener uklad-dwa">
+          <div class="uklad-dwa__tekst">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 01 · mission
+            </p>
+            <h2 class="sekcja__tytul sekcja__tytul--zdanie" id="misja-tytul" data-wejscie data-rozjasniane>
+              We teach how to use AI in&nbsp;the work of institutions and local communities.
+            </h2>
+            <p class="sekcja__lead" data-wejscie>
+              Lucid Academy is a foundation that provides education about artificial intelligence and runs
+              cultural and civic projects. We teach people to use AI tools
+              <mark class="podswietlenie">responsibly</mark>: checking the results, aware of the limitations
+              and with their own use cases in&nbsp;mind.
+            </p>
+
+            <ul class="filary" role="list">
+              <li class="filar" data-wejscie>
+                <p class="filar__numer znacznik">pillar 1</p>
+                <h3 class="filar__tytul">AI education</h3>
+                <p>
+                  Training sessions and lectures for schools, public offices, NGOs and residents,
+                  based on sound knowledge of what the tools can and cannot do.
+                </p>
+              </li>
+              <li class="filar" data-wejscie style="--opoznienie: 90ms">
+                <p class="filar__numer znacznik znacznik--cyjan">pillar 2</p>
+                <h3 class="filar__tytul">Culture and community</h3>
+                <p>
+                  Digital tools for local events and initiatives: guides to neighbourhood festivals,
+                  city games and maps. In&nbsp;these projects, technology serves social and cultural
+                  goals.
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          <figure class="ilustracja" data-wejscie>
+            <img
+              src="../assets/art/laser-ethics.webp"
+              srcset="../assets/art/768/laser-ethics.webp 768w, ../assets/art/laser-ethics.webp 1536w"
+              sizes="(min-width: 1024px) 46vw, 100vw"
+              alt="Laser illustration: two glowing spheres joined by an axis with a prism in the middle, like the pans of a scale"
+              width="1536"
+              height="1024"
+              loading="lazy"
+              decoding="async"
+              data-parallax="0.07"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           02 · UNIWERSYTET I SZKOLENIA
+      ========================================================== -->
+      <section class="sekcja" id="uniwersytet" aria-labelledby="uniwersytet-tytul">
+        <!-- Miejsce na rozbudowę w v1.5 -->
+        <div class="kontener">
+          <div class="uklad-dwa uklad-dwa--odwrocony">
+            <div class="uklad-dwa__tekst">
+              <p class="etykieta" data-wejscie>
+                <span class="etykieta__znak" aria-hidden="true">&gt;</span> 02 · university and training
+              </p>
+              <h2 class="sekcja__tytul sekcja__tytul--zdanie" id="uniwersytet-tytul" data-wejscie data-rozjasniane>
+                We teach AI courses at Nicolaus Copernicus University in&nbsp;Toruń.
+              </h2>
+              <p class="sekcja__lead" data-wejscie>
+                We work most closely with the cognitive science department. Our courses are also
+                taken by psychology students and are on the list of university-wide electives.
+                We have also worked with the university’s Open University as part of the
+                European YUFE alliance.
+              </p>
+
+              <div class="zajecia" data-wejscie>
+                <p class="zajecia__naglowek">Three strands of our courses</p>
+                <ul class="zajecia__lista" role="list">
+                  <li>
+                    <span class="zajecia__nazwa znacznik">Knowledge</span>
+                    <span class="zajecia__opis">how AI systems work and what questions their development raises.</span>
+                  </li>
+                  <li>
+                    <span class="zajecia__nazwa znacznik znacznik--cyjan">Tools</span>
+                    <span class="zajecia__opis">hands-on workshops with AI tools, adapted to the participants’ level.</span>
+                  </li>
+                  <li>
+                    <span class="zajecia__nazwa znacznik znacznik--magenta">Impact</span>
+                    <span class="zajecia__opis">projects in&nbsp;which students and local communities plan changes supported by AI.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <p class="sekcja__uwaga" data-wejscie>
+                We support the most active participants in their further development with
+                Lucid Flow microgrants, mentoring in the Lucid Academy Sensei programme and
+                LA Journeys community meetings.
+              </p>
+            </div>
+
+            <figure class="ilustracja" data-wejscie>
+              <img
+                src="../assets/art/laser-dialogue.webp"
+                srcset="../assets/art/768/laser-dialogue.webp 768w, ../assets/art/laser-dialogue.webp 1536w"
+                sizes="(min-width: 1024px) 46vw, 100vw"
+                alt="Laser illustration: a question mark made of points and lines of light"
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+                data-parallax="0.07"
+              />
+            </figure>
+          </div>
+
+          <!-- Pasek trzech liczb: ankiety z kursów na UMK (nie ze szkoleń dla instytucji).
+               Każda liczba ma mały wykres w tej samej skali co dane: 128 kropek = 128 ankiet,
+               pierścień 5,16 z 6 (86%), siatka 10×10 z 79 polami. Kropki i siatkę dorysowuje
+               js/przewijanie.js; bez JavaScriptu zostają same liczby. -->
+          <figure class="liczby" data-wejscie>
+            <ul class="liczby__lista" role="list">
+              <li class="liczba">
+                <div class="liczba__wykres wykres-kropki" data-wykres="kropki" data-ile="128" aria-hidden="true"></div>
+                <span class="liczba__wartosc">128</span>
+                <span class="liczba__opis">surveys</span>
+              </li>
+              <li class="liczba">
+                <svg class="liczba__wykres wykres-pierscien" data-wykres="pierscien" style="--udzial: 86" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                  <circle class="wykres-pierscien__tor" cx="50" cy="50" r="42" pathLength="100" />
+                  <circle class="wykres-pierscien__luk" cx="50" cy="50" r="42" pathLength="100" />
+                </svg>
+                <span class="liczba__wartosc">5.16 <span class="liczba__skala">/ 6</span></span>
+                <span class="liczba__opis">average rating</span>
+              </li>
+              <li class="liczba">
+                <div class="liczba__wykres wykres-siatka" data-wykres="siatka" data-ile="100" data-zapalone="79" aria-hidden="true"></div>
+                <span class="liczba__wartosc">79%</span>
+                <span class="liczba__opis">of ratings were 5 or 6</span>
+              </li>
+            </ul>
+            <figcaption class="liczby__podpis">
+              Course evaluation surveys from our classes at Nicolaus Copernicus University (UMK), two semesters, 1–6 scale. In&nbsp;both semesters the average at the end of the course was higher than at mid-course.
+            </figcaption>
+          </figure>
+
+          <!-- Wykłady i rozmowy: linki do YouTube / Spotify, bez osadzania odtwarzaczy -->
+          <div class="wyklady">
+            <!-- Fragment sieci nad wykładami, po prawej (js/neurony.js), tylko na szerokim ekranie -->
+            <canvas class="neurony neurony--fragment neurony--wyklady" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+            <h3 class="podtytul" data-wejscie>Lectures and conversations</h3>
+            <p class="wyklady__jezyk" data-wejscie>
+              The recordings are in&nbsp;Polish. On YouTube you can turn on automatic subtitles
+              and have them translated into English (Settings&nbsp;→ Subtitles&nbsp;→ Auto-translate).
+            </p>
+            <ul class="wyklady__lista" role="list">
+              <li class="wyklad" data-wejscie>
+                <article class="wyklad__karta" aria-labelledby="wyklad-1">
+                  <div class="wyklad__miniatura">
+                    <img src="../assets/media/wyklad-alignment.webp" alt="Title slide of the lecture “Alignment – the most important word you don’t know” from the Year of Science Popularisation at UMK" width="640" height="360" loading="lazy" decoding="async" />
+                  </div>
+                  <div class="wyklad__opis">
+                    <p class="wyklad__rodzaj znacznik">lecture</p>
+                    <h4 class="wyklad__tytul" id="wyklad-1">Alignment&nbsp;— the most important word you don’t know</h4>
+                    <p class="wyklad__meta">Year of Science Popularisation at&nbsp;UMK&nbsp;· September&nbsp;2026&nbsp;· UMK&nbsp;TV</p>
+                    <div class="wyklad__linki">
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://www.youtube.com/watch?v=_q5QvRR_wns" target="_blank" rel="noopener">YouTube<span class="sr-only">&nbsp;— lecture “Alignment&nbsp;— the most important word you don’t know”, in Polish (opens in a new tab)</span></a>
+                    </div>
+                  </div>
+                </article>
+              </li>
+              <li class="wyklad" data-wejscie style="--opoznienie: 90ms">
+                <article class="wyklad__karta" aria-labelledby="wyklad-2">
+                  <div class="wyklad__miniatura">
+                    <img src="../assets/media/wyklad-jak-nie-zakochac-sie-w-ai.webp" alt="Title slide of the lecture at the 24th Toruń Festival of Science and Art with the question “Is artificial intelligence changing what we love?” and a photo of Piotr Jarczyk" width="640" height="360" loading="lazy" decoding="async" />
+                  </div>
+                  <div class="wyklad__opis">
+                    <p class="wyklad__rodzaj znacznik">lecture</p>
+                    <h4 class="wyklad__tytul" id="wyklad-2">How not to fall in&nbsp;love with AI? Is artificial intelligence changing the way we love?</h4>
+                    <p class="wyklad__meta">Toruń Festival of Science and Art 2026&nbsp;· UMK&nbsp;TV</p>
+                    <div class="wyklad__linki">
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://www.youtube.com/watch?v=X0jAJ5PJmV8" target="_blank" rel="noopener">YouTube<span class="sr-only">&nbsp;— lecture “How not to fall in love with AI?”, in Polish (opens in a new tab)</span></a>
+                    </div>
+                  </div>
+                </article>
+              </li>
+              <li class="wyklad" data-wejscie>
+                <article class="wyklad__karta" aria-labelledby="wyklad-3">
+                  <div class="wyklad__miniatura">
+                    <img src="../assets/media/mysloteka-zrozumiec-ai.webp" alt="Cover of the Myśloteka podcast episode “Understanding AI before it understands us” with guest Piotr Jarczyk" width="640" height="360" loading="lazy" decoding="async" />
+                  </div>
+                  <div class="wyklad__opis">
+                    <p class="wyklad__rodzaj znacznik znacznik--cyjan">podcast</p>
+                    <h4 class="wyklad__tytul" id="wyklad-3">Understanding AI before it understands us. A&nbsp;conversation about the education and psychology of tomorrow</h4>
+                    <p class="wyklad__meta">Myśloteka&nbsp;· student podcast</p>
+                    <div class="wyklad__linki">
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://www.youtube.com/watch?v=Ww51DYemefI" target="_blank" rel="noopener">YouTube<span class="sr-only">&nbsp;— Myśloteka podcast, episode “Understanding AI before it understands us”, in Polish (opens in a new tab)</span></a>
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://open.spotify.com/episode/7kMGxE1dvcjd8tesH87DEL" target="_blank" rel="noopener">Spotify<span class="sr-only">&nbsp;— Myśloteka podcast, episode “Understanding AI before it understands us”, in Polish (opens in a new tab)</span></a>
+                    </div>
+                  </div>
+                </article>
+              </li>
+              <li class="wyklad" data-wejscie style="--opoznienie: 90ms">
+                <article class="wyklad__karta" aria-labelledby="wyklad-4">
+                  <div class="wyklad__miniatura">
+                    <img src="../assets/media/mysloteka-alignment.webp" alt="Cover of the Myśloteka podcast episode about alignment" width="640" height="360" loading="lazy" decoding="async" />
+                  </div>
+                  <div class="wyklad__opis">
+                    <p class="wyklad__rodzaj znacznik znacznik--cyjan">podcast</p>
+                    <h4 class="wyklad__tytul" id="wyklad-4">Alignment, or the most important word you don’t know</h4>
+                    <p class="wyklad__meta">Myśloteka&nbsp;· student podcast</p>
+                    <div class="wyklad__linki">
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://www.youtube.com/watch?v=b7SXD3Gmfng" target="_blank" rel="noopener">YouTube<span class="sr-only">&nbsp;— Myśloteka podcast, episode “Alignment, or the most important word you don’t know”, in Polish (opens in a new tab)</span></a>
+                      <a class="przycisk przycisk--obrys przycisk--zewn" href="https://open.spotify.com/episode/4KtP24XzioVFlv4Nuz7pv7" target="_blank" rel="noopener">Spotify<span class="sr-only">&nbsp;— Myśloteka podcast, episode “Alignment, or the most important word you don’t know”, in Polish (opens in a new tab)</span></a>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Głosy z warsztatów: cytaty dosłownie, bez liczb z ankiet warsztatowych -->
+          <div class="glosy">
+            <!-- Fragment sieci przy głosach (js/neurony.js), tylko na szerokim ekranie -->
+            <canvas class="neurony neurony--fragment neurony--glosy" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+            <h3 class="podtytul" data-wejscie>Participants’ most common request: <mark class="podswietlenie">more</mark></h3>
+            <ul class="glosy__lista" role="list">
+              <li data-wejscie>
+                <blockquote class="glos"><p>“Add more hours of these exercises (workshops).”</p></blockquote>
+              </li>
+              <li data-wejscie style="--opoznienie: 90ms">
+                <blockquote class="glos"><p>“Add more meetings/editions ;)”</p></blockquote>
+              </li>
+              <li data-wejscie style="--opoznienie: 180ms">
+                <blockquote class="glos"><p>“And if you’re thinking about a&nbsp;follow-up, I’d be happy to join :D”</p></blockquote>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           03 · OFERTA
+      ========================================================== -->
+      <section class="sekcja" id="oferta" aria-labelledby="oferta-tytul">
+        <!-- Miejsce na rozbudowę w v1.5 -->
+        <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+        <div class="kontener">
+          <header class="sekcja__naglowek">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 03 · services
+            </p>
+            <h2 class="sekcja__tytul" id="oferta-tytul" data-wejscie>Training, digital tools and participatory processes</h2>
+            <p class="sekcja__lead" data-wejscie>
+              We provide education and advisory services for public institutions,
+              local governments, schools, NGOs and local communities.
+            </p>
+          </header>
+
+          <div class="oferta">
+            <article class="obszar obszar--wiodacy" data-wejscie>
+              <figure class="obszar__obraz">
+                <img
+                  src="../assets/art/laser-sensei.webp"
+                  srcset="../assets/art/768/laser-sensei.webp 768w, ../assets/art/laser-sensei.webp 1536w"
+                  sizes="(min-width: 900px) 46vw, 100vw"
+                  alt="Laser illustration: a row of glass prisms through which a beam of light passes and splits"
+                  width="1536"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <div class="obszar__tresc">
+                <p class="obszar__numer znacznik">01 · core area</p>
+                <h3 class="obszar__tytul">AI education</h3>
+                <p>
+                  We train seniors, young people, educators, public-sector staff, local leaders
+                  and residents. We adapt the format, length and level
+                  <mark class="podswietlenie">to the needs of the group</mark>: from a&nbsp;single lecture to a&nbsp;series of workshops.
+                </p>
+                <p>
+                  Alongside hands-on exercises, we explain how the tools work, because that knowledge
+                  stays relevant longer than any particular version of an app.
+                </p>
+              </div>
+            </article>
+
+            <article class="obszar" data-wejscie>
+              <figure class="obszar__obraz">
+                <img
+                  src="../assets/art/768/laser-vibe-coding.webp"
+                  alt="Laser illustration: a wave of light coming out of a speech bubble forms the building blocks of a tool"
+                  width="768"
+                  height="512"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <div class="obszar__tresc">
+                <p class="obszar__numer znacznik znacznik--cyjan">02</p>
+                <h3 class="obszar__tytul">Vibe coding and digital community projects</h3>
+                <p>
+                  Vibe coding means building digital tools in&nbsp;dialogue with AI: participants describe
+                  the features they need and the model produces a&nbsp;working prototype. In our
+                  workshops, people build tools that respond to specific needs of neighbourhoods,
+                  schools and cities.
+                </p>
+              </div>
+            </article>
+
+            <article class="obszar" data-wejscie style="--opoznienie: 90ms">
+              <figure class="obszar__obraz">
+                <img
+                  src="../assets/art/768/laser-facilitation.webp"
+                  alt="Laser illustration: a circle of seats around a glowing centre into which streaks of light converge"
+                  width="768"
+                  height="512"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <div class="obszar__tresc">
+                <p class="obszar__numer znacznik znacznik--magenta">03</p>
+                <h3 class="obszar__tytul">Facilitating participatory processes</h3>
+                <p>
+                  We run public consultations, participatory budgets, citizens’ panels and debates.
+                  We use AI tools where they improve the quality of the process: analysing
+                  submissions, visualising data and making materials more accessible.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <p class="oferta__akcja" data-wejscie>
+            <a class="przycisk przycisk--glowny" href="#kontakt">Let’s talk about working together</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           04 · GDZIE JUŻ BYLIŚMY / Z KIM PRACOWALIŚMY
+           Fragment mapy z danych Natural Earth 1:10 mln (domena publiczna) w rzucie
+           PUWG 1992 (EPSG:2180): ląd z kropek, wybrzeże, granica, Wisła i Odra.
+           Miasta według współrzędnych z OpenStreetMap (Nominatim) w tym samym rzucie,
+           ramka 518 × 353 km. Mapę i pozycje miast liczy narzedzia/mapa.py.
+           Bez interakcji. Przy przewijaniu mapa odsłania się z zachodu na wschód
+           (js/przewijanie.js), a --opoznienie miasta zgrywa jego wejście z tym ruchem.
+      ========================================================== -->
+      <section class="sekcja" id="gdzie-bylismy" aria-labelledby="gdzie-tytul">
+        <!-- Miejsce na rozbudowę w v1.5: kolejne miasto = nowy element listy z pozycją z narzedzia/mapa.py (zmienne x, y i opoznienie w atrybucie style) -->
+        <div class="kontener">
+          <p class="etykieta" data-wejscie>
+            <span class="etykieta__znak" aria-hidden="true">&gt;</span> 04 · where we’ve been
+          </p>
+          <div class="gdzie">
+            <!-- Fragment sieci pod mapą, obok listy instytucji (js/neurony.js), tylko na szerokim ekranie -->
+            <canvas class="neurony neurony--fragment neurony--gdzie" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+            <div class="gdzie__miasta">
+              <h2 class="sekcja__tytul" id="gdzie-tytul" data-wejscie>Where we’ve been</h2>
+              <div class="mapa">
+                <!-- Okno odsłaniania: przesuwa się w prawo, a mapa w nim w lewo, więc mapa stoi,
+                     a okno odsłania ją z zachodu na wschód (css/strona.css, js/przewijanie.js) -->
+                <div class="mapa__odslona">
+              <svg class="mapa__tlo" viewBox="0 0 1000 681.4" aria-hidden="true" focusable="false">
+                <g class="mapa__kropki mapa__kropki--gesto" stroke-dasharray="0 12" stroke-width="2.4" stroke-linecap="round" fill="none">
+                  <path class="mapa__sasiedzi" d="M774 5.2h60M858 5.2h12M930 5.2h60M768 15.6h228M774 26h216M780 36.4h216M774 46.8h216M768 57.2h.01M792 57.2h204M762 67.5h.01M822 67.5h168M756 77.9h.01M804 77.9h192M750 88.3h.01M774 88.3h216M744 98.7h.01M780 98.7h216M762 109.1h228M852 119.5h144M6 171.5h12M24 181.9h.01M30 192.3h.01M12 202.6h24M6 213h36M6 233.8h.01M12 244.2h36M6 254.6h36M12 265h24M6 275.4h36M12 285.8h36M6 296.2h36M12 306.6h36M6 317h48M12 327.4h36M6 337.7h48M12 348.1h48M6 358.5h48M12 368.9h36M6 379.3h48M12 389.7h36M6 400.1h24M12 410.5h.01M6 420.9h12M12 431.3h.01M6 441.7h12M12 452.1h24M6 462.5h36M12 472.8h36M6 483.2h60M12 493.6h60M6 504h72M12 514.4h60M6 524.8h60M12 535.2h48M6 545.6h60M12 556h48M6 566.4h72M12 576.8h72M6 587.2h72M12 597.6h60M6 607.9h72M12 618.3h72M6 628.7h72M12 639.1h60M6 649.5h60M12 659.9h48M6 670.3h60M12 680.7h48" />
+                  <path class="mapa__polska" d="M504 36.4h72M450 46.8h120M594 46.8h.01M420 57.2h156M612 57.2h.01M414 67.5h168M384 77.9h204M342 88.3h252M336 98.7h252M330 109.1h264M324 119.5h276M756 119.5h84M306 129.9h312M690 129.9h12M738 129.9h252M312 140.3h360M720 140.3h276M258 150.7h432M714 150.7h276M216 161.1h780M174 171.5h816M144 181.9h852M102 192.3h888M84 202.6h912M54 213h.01M78 213h912M60 223.4h.01M96 223.4h900M102 233.8h888M96 244.2h900M54 254.6h.01M90 254.6h900M48 265h24M96 265h900M54 275.4h936M60 285.8h936M54 296.2h936M60 306.6h936M66 317h924M60 327.4h936M66 337.7h924M72 348.1h924M66 358.5h924M60 368.9h936M66 379.3h924M60 389.7h936M42 400.1h948M24 410.5h972M30 420.9h960M24 431.3h972M30 441.7h960M48 452.1h948M54 462.5h936M60 472.8h936M78 483.2h912M84 493.6h912M90 504h900M84 514.4h912M78 524.8h912M72 535.2h924M78 545.6h912M72 556h924M90 566.4h900M96 576.8h900M90 587.2h900M84 597.6h912M90 607.9h900M96 618.3h900M90 628.7h900M84 639.1h912M78 649.5h912M72 659.9h924M78 670.3h912M72 680.7h924" />
+                </g>
+                <g class="mapa__kropki mapa__kropki--rzadko" stroke-dasharray="0 20" stroke-width="4" stroke-linecap="round" fill="none">
+                  <path class="mapa__sasiedzi" d="M770 8.7h100M930 8.7h60M780 26h220M790 43.3h200M840 60.6h160M810 77.9h180M780 95.3h220M770 112.6h220M20 199.2h20M10 216.5h.01M10 251.1h20M20 268.5h20M10 285.8h40M20 303.1h20M10 320.4h40M20 337.7h20M10 355.1h40M20 372.4h20M10 389.7h40M20 407h.01M10 424.4h.01M20 441.7h.01M10 459h20M20 476.3h40M10 493.6h60M20 511h40M10 528.3h40M20 545.6h40M10 562.9h60M20 580.2h60M10 597.6h60M20 614.9h60M10 632.2h60M20 649.5h40M10 666.8h40" />
+                  <path class="mapa__polska" d="M470 43.3h120M420 60.6h160M390 77.9h200M630 77.9h.01M340 95.3h240M330 112.6h260M320 129.9h300M700 129.9h.01M740 129.9h260M270 147.2h400M710 147.2h280M200 164.5h800M150 181.9h840M100 199.2h900M50 216.5h.01M90 216.5h900M100 233.8h900M90 251.1h900M60 268.5h940M70 285.8h920M60 303.1h940M70 320.4h920M60 337.7h940M70 355.1h920M60 372.4h940M70 389.7h920M40 407h960M30 424.4h960M40 441.7h960M50 459h940M80 476.3h920M90 493.6h900M80 511h920M70 528.3h920M80 545.6h920M90 562.9h900M100 580.2h900M90 597.6h900M100 614.9h900M90 632.2h900M80 649.5h920M70 666.8h920" />
+                </g>
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="mapa__rzeka" d="M229.8 685.3l-4.4 -6.6 -5.6 -.5 -1.5 -2.7 1 -1.3 -2.6 -3.2 8.9 -17.2 -4.4 -3.1 3 -3.6 1.9 -4.4 -2.6 -6.5 0 -2.8 -4.7 -.5 -6.9 1.1 .1 -1.4 .9 .1 -1.6 -2.8 -5 -4.2 .8 -5.2 -21.6 -3.9 -3.2 .1 -5.8 -3.5 -5.5 2.7 -1.6 -.3 -13.6 -5.5 -4.9 -.9 -6.8 4.4 -8.9 .4 -5.1 -2.2 -4.1 -4.3 -4.8 2.9 -4.3 1 -9.7 -.5 -5.7 -4.1 -8.8 -2.1 -1.9 .8 -8.2 -6.9 -1.2 -3.2 3.5 -12.4 -1.6 -4.4 2.7 -3.2 .3 -4.4 -1.8 -3.9 -11.6 -5.5 -2.7 -3.5 1 -3.8 -4.9 -16 -.2 -8.5 7.1 -5.6 6 -9.7 -.5 -2.4 -2.3 -2.4 1.3 -4.9 4.1 -7.4 -11.5 -13.5 -7.7 -3.6 -3.4 -5.3 -3.7 -2.8 -5.7 -11.5 -16.6 -13.2 -3.9 -5.4 -8.1 -2.7 -2.1 -1.9 -1.3 -3.1 3.7 -2.8 1.5 -2.5 .8 -4 -1.7 -14 6.5 -4.2 8.2 -3.6 8 -5.6 4.3 -3.9 1.9 -3.7 5.2 -13.7 -.9 -9.7 1.6 -5.4 3.8 -3.8 5.3 -8.4 -.6 -.3 0 -2.7 3 -8.1 1.2 -2 3.9 -3.3 .9 -3.8 4.3 -4.5 4.7 -11.2 2.3 -.9 5.8 -13.2 .9 -7.7 -2.9 -7.4 -.5 -5.9M971.4 685.3l2.1 -4.3 -1 -3.4 -5.9 -7.6 -4.4 -2.7 -4.5 -.7 -3.9 -2.4 -2.4 -5.7 -4.8 -4.4 5.3 -8.3 .7 -2.8 -.8 -3.1 -5.8 -3.4 -1.8 -2.4 .3 -8.8 -3.5 -4.8 1.2 -4.9 -.5 -4 -6.6 -8.8 -3.5 -2.9 -6.8 -11.1 -4.9 -1.9 -8.3 -15.6 -5.6 -2.8 -2 -2.7 -4 -9.6 -2.3 -1.7 -8.1 -.2 -7.4 -5.1 -8.2 -2.4 -3.6 -3.8 -2.9 2.3 -14.8 -.4 -7.6 1.5 -12.8 8.4 -3.5 .8 -10.9 -1.8 -14.9 3 -11.5 -.6 -5.7 -2.1 -20.2 -16 -7.7 -3.5 -7.7 -.7 -1.6 -4.3 -6.4 -6.5 -12.3 -5.4 -7.5 -1 -7.7 -5.3 -7.3 -3.1 -4.3 -4.6 -2.3 -1.1 -10.6 -.3 -32.1 -8.8 -4.2 -3.8 -12.3 -21.9 -4 -12.4 -7.4 -5.5 -1.7 -4.6 -14 -8.9 -4.1 -12.9 -2.3 -2.5 -7.9 2.5 -20.3 -4.7 -18.7 -11.5 -16.7 -4.4 -4.3 -4.3 .4 -2.8 7.2 -8.2 .7 -9.1 3.1 -4.9 7 -3.4 4 -4.9 4.4 -12.2 3.3 -5.1 8 -2.8 6.5 -7.9 15.4 -5.9 1.3 .5 8.5 -2.5 4.2 -3.4 2.9 -4.1 2.1 -5.5 2.3 -19 -1.6 -3.6 -1.1 -10 3.8 -6.2 1.4 -5.2 3.9 -1 4.6 -3.2 1.1 -2.4 -.1 -2.5 -1.5 -2.9 -.9 -14 5.3 -11.2 .5 -4.1 -.8 -2.8 -3.2 -4.8 1.7 -4.7 -2.5 -6.6 .1 -3.4 -3.5 -7.6 -.3 -11.3 1.8 -11.6 3.3 -8.4 7.9 -6.8 2.9 -5.8 -.2 -18.2 1 -6.7" vector-effect="non-scaling-stroke" />
+                  <path class="mapa__granica" d="M48.1 253.6l2.2 -7.4 -1.1 -9.8 -3.4 -8.3 -3.1 -13M74 685.3l-2.7 -3.6 -1.2 -11.2 -6 -7.9 -.1 -4.5 1.9 -3.6 8.1 -7.3 4.9 -6.9 1.4 -4.1 1.2 -13.1 4 -7 1.6 -5.9 3.7 -4.6 -8.2 -7 -1.1 -3.1 3.5 -12.4 -1.7 -4.4 2.8 -3.3 .3 -4.3 -1.8 -3.9 -11.6 -5.5 -2.8 -3.5 1.1 -3.9 -5 -15.9 -.2 -8.6 7.2 -5.5 5.9 -9.8 -.4 -2.3 -2.3 -2.4 1.3 -4.9 4.1 -7.5 -11.6 -13.4 -7.6 -3.6 -3.4 -5.4 -3.7 -2.7 -5.8 -11.6 -16.5 -13.2 -3.9 -5.3 -8.1 -2.7 -2.1 -2 -1.3 -3.1 3.6 -2.7 1.5 -2.6 .9 -4 -1.8 -13.9 6.6 -4.3 8.2 -3.5 12.2 -9.5 7.1 -17.4 -.9 -9.7 .6 -2.9 8.7 -12.8 -4.6 -6 -3.3 -35.8 -6.2 -14.3 -.6 -4.5 1 -14.7 -3.8 -12.8 1 -9.4M1003.9 122.8l-111.5 -2.1 -146.7 -5 -9.8 -.5 -6.2 -2 -2.6 -2.2M42.7 214.9l-.8 -3.4 -2 -2.9 2.3 -.9 2.5 -5.7" vector-effect="non-scaling-stroke" />
+                  <path class="mapa__brzeg" d="M651.1 135.3l47 -7.1 10.3 -5.1 5 -1.2 3.9 -1.8 7.6 -8.1 4.3 -1.9 0 -1.6 13.3 -12.4 12 -15.7 6.2 -12.5 1.7 -1.3 .5 -2.1 -.1 -3.4 3.6 -6.9 3.1 -8.1 .7 -3.5 -.5 -5 -4.3 -15.1 -.7 -4.8 2.4 -9.6 1.9 -3.8 2.5 -2.8 2.3 -.7 3.2 3.5 1.5 .7 5.1 -1.5 8.5 .5 7.7 -1.6 19.7 2.3 5.1 -1.3 9.2 -5.3 2.2 -2M843.6 -3.9l-3.5 2.3 -.2 1.9 1.3 2.7 2.1 2.3 2.4 .4 23 -2.4 5.2 1.3 6.9 6.2 13.5 2.1 8.7 -1.2 2 -2.3 2.9 3.1 1.5 -.5 1.8 -2.6 10.3 -3.2 4.9 -2.7 1.4 -4.8 -.6 -2.6M-3.9 162.5l.4 .3 -.4 1.9M-3.9 187l2.4 1.5 1.1 4.1 -.3 2.6 2.3 .3 4.8 2.9 0 2 -2.5 4.3 -7.8 5.5M-3.9 218.3l3.2 1.5 .6 2.4 3.6 4.8 1.4 -.2 8.8 8.5 4.1 1.3 2.4 3.2 3.9 .3 4.6 2.9 10.2 1.4 3.6 -.8 1.7 -2.9 1 -.6 2 .5 1.7 2 .2 3.4 -1.1 1.6 -6.3 3.8 1.6 1.1 3.8 1.2 2.3 -.1 2.3 -.9 1.8 -1.4 .3 -1.8 -2.1 -1.7 1.7 -1.3 -1.5 -1.6 .8 -1.6 4.4 3.5 1.2 4.3 5.1 3.4 3.6 4.1 5.6 1.4 6.7 2.9 2.2 2 5.5 11.2 1.3 2 .7 -.6 1.1 -5.4 3 -2.5 .2 -2.9 -4.6 -1 -1.4 -.9 -3.4 -9.7 1.1 -4.7 3.7 -9.1 1.4 1.4 2.7 -1.1 2 0 -.5 -5.4 2.5 -12.1 -.9 0 -.5 2.5 -1.1 1.7 -3.2 2.8 .7 1.5 -1.1 -.5 -2.1 -2.6 2.8 -2.8 -1.5 -3.7 -2.9 -1.9 -14 -2.4 -1.8 -2.3 1.8 -4.1 -.7 -1.5 -1.3 2.1 -1.1 .2 -2.5 -1.1 -1.1 .3 -3 3.7 5.7 2.1 1 1.4 -.4 2.6 -1.5 1.8 -1.6 .6 -1.1 -.9 -3.6 2 -3.6 .5 -.1 1.4 1.7 .8 -1.8 .7 -4.6 -1.8 -2 -1.5 -5.5 -9.3 -2.9 -1.5 -14.8 .7 -2.8 -.7 -2 -1.6 -3.2 3.1 -3.8 1.9 -7.4 1.4 -8.1 -.4 -4.3 -1.7 -.5 -.7M-3.9 213.8l2.8 -1.8 4.2 -.6 4.6 -2.2 1.2 -1.2 1.4 -6.1 -4.1 -9.3 .8 -5.5 6.3 .9 2.2 1.1 -1 1.5 .2 1.2 -1.7 7.5 2.3 -3.4 1.6 -.7 5.1 .3 -1.2 1 -.7 2 4.2 1.6 -.8 -2.8 2 -5.2 .2 -5.7 -1.5 -3.7 -3 1 -.8 -3.5 -2.7 -5.4 -1.9 -1.8 -2.5 -.7 -2.5 .3 -1.4 1.6 .9 2.7 -.1 1.6 -2.4 1.8 -1.5 3.2 -.8 .4 -4.5 1.3 .4 -2.8 2.7 -4.3 -.5 -2.7 -.9 -.3 -5.3 2.2 -1.3 1.4M-3.9 169.3l1.2 -5.7 -1.2 -3.7M-3.9 147l2.4 1.1 4.3 12.3 3.1 3.6 16.2 10.3 20.5 26 2.1 1.7 7.1 4.1 12.5 1.9 5.1 -.7 5.1 -2.3 9.5 -6.1 34.3 -12.9 29.2 -5.8 35.9 -12.9 48.1 -10.4 24.9 -10 20.3 -1.6 14.1 -4.1 -1.6 1.5 -6.4 2.6 2.7 2 11.1 -1.5 .1 -1.3 -.9 0 .1 -1.6 6 .2 -.1 -1 -.7 -.5 .3 -3.4 -2.8 -.3 -7 1.9 9.8 -5.2 8.1 -8.8 -1.7 3.1 -4.1 4.4 5.5 -1.5 1.8 -2 4.5 -1.9 1.7 -1.8 -1.4 -3.2 -2.5 -.1 -3 3 5.6 -8.9 15.2 -18.1 -.8 3.4 1.2 .5 2.1 -.7 1.6 -1.8 .9 -2.8 -.7 -.9 -3.5 2.3 2.7 -5 4.5 -4.2 8.7 -5 26.2 -3 10.2 -3.8 5.3 -.7 4.8 -1.5 12.3 -12.8 37.9 -16.6 47.1 -7.9 21.2 -6.9 33.1 -2.6 20.4 .3 2.8 1 4.4 4 4.3 1.5 42.2 25.6 9 12.5 1.2 3.3 .1 2.9 -2.2 1.1 -1.9 -3.9 -2.2 -1.6 -1.5 -4 -7.9 -12.7 -6.7 -1.9 -1.1 -2.1 -3.5 -1.2 -7.4 -5.1 -7.3 -3.6 -1.2 -1.7 -4 -3.1 -1 -.5 -1.5 .6 -.8 1.1 -1.8 6.1 -.3 4.6 4.3 3 3.2 6.6 -.5 4.4 1.4 1.6 -.8 4.2 1.4 1.8 2.4 -.5 2.1 -2.7 -.7 3.6 2.5 5.2 4 11.9 -.5 13.4 .8 8 1.7 3.6 2 .7 3.8 3 5.7 1.5 1.8 1.2 2.9 4.8 21.1 6.9 4.6 .4 3.9 -2.2 2.6 1.9 3.4 1M752.8 109.1l-1.5 4.1 -1.2 1 -4.9 1.7 -1.4 -.1 .8 4.2 -1.9 .5 -1.6 4.5 -1.1 1.1 -3.5 1 -8 6 -7 1.6 -12.9 7.8 -3.2 2.9 -4.8 7.3 -2.2 5.9 -1.6 1.7 .5 -5.8 2.1 -3 0 -1.7 -3 .4 -11.1 -1.4 -3.2 -1.8 .4 -3 1.3 -1.3 -1.3 -.7 -2.9 -3.9 0 -1.3 5.2 -2 10.8 -1 5.3 -1.5 5.4 -2.9 37.1 -28.9 20.4 -26.7 1.7 -1 3.1 0 1.2 -.6 .7 -2.4 -1.7 -1.4 -.5 -3.4 .4 -3.9 .8 -3 1.4 -2.3 1.9 -1.4 4.8 -.9 2.4 1.1 .9 6.5 1 3.4 2.4 2.8 1.6 .1 3.3 -3.7 7.9 -4.8 28.6 1.1 .1 1.7 -9 4.4 -6.5 6.8 -3.4 1.3 -16.2 9.3 -3.7 1.5 -1.6 3 -1.3 .8 -2.5 -.7 -2.3 -2.2 -4.9 -.3 -3 5.6 -2.8 7.4 -4.5 5.2 -8.3 3.9 -2.3 .6 -.7 .8" vector-effect="non-scaling-stroke" />
+                </g>
+              </svg>
+                </div>
+                <ul class="miasta" role="list">
+                  <li class="miasto miasto--nad-w-prawo" style="--x: 59.97%; --y: 61.86%; --opoznienie: 750ms" data-lat="53.01027" data-lon="18.60481">Toruń</li>
+                  <li class="miasto miasto--w-lewo" style="--x: 52.19%; --y: 58.23%; --opoznienie: 690ms" data-lat="53.12196" data-lon="18.00025">Bydgoszcz</li>
+                  <li class="miasto miasto--w-lewo" style="--x: 83.85%; --y: 37.47%; --opoznienie: 980ms" data-lat="53.77668" data-lon="20.47651">Olsztyn</li>
+                  <li class="miasto miasto--w-prawo" style="--x: 8.10%; --y: 46.05%; --opoznienie: 330ms" data-lat="53.43018" data-lon="14.55096">Szczecin</li>
+                  <li class="miasto miasto--w-prawo" style="--x: 59.69%; --y: 16.69%; --opoznienie: 750ms" data-lat="54.44479" data-lon="18.56849">Sopot</li>
+                  <li class="miasto miasto--w-prawo" style="--x: 67.41%; --y: 67.01%; --opoznienie: 800ms" data-lat="52.84739" data-lon="19.17927">Lipno</li>
+                  <li class="miasto miasto--pod-w-lewo" style="--x: 62.37%; --y: 65.90%; --opoznienie: 760ms" data-lat="52.88255" data-lon="18.79069">Ciechocinek</li>
+                  <li class="miasto miasto--w-lewo" style="--x: 91.51%; --y: 85.85%; --opoznienie: 1120ms" data-lat="52.23196" data-lon="21.00672">Warsaw</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="gdzie__instytucje">
+              <h3 class="podtytul" data-wejscie>Who we’ve worked with</h3>
+              <div class="instytucje">
+                <div class="instytucje__grupa" data-wejscie>
+                  <h4 class="instytucje__nazwa znacznik">Education and research</h4>
+                  <ul role="list">
+                    <li>Nicolaus Copernicus University in&nbsp;Toruń</li>
+                    <li>Open University at UMK (cooperation within YUFE)</li>
+                    <li>Toruń University of the Third Age</li>
+                    <li>Toruń Social Services Centre</li>
+                  </ul>
+                </div>
+                <div class="instytucje__grupa" data-wejscie>
+                  <h4 class="instytucje__nazwa znacznik znacznik--blekit">Local government</h4>
+                  <ul role="list">
+                    <li>Toruń City Hall</li>
+                    <li>Bydgoszcz City Hall</li>
+                    <li>Toruń City Lab</li>
+                    <li>Urban Lab Bydgoszcz</li>
+                    <li>Urban Lab Szczecin</li>
+                  </ul>
+                </div>
+                <div class="instytucje__grupa" data-wejscie>
+                  <h4 class="instytucje__nazwa znacznik znacznik--magenta">Culture and the arts</h4>
+                  <ul role="list">
+                    <li>Centre of Contemporary Art in&nbsp;Toruń</li>
+                    <li>Bydgoskie Przedmieście Cultural Hub</li>
+                    <li>Toruńska Agenda Kulturalna (Toruń’s culture agency)</li>
+                  </ul>
+                </div>
+                <div class="instytucje__grupa" data-wejscie>
+                  <h4 class="instytucje__nazwa znacznik znacznik--cyjan">Foundations and NGOs</h4>
+                  <ul role="list">
+                    <li>Stefan Batory Foundation</li>
+                    <li>Stocznia Foundation</li>
+                    <li>Michelin Development Foundation</li>
+                    <li>FISE (Foundation for Social and Economic Initiatives)</li>
+                    <li>Pracownia Zrównoważonego Rozwoju (sustainable development studio)</li>
+                    <li>Polish Development Institute (delivering initiatives of NASK and the Ministry of&nbsp;Digital Affairs)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           05 · CO BUDUJEMY
+           Kafle powstają z kafle.json — tam się je edytuje.
+      ========================================================== -->
+      <section class="sekcja" id="co-robimy" aria-labelledby="co-robimy-tytul">
+        <!-- Miejsce na rozbudowę w v1.5: kolejne projekty dopisuje się w kafle.json -->
+        <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+        <div class="kontener">
+          <header class="sekcja__naglowek">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 05 · what we build
+            </p>
+            <h2 class="sekcja__tytul" id="co-robimy-tytul" data-wejscie>What we build</h2>
+            <p class="sekcja__lead" data-wejscie>
+              We build digital tools together with institutions and teach teams to develop them
+              <mark class="podswietlenie">on their own</mark>. Selected examples below; the tools
+              themselves are in&nbsp;Polish.
+            </p>
+          </header>
+
+          <div class="filtr" role="group" aria-label="Show projects by category" hidden></div>
+          <p class="filtr__licznik"></p>
+
+          <!-- Kafle z kafle.en.json (ta sama struktura co kafle.json, treść po angielsku) -->
+          <ul class="kafle" role="list" data-zrodlo="../kafle.en.json"></ul>
+
+          <noscript>
+            <p class="kafle__komunikat">
+              The project list needs JavaScript to display.
+              We are happy to show you our tools&nbsp;— <a href="#kontakt">get in touch</a>.
+            </p>
+          </noscript>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           06 · ZESPÓŁ
+      ========================================================== -->
+      <section class="sekcja" id="zespol" aria-labelledby="zespol-tytul">
+        <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba"> przed zdjęciem grupowym -->
+        <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
+        <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+        <div class="kontener">
+          <header class="sekcja__naglowek">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 06 · team
+            </p>
+            <h2 class="sekcja__tytul" id="zespol-tytul" data-wejscie>The Lucid Academy team</h2>
+            <p class="sekcja__lead" data-wejscie>
+              Our team brings together people from academia, the technology sector
+              and civil society organisations.
+            </p>
+          </header>
+
+          <div class="zespol">
+            <article class="osoba" data-wejscie>
+              <img
+                class="osoba__zdjecie"
+                src="../assets/piotr-jarczyk-480.webp"
+                srcset="../assets/piotr-jarczyk-480.webp 480w, ../assets/piotr-jarczyk-900.webp 900w"
+                sizes="(min-width: 720px) 300px, 240px"
+                alt="Portrait of Piotr Jarczyk"
+                width="480"
+                height="641"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="osoba__opis">
+                <h3 class="osoba__imie">Piotr Jarczyk</h3>
+                <p class="osoba__rola">founder and president</p>
+                <ul class="osoba__obszary" role="list" aria-label="Areas">
+                  <li class="znacznik">AI education</li>
+                  <li class="znacznik">workshops</li>
+                  <li class="znacznik">vibe coding</li>
+                </ul>
+                <p>
+                  A&nbsp;lawyer by training, he has also completed five years of psychology studies.
+                  For more than three years he has been running training sessions and lectures
+                  on artificial intelligence for a&nbsp;wide range of groups: seniors, residents of
+                  smaller towns, educators, public-sector staff, students and local leaders.
+                </p>
+                <p>
+                  At Nicolaus Copernicus University he teaches AI courses of his own design in the
+                  Department of Cognitive Science. He founded Lucid Academy in&nbsp;2025 to give
+                  worthwhile educational and social projects a&nbsp;permanent organisational base,
+                  so that their results can last.
+                </p>
+                <a class="link-cichy" href="mailto:piotr.jarczyk.ai@gmail.com">piotr.jarczyk.ai@gmail.com</a>
+              </div>
+            </article>
+
+            <article class="osoba" data-wejscie>
+              <img
+                class="osoba__zdjecie"
+                src="../assets/sylwia-kulczyk-480.webp"
+                srcset="../assets/sylwia-kulczyk-480.webp 480w, ../assets/sylwia-kulczyk-900.webp 900w"
+                sizes="(min-width: 720px) 300px, 240px"
+                alt="Portrait of Sylwia Kulczyk"
+                width="480"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="osoba__opis">
+                <h3 class="osoba__imie">Sylwia Kulczyk</h3>
+                <ul class="osoba__obszary" role="list" aria-label="Areas">
+                  <li class="znacznik">culture</li>
+                  <li class="znacznik">workshops</li>
+                  <li class="znacznik">vibe coding</li>
+                </ul>
+                <p>
+                  She is a&nbsp;fifth-year psychology student at UMK, and art and people are the two things
+                  that make her happiest. At Lucid Academy she looks after culture: she comes up
+                  with and co-creates events where people can meet, feel something real and
+                  simply have a&nbsp;good time.
+                </p>
+                <p>
+                  She also runs workshops on artificial intelligence for children, adults and seniors.
+                  She wants everyone in the room to feel seen and heard, because she believes that
+                  mindfulness helps us live everyday life more fully, including when we learn together.
+                  She takes great pleasure in building websites, tools and games in the spirit
+                  of vibe coding.
+                </p>
+                <p>
+                  After hours she sings, finds her place in the theatre and looks for freedom
+                  in&nbsp;nature.
+                </p>
+              </div>
+            </article>
+
+            <article class="osoba" data-wejscie>
+              <img
+                class="osoba__zdjecie"
+                src="../assets/maciej-piotrowski-480.webp"
+                srcset="../assets/maciej-piotrowski-480.webp 480w, ../assets/maciej-piotrowski-900.webp 900w"
+                sizes="(min-width: 720px) 300px, 240px"
+                alt="Portrait of Maciej Piotrowski"
+                width="480"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="osoba__opis">
+                <h3 class="osoba__imie">Maciej Piotrowski</h3>
+                <ul class="osoba__obszary" role="list" aria-label="Areas">
+                  <li class="znacznik">vibe coding</li>
+                  <li class="znacznik">AI education</li>
+                </ul>
+                <p>
+                  What he could create used to be limited by the barrier of JavaScript or Python. With AI,
+                  he brings his abstract visions and ideas to life&nbsp;— from websites to apps
+                  that make everyday life easier.
+                </p>
+                <p>
+                  At Lucid Academy he focuses mainly on vibe coding and on teaching about the latest
+                  developments in AI, and during workshops he experiences a&nbsp;real sense of flow.
+                  Away from the arcana of AI, he likes to switch off with a&nbsp;book, anime or football.
+                </p>
+              </div>
+            </article>
+
+            <article class="osoba" data-wejscie>
+              <img
+                class="osoba__zdjecie"
+                src="../assets/piotr-humin-480.webp"
+                srcset="../assets/piotr-humin-480.webp 480w, ../assets/piotr-humin-900.webp 900w"
+                sizes="(min-width: 720px) 300px, 240px"
+                alt="Portrait of Piotr Humin"
+                width="480"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="osoba__opis">
+                <h3 class="osoba__imie">Piotr Humin</h3>
+                <ul class="osoba__obszary" role="list" aria-label="Areas">
+                  <li class="znacznik">workshops</li>
+                  <li class="znacznik">vibe coding</li>
+                </ul>
+                <p>
+                  As an IT technician and cognitive science student, he combines an interest in technology
+                  with curiosity about people. At Lucid Academy he supports workshops and develops
+                  projects through vibe coding. He used to write code line by line; today he tells AI
+                  what to build&nbsp;— the rest is negotiation.
+                </p>
+                <p>
+                  He wants to help others understand the changes under way, believing that technology
+                  should serve people and should not distance them from what really matters. Away from
+                  the digital world, he finds energy and balance in sport and in being close to nature.
+                </p>
+              </div>
+            </article>
+
+            <figure class="zdjecie-grupowe" data-wejscie>
+              <img
+                src="../assets/zdjecia/grupowe-1600.webp"
+                srcset="../assets/zdjecia/grupowe-800.webp 800w, ../assets/zdjecia/grupowe-1600.webp 1600w"
+                sizes="(min-width: 1100px) 980px, 100vw"
+                alt="Members and friends of Lucid Academy in a group photo in a park"
+                width="1600"
+                height="1068"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>Members and friends of Lucid Academy</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           07 · KONTAKT
+      ========================================================== -->
+      <section class="sekcja" id="kontakt" aria-labelledby="kontakt-tytul">
+        <!-- Miejsce na formularz kontaktowy w v1.5 -->
+        <!-- Fragment sieci pod ilustracją, nad stopką (js/neurony.js), tylko na szerokim ekranie -->
+        <canvas class="neurony neurony--fragment neurony--kontakt" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
+        <div class="kontener uklad-dwa">
+          <div class="uklad-dwa__tekst">
+            <p class="etykieta" data-wejscie>
+              <span class="etykieta__znak" aria-hidden="true">&gt;</span> 07 · contact
+            </p>
+            <h2 class="sekcja__tytul" id="kontakt-tytul" data-wejscie>Let’s talk about working together</h2>
+            <p class="sekcja__lead" data-wejscie>
+              Get in touch about training, joint projects and partnerships for educational
+              and cultural events.
+            </p>
+
+            <div class="kontakt" data-wejscie>
+              <address class="kontakt__karta">
+                <p class="kontakt__etykieta">contact details</p>
+                <p class="kontakt__nazwa">Lucid Academy</p>
+                <p>Piotr Jarczyk&nbsp;— founder and president</p>
+                <a class="kontakt__mail" href="mailto:piotr.jarczyk.ai@gmail.com">piotr.jarczyk.ai@gmail.com</a>
+                <p class="kontakt__telefon">+48 693 10 70 10</p>
+              </address>
+
+              <div class="kontakt__formalne">
+                <p class="kontakt__etykieta">registration details</p>
+                <dl class="formalne">
+                  <div><dt>KRS (court register)</dt><dd>0001213720</dd></div>
+                  <div><dt>NIP (tax ID)</dt><dd>9562408656</dd></div>
+                  <div><dt>REGON</dt><dd>543572049</dd></div>
+                </dl>
+                <p>Registered office: ul.&nbsp;Hieronima Derdowskiego&nbsp;3/9, 87-100&nbsp;Toruń, Poland</p>
+              </div>
+            </div>
+
+            <p class="sekcja__uwaga" data-wejscie>
+              We prepare each quote individually, depending on the format, the audience
+              and the scope of work.
+            </p>
+          </div>
+
+          <figure class="ilustracja" data-wejscie>
+            <img
+              src="../assets/art/laser-events.webp"
+              srcset="../assets/art/768/laser-events.webp 768w, ../assets/art/laser-events.webp 1536w"
+              sizes="(min-width: 1024px) 46vw, 100vw"
+              alt="Laser illustration: a tower of light sending out a signal that spreads in waves over a city"
+              width="1536"
+              height="1024"
+              loading="lazy"
+              decoding="async"
+              data-parallax="0.07"
+            />
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="stopka">
+      <div class="kontener stopka__wnetrze">
+        <p class="stopka__znak"><span class="etykieta__znak" aria-hidden="true">&gt;</span> lucid academy · 2026</p>
+        <a class="link-cichy" href="#">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
+    </footer>
+  </body>
+</html>
