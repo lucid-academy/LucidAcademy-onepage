@@ -539,8 +539,9 @@
                   <li class="miasto miasto--w-prawo" style="--x: 8.10%; --y: 46.05%; --opoznienie: 330ms" data-lat="53.43018" data-lon="14.55096">Szczecin</li>
                   <li class="miasto miasto--w-prawo" style="--x: 59.69%; --y: 16.69%; --opoznienie: 750ms" data-lat="54.44479" data-lon="18.56849">Sopot</li>
                   <li class="miasto miasto--w-prawo" style="--x: 67.41%; --y: 67.01%; --opoznienie: 800ms" data-lat="52.84739" data-lon="19.17927">Lipno</li>
-                  <li class="miasto miasto--pod-w-lewo" style="--x: 62.37%; --y: 65.90%; --opoznienie: 760ms" data-lat="52.88255" data-lon="18.79069">Ciechocinek</li>
-                  <li class="miasto miasto--w-lewo" style="--x: 91.51%; --y: 85.85%; --opoznienie: 1120ms" data-lat="52.23196" data-lon="21.00672">Warszawa</li>
+                  <li class="miasto miasto--w-lewo" style="--x: 62.37%; --y: 65.90%; --opoznienie: 760ms" data-lat="52.88255" data-lon="18.79069">Ciechocinek</li>
+                  <li class="miasto miasto--pod-w-lewo" style="--x: 91.51%; --y: 85.85%; --opoznienie: 1120ms" data-lat="52.23196" data-lon="21.00672">Warszawa</li>
+                  <li class="miasto miasto--pod" style="--x: 64.93%; --y: 73.01%; --opoznienie: 780ms" data-lat="52.65667" data-lon="18.98833">Wieniec-Zdrój</li>
                 </ul>
               </div>
             </div>
@@ -631,7 +632,7 @@
            06 · ZESPÓŁ
       ========================================================== -->
       <section class="sekcja" id="zespol" aria-labelledby="zespol-tytul">
-        <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba"> przed zdjęciem grupowym -->
+        <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba osoba--karta"> w .zespol__siatka -->
         <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
         <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener">
@@ -683,107 +684,238 @@
               </div>
             </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="assets/sylwia-kulczyk-480.webp"
-                srcset="assets/sylwia-kulczyk-480.webp 480w, assets/sylwia-kulczyk-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portret Sylwii Kulczyk"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Sylwia Kulczyk</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Obszary">
-                  <li class="znacznik">kultura</li>
-                  <li class="znacznik">warsztaty</li>
-                  <li class="znacznik">vibe coding</li>
-                </ul>
-                <p>
-                  Jest studentką piątego roku psychologii na UMK, a&nbsp;sztuka i&nbsp;ludzie to dwie rzeczy,
-                  które cieszą ją najbardziej. W&nbsp;Lucid Academy zajmuje się kulturą: wymyśla
-                  i&nbsp;współtworzy wydarzenia, na których można się spotkać, poczuć coś prawdziwego
-                  i&nbsp;po prostu dobrze spędzić czas.
-                </p>
-                <p>
-                  Prowadzi też warsztaty o&nbsp;sztucznej inteligencji dla dzieci, dorosłych i&nbsp;seniorów.
-                  Zależy jej na tym, by każda osoba na sali czuła się zauważona i&nbsp;wysłuchana, bo wierzy,
-                  że uważność pomaga pełniej przeżywać codzienność, także podczas wspólnej nauki.
-                  Z&nbsp;ogromną przyjemnością tworzy w&nbsp;duchu vibe codingu strony internetowe,
-                  narzędzia i&nbsp;gry.
-                </p>
-                <p>
-                  Po godzinach śpiewa, odnajduje swoje miejsce w&nbsp;teatrze i&nbsp;szuka wolności
-                  w&nbsp;naturze.
-                </p>
-              </div>
-            </article>
+            <!-- Pozostałe osoby: karty po dwie w rzędzie na szerokim ekranie -->
+            <div class="zespol__siatka">
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/sylwia-kulczyk-480.webp"
+                    srcset="assets/sylwia-kulczyk-480.webp 480w, assets/sylwia-kulczyk-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Sylwii Kulczyk"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Sylwia Kulczyk</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">kultura</li>
+                      <li class="znacznik">warsztaty</li>
+                      <li class="znacznik">vibe coding</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Jest studentką piątego roku psychologii na UMK, a&nbsp;sztuka i&nbsp;ludzie to dwie rzeczy,
+                    które cieszą ją najbardziej. W&nbsp;Lucid Academy zajmuje się kulturą: wymyśla
+                    i&nbsp;współtworzy wydarzenia, na których można się spotkać, poczuć coś prawdziwego
+                    i&nbsp;po prostu dobrze spędzić czas.
+                  </p>
+                  <p>
+                    Prowadzi też warsztaty o&nbsp;sztucznej inteligencji dla dzieci, dorosłych i&nbsp;seniorów.
+                    Zależy jej na tym, by każda osoba na sali czuła się zauważona i&nbsp;wysłuchana, bo wierzy,
+                    że uważność pomaga pełniej przeżywać codzienność, także podczas wspólnej nauki.
+                    Z&nbsp;ogromną przyjemnością tworzy w&nbsp;duchu vibe codingu strony internetowe, narzędzia
+                    i&nbsp;gry.
+                  </p>
+                  <p>
+                    Po godzinach śpiewa, odnajduje swoje miejsce w&nbsp;teatrze i&nbsp;szuka wolności
+                    w&nbsp;naturze.
+                  </p>
+                </div>
+              </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="assets/maciej-piotrowski-480.webp"
-                srcset="assets/maciej-piotrowski-480.webp 480w, assets/maciej-piotrowski-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portret Macieja Piotrowskiego"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Maciej Piotrowski</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Obszary">
-                  <li class="znacznik">vibe coding</li>
-                  <li class="znacznik">edukacja o&nbsp;AI</li>
-                </ul>
-                <p>
-                  Kiedyś jego możliwości tworzenia ograniczała bariera JavaScriptu czy Pythona. Dzięki AI
-                  wciela w&nbsp;życie swoje abstrakcyjne wizje i&nbsp;pomysły&nbsp;— od stron internetowych
-                  po aplikacje ułatwiające codzienność.
-                </p>
-                <p>
-                  W&nbsp;Lucid Academy zajmuje się głównie vibe codingiem i&nbsp;edukacją o&nbsp;nowinkach
-                  w&nbsp;świecie AI, a&nbsp;podczas warsztatów doświadcza prawdziwego poczucia flow. Poza
-                  arkanami AI lubi odciąć się od świata przy książce, anime czy piłce nożnej.
-                </p>
-              </div>
-            </article>
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/maciej-piotrowski-480.webp"
+                    srcset="assets/maciej-piotrowski-480.webp 480w, assets/maciej-piotrowski-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Macieja Piotrowskiego"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Maciej Piotrowski</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">vibe coding</li>
+                      <li class="znacznik">edukacja o&nbsp;AI</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Kiedyś jego możliwości tworzenia ograniczała bariera JavaScriptu czy Pythona. Dzięki AI
+                    wciela w&nbsp;życie swoje abstrakcyjne wizje i&nbsp;pomysły&nbsp;— od stron internetowych po
+                    aplikacje ułatwiające codzienność.
+                  </p>
+                  <p>
+                    W&nbsp;Lucid Academy zajmuje się głównie vibe codingiem i&nbsp;edukacją o&nbsp;nowinkach
+                    w&nbsp;świecie AI, a&nbsp;podczas warsztatów doświadcza prawdziwego poczucia flow. Poza
+                    arkanami AI lubi odciąć się od świata przy książce, anime czy piłce nożnej.
+                  </p>
+                </div>
+              </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="assets/piotr-humin-480.webp"
-                srcset="assets/piotr-humin-480.webp 480w, assets/piotr-humin-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portret Piotra Humina"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Piotr Humin</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Obszary">
-                  <li class="znacznik">warsztaty</li>
-                  <li class="znacznik">vibe coding</li>
-                </ul>
-                <p>
-                  Jako technik informatyk i&nbsp;student kognitywistyki łączy zainteresowanie technologią
-                  z&nbsp;ciekawością człowieka. W&nbsp;Lucid Academy wspiera warsztaty i&nbsp;rozwija projekty
-                  metodą vibe codingu. Kiedyś pisał kod linijka po linijce, dziś mówi AI, co ma
-                  powstać&nbsp;— reszta to negocjacje.
-                </p>
-                <p>
-                  Chce pomagać innym rozumieć zachodzące zmiany, wierząc, że technologia powinna służyć
-                  człowiekowi, a&nbsp;nie oddalać go od tego, co naprawdę ważne. Poza cyfrowym światem
-                  energię i&nbsp;równowagę odnajduje w&nbsp;sporcie oraz bliskości przyrody.
-                </p>
-              </div>
-            </article>
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/piotr-humin-480.webp"
+                    srcset="assets/piotr-humin-480.webp 480w, assets/piotr-humin-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Piotra Humina"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Piotr Humin</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">warsztaty</li>
+                      <li class="znacznik">vibe coding</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Jako technik informatyk i&nbsp;student kognitywistyki łączy zainteresowanie technologią
+                    z&nbsp;ciekawością człowieka. W&nbsp;Lucid Academy wspiera warsztaty i&nbsp;rozwija projekty
+                    metodą vibe codingu. Kiedyś pisał kod linijka po linijce, dziś mówi AI, co ma powstać&nbsp;—
+                    reszta to negocjacje.
+                  </p>
+                  <p>
+                    Chce pomagać innym rozumieć zachodzące zmiany, wierząc, że technologia powinna służyć
+                    człowiekowi, a&nbsp;nie oddalać go od tego, co naprawdę ważne. Poza cyfrowym światem energię
+                    i&nbsp;równowagę odnajduje w&nbsp;sporcie oraz bliskości przyrody.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/alicja-kaminska-480.webp"
+                    srcset="assets/alicja-kaminska-480.webp 480w, assets/alicja-kaminska-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Alicji Kamińskiej"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Alicja Kamińska</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">warsztaty</li>
+                      <li class="znacznik">vibe coding</li>
+                      <li class="znacznik">nowe projekty</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Jest studentką piątego roku psychologii. Najbardziej interesuje ją drugi człowiek: jego
+                    potrzeby, możliwości i&nbsp;potencjał, który często czeka na odkrycie. Lubi pomagać innym
+                    dostrzegać własne mocne strony, angażuje się w&nbsp;działania charytatywne i&nbsp;chętnie
+                    pracuje z&nbsp;ludźmi. Ważne są dla niej edukacja, otwartość i&nbsp;tworzenie przestrzeni,
+                    w&nbsp;której każdy może się rozwijać.
+                  </p>
+                  <p>
+                    W&nbsp;Lucid Academy rozwija nowe pomysły, przygotowuje warsztaty i&nbsp;zajmuje się vibe
+                    codingiem. Śledzi rozwój sztucznej inteligencji i&nbsp;nowości technologiczne,
+                    a&nbsp;w&nbsp;pracy lubi łączyć pozornie odległe tematy i&nbsp;szukać rozwiązań poza
+                    utartymi schematami.
+                  </p>
+                  <p>
+                    Poza pracą jej największą pasją jest łyżwiarstwo figurowe, które daje jej radość
+                    i&nbsp;inspirację.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/grazyna-gaca-pawlikowska-480.webp"
+                    srcset="assets/grazyna-gaca-pawlikowska-480.webp 480w, assets/grazyna-gaca-pawlikowska-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Grażyny Gacy-Pawlikowskiej"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Grażyna <span class="osoba__nazwisko">Gaca-Pawlikowska</span></h3>
+                    <p class="osoba__rola">koordynatorka projektów i&nbsp;wsparcie merytoryczne</p>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">koordynacja</li>
+                      <li class="znacznik">szkolenia</li>
+                      <li class="znacznik">wydarzenia</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Studia filozoficzne i&nbsp;socjologiczne nauczyły ją uważności na ludzi i&nbsp;procesy. Od
+                    piętnastu lat wykorzystuje to w&nbsp;praktyce, organizując w&nbsp;Toruniu konferencje,
+                    szkolenia i&nbsp;lokalne wydarzenia.
+                  </p>
+                  <p>
+                    W&nbsp;Lucid Academy koordynuje sprawy administracyjne i&nbsp;wspiera działania edukacyjne
+                    jako doradczyni i&nbsp;trenerka. Wolny czas najchętniej spędza blisko natury
+                    i&nbsp;z&nbsp;dobrą książką.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="assets/hania-lejer-480.webp"
+                    srcset="assets/hania-lejer-480.webp 480w, assets/hania-lejer-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portret Hani Lejer"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Hania Lejer</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Obszary">
+                      <li class="znacznik">warsztaty</li>
+                      <li class="znacznik">seniorzy</li>
+                      <li class="znacznik">psychologia</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Absolwentka psychologii, obecnie studentka kognitywistyki. Ma doświadczenie
+                    w&nbsp;projektach społecznych i&nbsp;inicjatywach na rzecz osób potrzebujących wsparcia,
+                    a&nbsp;także w&nbsp;tworzeniu treści o&nbsp;tematyce psychologicznej.
+                  </p>
+                  <p>
+                    W&nbsp;Lucid Academy prowadzi warsztaty dla seniorów. Interesuje się wpływem sztucznej
+                    inteligencji na przemiany kulturowe i&nbsp;relacje społeczne. W&nbsp;wolnym czasie sięga po
+                    literaturę science fiction i&nbsp;reportaże.
+                  </p>
+                </div>
+              </article>
+            </div>
 
             <figure class="zdjecie-grupowe" data-wejscie>
               <img

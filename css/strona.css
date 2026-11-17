@@ -1530,6 +1530,10 @@ html:not(.js) .liczba__wykres { display: none; }
 .miasto--pod-w-lewo { translate: -100% 0; padding-top: var(--odstep); padding-right: calc(var(--odstep) * .4); }
 .miasto--pod-w-lewo::before { right: 0; top: 0; translate: 50% -50%; }
 
+/* Pod punktem, wyśrodkowany: dla miasta, które ma sąsiada tuż obok po obu stronach */
+.miasto--pod { translate: -50% 0; padding-top: var(--odstep); }
+.miasto--pod::before { left: 50%; top: 0; translate: -50% -50%; }
+
 .miasto--w-lewo { translate: -100% -50%; padding-right: var(--odstep); }
 .miasto--w-lewo::before { right: 0; top: 50%; translate: 50% -50%; }
 
@@ -1616,6 +1620,54 @@ html:not(.js) .liczba__wykres { display: none; }
   margin: -2px 0 2px;
   padding: 0;
   list-style: none;
+}
+
+/* Pozostałe osoby: założyciel zostaje w szerokim układzie wyżej, reszta w kartach,
+   po dwie w rzędzie na szerokim ekranie. W karcie mniejsze zdjęcie stoi obok imienia
+   i znaczników, a opis idzie pod spodem na całą szerokość karty. */
+.zespol__siatka {
+  display: grid;
+  gap: clamp(40px, 5vw, 64px) clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .zespol__siatka { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.osoba--karta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: clamp(24px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+}
+.osoba__glowka {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: center;
+}
+@media (min-width: 960px) {
+  .osoba__glowka { grid-template-columns: 150px minmax(0, 1fr); }
+}
+.osoba--karta .osoba__zdjecie { width: 100%; }
+.osoba__podpis {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.osoba--karta .osoba__imie { font-size: clamp(1.5rem, .9rem + 1vw, 2rem); }
+/* Nazwisko dwuczłonowe w jednej linii, gdy kolumna je mieści (poniżej 380 px
+   łamie się na łączniku, żeby nie wyjść poza kartę) */
+@media (min-width: 380px) {
+  .osoba__nazwisko { white-space: nowrap; }
+}
+.osoba__tekst {
+  display: grid;
+  gap: 14px;
+  max-width: 40em;
 }
 
 .zdjecie-grupowe { margin: 0; }

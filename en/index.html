@@ -542,8 +542,9 @@
                   <li class="miasto miasto--w-prawo" style="--x: 8.10%; --y: 46.05%; --opoznienie: 330ms" data-lat="53.43018" data-lon="14.55096">Szczecin</li>
                   <li class="miasto miasto--w-prawo" style="--x: 59.69%; --y: 16.69%; --opoznienie: 750ms" data-lat="54.44479" data-lon="18.56849">Sopot</li>
                   <li class="miasto miasto--w-prawo" style="--x: 67.41%; --y: 67.01%; --opoznienie: 800ms" data-lat="52.84739" data-lon="19.17927">Lipno</li>
-                  <li class="miasto miasto--pod-w-lewo" style="--x: 62.37%; --y: 65.90%; --opoznienie: 760ms" data-lat="52.88255" data-lon="18.79069">Ciechocinek</li>
-                  <li class="miasto miasto--w-lewo" style="--x: 91.51%; --y: 85.85%; --opoznienie: 1120ms" data-lat="52.23196" data-lon="21.00672">Warsaw</li>
+                  <li class="miasto miasto--w-lewo" style="--x: 62.37%; --y: 65.90%; --opoznienie: 760ms" data-lat="52.88255" data-lon="18.79069">Ciechocinek</li>
+                  <li class="miasto miasto--pod-w-lewo" style="--x: 91.51%; --y: 85.85%; --opoznienie: 1120ms" data-lat="52.23196" data-lon="21.00672">Warsaw</li>
+                  <li class="miasto miasto--pod" style="--x: 64.93%; --y: 73.01%; --opoznienie: 780ms" data-lat="52.65667" data-lon="18.98833">Wieniec-Zdrój</li>
                 </ul>
               </div>
             </div>
@@ -635,7 +636,7 @@
            06 · ZESPÓŁ
       ========================================================== -->
       <section class="sekcja" id="zespol" aria-labelledby="zespol-tytul">
-        <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba"> przed zdjęciem grupowym -->
+        <!-- Miejsce na kolejne osoby w v1.5: nowa osoba = kolejny <article class="osoba osoba--karta"> w .zespol__siatka -->
         <!-- Fragment sieci obok nagłówka (js/neurony.js), tylko na szerokim ekranie -->
         <canvas class="neurony neurony--fragment neurony--naglowek" data-neurony data-neurony-ile="14,22" data-neurony-czas="2600" data-neurony-jasnosc="1.5" aria-hidden="true"></canvas>
         <div class="kontener">
@@ -687,107 +688,235 @@
               </div>
             </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="../assets/sylwia-kulczyk-480.webp"
-                srcset="../assets/sylwia-kulczyk-480.webp 480w, ../assets/sylwia-kulczyk-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portrait of Sylwia Kulczyk"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Sylwia Kulczyk</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Areas">
-                  <li class="znacznik">culture</li>
-                  <li class="znacznik">workshops</li>
-                  <li class="znacznik">vibe coding</li>
-                </ul>
-                <p>
-                  She is a&nbsp;fifth-year psychology student at UMK, and art and people are the two things
-                  that make her happiest. At Lucid Academy she looks after culture: she comes up
-                  with and co-creates events where people can meet, feel something real and
-                  simply have a&nbsp;good time.
-                </p>
-                <p>
-                  She also runs workshops on artificial intelligence for children, adults and seniors.
-                  She wants everyone in the room to feel seen and heard, because she believes that
-                  mindfulness helps us live everyday life more fully, including when we learn together.
-                  She takes great pleasure in building websites, tools and games in the spirit
-                  of vibe coding.
-                </p>
-                <p>
-                  After hours she sings, finds her place in the theatre and looks for freedom
-                  in&nbsp;nature.
-                </p>
-              </div>
-            </article>
+            <!-- Pozostałe osoby: karty po dwie w rzędzie na szerokim ekranie -->
+            <div class="zespol__siatka">
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/sylwia-kulczyk-480.webp"
+                    srcset="../assets/sylwia-kulczyk-480.webp 480w, ../assets/sylwia-kulczyk-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Sylwia Kulczyk"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Sylwia Kulczyk</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">culture</li>
+                      <li class="znacznik">workshops</li>
+                      <li class="znacznik">vibe coding</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    She is a&nbsp;fifth-year psychology student at UMK, and art and people are the two things
+                    that make her happiest. At Lucid Academy she looks after culture: she comes up with and
+                    co-creates events where people can meet, feel something real and simply have a&nbsp;good
+                    time.
+                  </p>
+                  <p>
+                    She also runs workshops on artificial intelligence for children, adults and seniors. She
+                    wants everyone in the room to feel seen and heard, because she believes that mindfulness
+                    helps us live everyday life more fully, including when we learn together. She takes great
+                    pleasure in building websites, tools and games in the spirit of vibe coding.
+                  </p>
+                  <p>
+                    After hours she sings, finds her place in the theatre and looks for freedom in&nbsp;nature.
+                  </p>
+                </div>
+              </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="../assets/maciej-piotrowski-480.webp"
-                srcset="../assets/maciej-piotrowski-480.webp 480w, ../assets/maciej-piotrowski-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portrait of Maciej Piotrowski"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Maciej Piotrowski</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Areas">
-                  <li class="znacznik">vibe coding</li>
-                  <li class="znacznik">AI education</li>
-                </ul>
-                <p>
-                  What he could create used to be limited by the barrier of JavaScript or Python. With AI,
-                  he brings his abstract visions and ideas to life&nbsp;— from websites to apps
-                  that make everyday life easier.
-                </p>
-                <p>
-                  At Lucid Academy he focuses mainly on vibe coding and on teaching about the latest
-                  developments in AI, and during workshops he experiences a&nbsp;real sense of flow.
-                  Away from the arcana of AI, he likes to switch off with a&nbsp;book, anime or football.
-                </p>
-              </div>
-            </article>
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/maciej-piotrowski-480.webp"
+                    srcset="../assets/maciej-piotrowski-480.webp 480w, ../assets/maciej-piotrowski-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Maciej Piotrowski"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Maciej Piotrowski</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">vibe coding</li>
+                      <li class="znacznik">AI education</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    What he could create used to be limited by the barrier of JavaScript or Python. With AI, he
+                    brings his abstract visions and ideas to life&nbsp;— from websites to apps that make
+                    everyday life easier.
+                  </p>
+                  <p>
+                    At Lucid Academy he focuses mainly on vibe coding and on teaching about the latest
+                    developments in AI, and during workshops he experiences a&nbsp;real sense of flow. Away from
+                    the arcana of AI, he likes to switch off with a&nbsp;book, anime or football.
+                  </p>
+                </div>
+              </article>
 
-            <article class="osoba" data-wejscie>
-              <img
-                class="osoba__zdjecie"
-                src="../assets/piotr-humin-480.webp"
-                srcset="../assets/piotr-humin-480.webp 480w, ../assets/piotr-humin-900.webp 900w"
-                sizes="(min-width: 720px) 300px, 240px"
-                alt="Portrait of Piotr Humin"
-                width="480"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="osoba__opis">
-                <h3 class="osoba__imie">Piotr Humin</h3>
-                <ul class="osoba__obszary" role="list" aria-label="Areas">
-                  <li class="znacznik">workshops</li>
-                  <li class="znacznik">vibe coding</li>
-                </ul>
-                <p>
-                  As an IT technician and cognitive science student, he combines an interest in technology
-                  with curiosity about people. At Lucid Academy he supports workshops and develops
-                  projects through vibe coding. He used to write code line by line; today he tells AI
-                  what to build&nbsp;— the rest is negotiation.
-                </p>
-                <p>
-                  He wants to help others understand the changes under way, believing that technology
-                  should serve people and should not distance them from what really matters. Away from
-                  the digital world, he finds energy and balance in sport and in being close to nature.
-                </p>
-              </div>
-            </article>
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/piotr-humin-480.webp"
+                    srcset="../assets/piotr-humin-480.webp 480w, ../assets/piotr-humin-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Piotr Humin"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Piotr Humin</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">workshops</li>
+                      <li class="znacznik">vibe coding</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    As an IT technician and cognitive science student, he combines an interest in technology
+                    with curiosity about people. At Lucid Academy he supports workshops and develops projects
+                    through vibe coding. He used to write code line by line; today he tells AI what to
+                    build&nbsp;— the rest is negotiation.
+                  </p>
+                  <p>
+                    He wants to help others understand the changes under way, believing that technology should
+                    serve people and should not distance them from what really matters. Away from the digital
+                    world, he finds energy and balance in sport and in being close to nature.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/alicja-kaminska-480.webp"
+                    srcset="../assets/alicja-kaminska-480.webp 480w, ../assets/alicja-kaminska-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Alicja Kamińska"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Alicja Kamińska</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">workshops</li>
+                      <li class="znacznik">vibe coding</li>
+                      <li class="znacznik">new projects</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    She is a&nbsp;fifth-year psychology student. She is most interested in people: their needs,
+                    abilities and the potential that is often waiting to be discovered. She enjoys helping
+                    others recognise their own strengths, takes part in charity work and likes working with
+                    people. Education, openness and creating a&nbsp;space where everyone can grow are important
+                    to her.
+                  </p>
+                  <p>
+                    At Lucid Academy she develops new ideas, prepares workshops and works on vibe coding
+                    projects. She follows developments in artificial intelligence and new technology, and in her
+                    work she likes to connect seemingly distant topics and look for solutions beyond established
+                    patterns.
+                  </p>
+                  <p>
+                    Outside work, her greatest passion is figure skating, which brings her joy and inspiration.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/grazyna-gaca-pawlikowska-480.webp"
+                    srcset="../assets/grazyna-gaca-pawlikowska-480.webp 480w, ../assets/grazyna-gaca-pawlikowska-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Grażyna Gaca-Pawlikowska"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Grażyna <span class="osoba__nazwisko">Gaca-Pawlikowska</span></h3>
+                    <p class="osoba__rola">project coordinator and adviser</p>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">coordination</li>
+                      <li class="znacznik">training</li>
+                      <li class="znacznik">events</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    Her studies in philosophy and sociology taught her to pay close attention to people and
+                    processes. For fifteen years she has put this into practice, organising conferences,
+                    training sessions and local events in Toruń.
+                  </p>
+                  <p>
+                    At Lucid Academy she coordinates administrative matters and supports educational activities
+                    as an adviser and trainer. She likes to spend her free time close to nature and with
+                    a&nbsp;good book.
+                  </p>
+                </div>
+              </article>
+
+              <article class="osoba osoba--karta" data-wejscie>
+                <div class="osoba__glowka">
+                  <img
+                    class="osoba__zdjecie"
+                    src="../assets/hania-lejer-480.webp"
+                    srcset="../assets/hania-lejer-480.webp 480w, ../assets/hania-lejer-900.webp 900w"
+                    sizes="(min-width: 960px) 150px, 112px"
+                    alt="Portrait of Hania Lejer"
+                    width="480"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="osoba__podpis">
+                    <h3 class="osoba__imie">Hania Lejer</h3>
+                    <ul class="osoba__obszary" role="list" aria-label="Areas">
+                      <li class="znacznik">workshops</li>
+                      <li class="znacznik">seniors</li>
+                      <li class="znacznik">psychology</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="osoba__tekst">
+                  <p>
+                    A&nbsp;psychology graduate, now studying cognitive science. She has experience in social
+                    projects and initiatives supporting people in need, as well as in creating content on
+                    psychological topics.
+                  </p>
+                  <p>
+                    At Lucid Academy she runs workshops for seniors. She is interested in how artificial
+                    intelligence affects cultural change and social relationships. In her free time she reads
+                    science fiction and reportage.
+                  </p>
+                </div>
+              </article>
+            </div>
 
             <figure class="zdjecie-grupowe" data-wejscie>
               <img

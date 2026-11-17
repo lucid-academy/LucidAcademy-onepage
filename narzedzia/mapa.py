@@ -14,7 +14,7 @@ Użycie:
   4. narzedzia/mapa-wynik/mapa.svg wkleić w miejsce <svg class="mapa__tlo">…</svg> (w oknie
      <div class="mapa__odslona">, które odsłania mapę przy przewijaniu),
      a --x, --y i --opoznienie miast przepisać z narzedzia/mapa-wynik/miasta.json. Stronę
-     podpisu (miasto--w-prawo, --w-lewo, --nad-w-prawo, --pod-w-lewo) dobiera się ręcznie.
+     podpisu (miasto--w-prawo, --w-lewo, --nad-w-prawo, --pod-w-lewo, --pod) dobiera się ręcznie.
 
 Nowe miasto: dopisać do MIASTA (współrzędne z OpenStreetMap, Nominatim). Jeśli leży poza
 obecną ramką, poszerzyć ją w RAMKA i zmienić proporcje .mapa w css/strona.css.
@@ -43,6 +43,7 @@ MIASTA = {
     "Lipno": (52.84739, 19.17927),
     "Ciechocinek": (52.88255, 18.79069),
     "Warszawa": (52.23196, 21.00672),
+    "Wieniec-Zdrój": (52.65667, 18.98833),
 }
 SZEROKOSC_SVG = 1000.0
 # Odsłanianie mapy z zachodu na wschód: czas i krzywa przejścia okna z reguły
